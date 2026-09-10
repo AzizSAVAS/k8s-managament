@@ -518,6 +518,154 @@
                 </div>
               </div>
 
+              <!-- 🌟 YENİ NESİL CLOUD STUDIO & ENTERPRISE SUITE VITRINI (1-CLICK DIRECT JUMP) -->
+              <div class="portal-feature-showcase">
+                <div class="portal-showcase-header">
+                  <div>
+                    <div class="portal-showcase-badge">⚡ SÜRÜM 2.4.0 YENİ ÖZELLİKLERİ</div>
+                    <h3 class="portal-showcase-title">Gelişmiş Cloud Studio & Kurumsal Operasyon Vitrini</h3>
+                    <p class="portal-showcase-desc">Yeni eklenen canlı yönetim, dosya transferi, maliyet ve eBPF otomasyon stüdyolarına tek tıkla doğrudan erişin:</p>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" onclick="switchGlobalView('operations')" style="align-self:center; white-space:nowrap; background:rgba(56,189,248,0.1); border-color:rgba(56,189,248,0.3); color:#38BDF8;">
+                    🎛️ Tüm 34 Modülü Yönetim Masasında Aç ➔
+                  </button>
+                </div>
+
+                <div class="portal-showcase-grid">
+                  <!-- Studio 1: Live YAML IDE -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('yaml-ide')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📝</span>
+                      <span class="showcase-tag blue">CLOUD STUDIO</span>
+                    </div>
+                    <div class="showcase-card-title">Canlı YAML IDE & Diff</div>
+                    <div class="showcase-card-desc">Tarayıcı içi syntax doğrulamalı k8s editörü, hazır deployment şablonları ve dry-run desteği.</div>
+                    <div class="showcase-card-link">Stüdyoyu Aç ➔</div>
+                  </div>
+
+                  <!-- Studio 2: Pod File Explorer -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('pod-files')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📁</span>
+                      <span class="showcase-tag cyan">KUBECTL CP</span>
+                    </div>
+                    <div class="showcase-card-title">Pod Dosya Gezgini</div>
+                    <div class="showcase-card-desc">Konteyner içi dosya ağacını canlı okuma, log indirme ve kubectl cp dosya transferi.</div>
+                    <div class="showcase-card-link">Dosyaları Gör ➔</div>
+                  </div>
+
+                  <!-- Studio 3: HPA Studio -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('hpa-studio')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">⚖️</span>
+                      <span class="showcase-tag purple">AUTOSCALE</span>
+                    </div>
+                    <div class="showcase-card-title">HPA Ölçekleme Stüdyosu</div>
+                    <div class="showcase-card-desc">CPU/Bellek hedefleri belirleme, surge simülasyonu ve pod replika ölçekleme eğrileri.</div>
+                    <div class="showcase-card-link">Simülatörü Aç ➔</div>
+                  </div>
+
+                  <!-- Studio 4: Secrets Vault -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('secrets-vault')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🔐</span>
+                      <span class="showcase-tag emerald">VAULT</span>
+                    </div>
+                    <div class="showcase-card-title">Secret & Config Kasası</div>
+                    <div class="showcase-card-desc">Base64 maskeleme/çözme, güvenli TLS & API anahtarı depolama ve tek tıkla şifreleme.</div>
+                    <div class="showcase-card-link">Kasayı Yönet ➔</div>
+                  </div>
+
+                  <!-- Studio 5: FinOps Calculator -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('finops-calculator')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">💰</span>
+                      <span class="showcase-tag amber">FINOPS</span>
+                    </div>
+                    <div class="showcase-card-title">Bulut Maliyet & ROI</div>
+                    <div class="showcase-card-desc">AWS/Azure/GCP karşısında on-premise RKE2 maliyet tasarrufu ve 3 yıllık ROI analizörü.</div>
+                    <div class="showcase-card-link">Hesaplayıcıyı Aç ➔</div>
+                  </div>
+
+                  <!-- Studio 6: DR / GSLB Failover -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('cluster-failover')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🌐</span>
+                      <span class="showcase-tag rose">DR & GSLB</span>
+                    </div>
+                    <div class="showcase-card-title">Multi-Cluster DR Failover</div>
+                    <div class="showcase-card-desc">Primary ve Secondary kümeler arası küresel DNS (GSLB) ve anlık acil durum yük aktarımı.</div>
+                    <div class="showcase-card-link">DR Paneline Git ➔</div>
+                  </div>
+
+                  <!-- Enterprise 1: Topology Graph -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('topology')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🕸️</span>
+                      <span class="showcase-tag blue">eBPF HARİTASI</span>
+                    </div>
+                    <div class="showcase-card-title">Görsel Ağ Topolojisi</div>
+                    <div class="showcase-card-desc">Internet, Ingress, Podlar, DB ve Depolama katmanları arasındaki canlı eBPF trafik akışı.</div>
+                    <div class="showcase-card-link">Haritayı İncele ➔</div>
+                  </div>
+
+                  <!-- Enterprise 2: Helm Catalog -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('helm')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📦</span>
+                      <span class="showcase-tag purple">HELM 3</span>
+                    </div>
+                    <div class="showcase-card-title">Özel Helm Kataloğu</div>
+                    <div class="showcase-card-desc">Redis, PostgreSQL, GitLab, NGINX chart kütüphanesi ve tarayıcı içi values.yaml düzenleyici.</div>
+                    <div class="showcase-card-link">Kataloğu Aç ➔</div>
+                  </div>
+
+                  <!-- Enterprise 3: Chaos Simulator -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('chaos')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🧪</span>
+                      <span class="showcase-tag rose">CHAOS RESILIENCE</span>
+                    </div>
+                    <div class="showcase-card-title">Kaos Mühendisliği</div>
+                    <div class="showcase-card-desc">Pod Kill, Node Network Latency ve CPU Spike senaryoları ile HA dayanıklılık testi.</div>
+                    <div class="showcase-card-link">Senaryoları Test Et ➔</div>
+                  </div>
+
+                  <!-- Enterprise 4: Audit Trail -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('audit')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📜</span>
+                      <span class="showcase-tag emerald">AUDIT LOGS</span>
+                    </div>
+                    <div class="showcase-card-title">Kurumsal Denetim Defteri</div>
+                    <div class="showcase-card-desc">Kim, ne zaman, hangi IP'den hangi k8s kaynağını değiştirdi? Filtreleme ve JSON export.</div>
+                    <div class="showcase-card-link">Kayıtları Gör ➔</div>
+                  </div>
+
+                  <!-- Enterprise 5: Webhooks -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('webhooks')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📢</span>
+                      <span class="showcase-tag amber">BİLDİRİM</span>
+                    </div>
+                    <div class="showcase-card-title">Slack / Teams / Telegram</div>
+                    <div class="showcase-card-desc">Kritik küme alarmları ve olayları için webhook entegrasyonu ve anlık test bildirimi gönderimi.</div>
+                    <div class="showcase-card-link">Kanalları Ayarla ➔</div>
+                  </div>
+
+                  <!-- Enterprise 6: Private Registry -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('registry')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🐳</span>
+                      <span class="showcase-tag cyan">HARBOR</span>
+                    </div>
+                    <div class="showcase-card-title">Özel Registry (Harbor)</div>
+                    <div class="showcase-card-desc">Kurumsal Docker registry entegrasyonu ve otomatik imagePullSecrets üretici.</div>
+                    <div class="showcase-card-link">Registry'yi Aç ➔</div>
+                  </div>
+                </div>
+              </div>
+
               <!-- ALT HIZLI BAĞLANTI & KÜME SEÇİCİ KARTI -->
               <div class="portal-quick-connect" style="flex-direction:column; align-items:stretch;">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
