@@ -2898,48 +2898,55 @@ table.dist-table tr:hover td {
    MULTI-CLUSTER HUB & AI COPILOT STYLES
    ============================================================================== */
 .topbar-cluster-dropdown {
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
-  color: #fff;
-  font-size: 0.76rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #E0F2FE;
+  font-size: 0.78rem;
   font-weight: 600;
-  padding: 5px 10px;
-  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  border-radius: 20px;
   outline: none;
   cursor: pointer;
   transition: var(--transition);
 }
 .topbar-cluster-dropdown:hover {
-  border-color: var(--primary-glow);
+  border-color: #38BDF8;
+  background: rgba(15, 23, 42, 0.95);
 }
 
-.ai-copilot-top-btn {
+/* Floating AI Copilot FAB */
+.ai-copilot-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 998;
   display: flex;
   align-items: center;
-  gap: 7px;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(56, 189, 248, 0.25));
-  border: 1px solid rgba(168, 85, 247, 0.5);
-  color: #F3E8FF;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.76rem;
-  font-weight: 700;
+  gap: 9px;
+  background: linear-gradient(135deg, #7C3AED, #2563EB);
+  border: 1.5px solid rgba(192, 132, 252, 0.6);
+  color: #fff;
+  padding: 11px 20px;
+  border-radius: 30px;
+  font-size: 0.86rem;
+  font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
-  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5), 0 0 12px rgba(56, 189, 248, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(10px);
 }
-.ai-copilot-top-btn:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(56, 189, 248, 0.4));
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.5);
+.ai-copilot-fab:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 14px 32px rgba(124, 58, 237, 0.7), 0 0 18px rgba(56, 189, 248, 0.5);
 }
+
 .ai-sparkle-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #A855F7;
-  box-shadow: 0 0 8px #C084FC;
-  animation: pulseGlow 1.8s infinite;
+  background: #C084FC;
+  box-shadow: 0 0 10px #E9D5FF;
+  animation: pulseGlow 1.6s infinite;
 }
 
 /* AI Copilot Slide Drawer */
