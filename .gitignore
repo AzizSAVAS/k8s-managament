@@ -1,0 +1,112 @@
+# ==============================================================================
+# Shamssoftware RKE2 Cluster Hub - Git Ignore Configuration
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Dependency Directories
+# ------------------------------------------------------------------------------
+node_modules/
+*/node_modules/
+jspm_packages/
+web_modules/
+.pnp/
+.pnp.js
+
+# ------------------------------------------------------------------------------
+# 2. Sensitive Keys, Certificates & SSH Private Keys
+# ------------------------------------------------------------------------------
+*.pem
+*.key
+*.pkcs12
+*.pfx
+*.p12
+id_rsa
+id_rsa*
+id_ed25519
+id_ed25519*
+id_ecdsa
+id_ecdsa*
+id_dsa
+*.ppk
+*.crt
+*.cer
+*.der
+*.csr
+*.pub
+
+# ------------------------------------------------------------------------------
+# 3. Kubernetes Kubeconfig & Cloud / Infrastructure Credentials
+# ------------------------------------------------------------------------------
+kubeconfig*
+*.kubeconfig
+rke2.yaml
+rke2*.yaml
+k3s.yaml
+k8s-*.yaml
+credentials*
+secrets*
+secret*
+*.token
+*token*.txt
+.kube/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# ------------------------------------------------------------------------------
+# 4. Environment Variables & Secret Configuration Files
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.env
+*.local
+
+# ------------------------------------------------------------------------------
+# 5. Logs & Runtime Execution Data
+# ------------------------------------------------------------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.pid
+*.seed
+*.pid.lock
+
+# ------------------------------------------------------------------------------
+# 6. Temporary & Backup Files
+# ------------------------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+scratch/
+scratch_*
+
+# ------------------------------------------------------------------------------
+# 7. Operating System & IDE Files
+# ------------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.sublime-workspace
+*.sublime-project
+
+# ------------------------------------------------------------------------------
+# 8. Build / Cache Directories
+# ------------------------------------------------------------------------------
+.npm/
+.eslintcache
+.cache/
+dist/
+build/

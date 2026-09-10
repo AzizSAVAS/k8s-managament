@@ -1,0 +1,72 @@
+# ==============================================================================
+# Shamssoftware RKE2 Cluster Dashboard - Project Git Ignore
+# ==============================================================================
+
+# Dependencies
+node_modules/
+jspm_packages/
+web_modules/
+.pnp/
+.pnp.js
+
+# Sensitive Keys & Certificates
+*.pem
+*.key
+*.pkcs12
+*.pfx
+*.p12
+id_rsa
+id_rsa*
+id_ed25519
+id_ed25519*
+id_ecdsa
+id_ecdsa*
+id_dsa
+*.ppk
+*.crt
+*.cer
+*.der
+*.csr
+*.pub
+
+# Kubernetes Kubeconfig & Cloud Credentials
+kubeconfig*
+*.kubeconfig
+rke2.yaml
+rke2*.yaml
+k3s.yaml
+credentials*
+secrets*
+secret*
+*.token
+*token*.txt
+.kube/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+*.env
+*.local
+
+# Logs & Runtime
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.pid
+*.seed
+*.pid.lock
+
+# Editor & OS Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.tmp
+*.bak
+*.swp
+*~

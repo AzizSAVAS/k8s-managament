@@ -1,0 +1,14 @@
+{
+  "name": "rke2-cluster-dashboard",
+  "version": "1.0.0",
+  "description": "Enterprise RKE2, Cilium, Proxmox & VMware vCenter Cluster Manager",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ssh2": "^1.17.0",
+    "ws": "^8.18.0"
+  }
+}

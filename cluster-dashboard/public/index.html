@@ -1,0 +1,2584 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shamssoftware - RKE2 & Cilium Cluster Hub</title>
+  <link rel="stylesheet" href="css/style.css?v=20260910_35">
+</head>
+<body>
+
+  <!-- FULL-SCREEN CLOUD CONSOLE LAYOUT -->
+  <div class="app-layout">
+    <!-- LEFT WORKFLOW SIDEBAR -->
+    <aside class="app-sidebar">
+      <div>
+        <div class="sidebar-header">
+          <div class="brand-row">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <div>
+              <div class="brand-title">Shamssoftware</div>
+              <div class="brand-badge">Enterprise v2.4</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 0. GİRİŞ & KARŞILAMA PORTALİ MENÜSÜ -->
+        <nav class="sidebar-pipeline" id="sidebar-portal-nav" style="display:flex;">
+          <div class="pipeline-title" data-i18n="sidebar_launchpad_title">BAŞLANGIÇ MERKEZİ</div>
+
+          <div class="ops-nav-item active" id="portal-nav-home" onclick="switchGlobalView('portal')">
+            <span class="ops-nav-icon">🏛️</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_home">Giriş Portalı</span>
+          </div>
+          <div class="ops-nav-item" id="portal-nav-wizard" onclick="enterAppMode('wizard', 'new')">
+            <span class="ops-nav-icon">🚀</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_wizard">Yeni Küme Kurulumu</span>
+          </div>
+          <div class="ops-nav-item" id="portal-nav-scale" onclick="enterAppMode('wizard', 'scale')">
+            <span class="ops-nav-icon">📈</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_scale">Küme Genişletme (Scale)</span>
+          </div>
+          <div class="ops-nav-item" id="portal-nav-ops" onclick="enterAppMode('operations')">
+            <span class="ops-nav-icon">🎛️</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_ops">Küme Yönetim & Bakım</span>
+          </div>
+
+          <div style="margin-top:20px; padding:14px 12px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:var(--radius-sm);">
+            <div style="font-size:0.72rem; font-weight:700; color:var(--primary-glow); margin-bottom:4px;" data-i18n="portal_info_card_title">⚡ SHAMSSOFTWARE HUB</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;" data-i18n="portal_info_card_desc">
+              Sıfırdan tam yedekli küme kurabilir veya çalışan kümenizi Day-2 masasıyla yönetebilirsiniz.
+            </div>
+          </div>
+        </nav>
+
+        <!-- 1. KURULUM SİHİRBAZI MENÜSÜ (YALNIZCA KURULUM EKRANINDA) -->
+        <nav class="sidebar-pipeline" id="sidebar-wizard-nav" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div class="pipeline-title" style="padding-bottom:0;" data-i18n="sidebar_wizard_title">Kurulum Aşamaları</div>
+            <button onclick="switchGlobalView('portal')" data-i18n-title="sidebar_exit_btn" style="background:rgba(255,255,255,0.06); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; font-size:0.72rem; padding:3px 8px; border-radius:4px;"><span data-i18n="sidebar_exit_btn">🏠 Çıkış</span></button>
+          </div>
+
+          <div class="step-item active" id="step-nav-1" onclick="goToStep(1)">
+            <div class="step-node">
+              <span class="step-num">1</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step1_nav_sub">01 / MOD</span>
+              <span class="step-label" data-i18n="step1_nav_title">Altyapı & Mod</span>
+            </div>
+            <span class="step-status-pill" id="step-status-1" data-i18n="status_active">Aktif</span>
+          </div>
+
+          <div class="step-item" id="step-nav-2" onclick="goToStep(2)">
+            <div class="step-node">
+              <span class="step-num">2</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step2_nav_sub">02 / BAĞLANTI</span>
+              <span class="step-label" data-i18n="step2_nav_title">Sunucu Keşfi</span>
+            </div>
+            <span class="step-status-pill" id="step-status-2" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+
+          <div class="step-item" id="step-nav-3" onclick="goToStep(3)">
+            <div class="step-node">
+              <span class="step-num">3</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step3_nav_sub">03 / BOYUT</span>
+              <span class="step-label" data-i18n="step3_nav_title">Küme Ayarları</span>
+            </div>
+            <span class="step-status-pill" id="step-status-3" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+
+          <div class="step-item" id="step-nav-4" onclick="goToStep(4)">
+            <div class="step-node">
+              <span class="step-num">4</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step4_nav_sub">04 / TOPOLOJİ</span>
+              <span class="step-label" data-i18n="step4_nav_title">Dağıtım Planı</span>
+            </div>
+            <span class="step-status-pill" id="step-status-4" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+
+          <div class="step-item" id="step-nav-5" onclick="goToStep(5)">
+            <div class="step-node">
+              <span class="step-num">5</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step5_nav_sub">05 / KURULUM</span>
+              <span class="step-label" data-i18n="step5_nav_title">Canlı Dağıtım</span>
+            </div>
+            <span class="step-status-pill" id="step-status-5" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+        </nav>
+
+        <!-- 2. KÜME YÖNETİM & OPERASYON MENÜSÜ (YALNIZCA YÖNETİM EKRANINDA) -->
+        <nav class="sidebar-pipeline ops-pipeline" id="sidebar-ops-nav" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div class="pipeline-title" style="padding-bottom:0;" data-i18n="sidebar_ops_title">Day-2 Yönetim Masası</div>
+            <button onclick="switchGlobalView('portal')" data-i18n-title="sidebar_exit_btn" style="background:rgba(255,255,255,0.06); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; font-size:0.72rem; padding:3px 8px; border-radius:4px;"><span data-i18n="sidebar_exit_btn">🏠 Çıkış</span></button>
+          </div>
+
+          <div class="ops-nav-item active" id="ops-nav-nodes" onclick="switchOpsView('nodes')">
+            <span class="ops-nav-icon">📊</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_nodes">Düğümler & Podlar</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-addons" onclick="switchOpsView('addons')">
+            <span class="ops-nav-icon">📦</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_addons">Eklenti Kataloğu</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-nfs" onclick="switchOpsView('nfs')">
+            <span class="ops-nav-icon">📂</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_nfs">Harici Depolama (NFS)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-apps" onclick="switchOpsView('apps')">
+            <span class="ops-nav-icon">🚀</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_apps">Uygulama Mağazası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-smoke" onclick="switchOpsView('smoke')">
+            <span class="ops-nav-icon">🧪</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_smoke">Smoke Test & Doğrulama</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-fortigate" onclick="switchOpsView('fortigate')">
+            <span class="ops-nav-icon">🛡️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_fortigate">FortiGate SLB & VIP</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cis" onclick="switchOpsView('cis')">
+            <span class="ops-nav-icon">🔍</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_cis">CIS Güvenlik Denetimi</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-rbac" onclick="switchOpsView('rbac')">
+            <span class="ops-nav-icon">🔒</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_rbac">RBAC & Kubeconfig</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-console" onclick="switchOpsView('console')">
+            <span class="ops-nav-icon">💻</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_console">Web kubectl / Shell</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-netpol" onclick="switchOpsView('netpol')">
+            <span class="ops-nav-icon">🌐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_netpol">Cilium Ağ Güvenliği</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-upgrade" onclick="switchOpsView('upgrade')">
+            <span class="ops-nav-icon">🔄</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_upgrade">Sıfır Kesintili Yükseltme</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-events" onclick="switchOpsView('events')">
+            <span class="ops-nav-icon">📜</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_events">Olay Akışı & Zaman Çizelgesi</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-alerts" onclick="switchOpsView('alerts')">
+            <span class="ops-nav-icon">🚨</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_alerts">Akıllı Alarm & Bildirimler</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-rightsizing" onclick="switchOpsView('rightsizing')">
+            <span class="ops-nav-icon">📊</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_rightsizing">Kaynak & FinOps Tasarruf</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-certs" onclick="switchOpsView('certs')">
+            <span class="ops-nav-icon">🔐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_certs">TLS / SSL Sertifikaları</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-logs" onclick="switchOpsView('logs')">
+            <span class="ops-nav-icon">📜</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_logs">Canlı Pod Log Akışı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-velero" onclick="switchOpsView('velero')">
+            <span class="ops-nav-icon">💾</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_velero">Velero & S3 Yedekleme</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-etcd" onclick="switchOpsView('etcd')">
+            <span class="ops-nav-icon">🗄️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_etcd">etcd & Küme Bakımı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-hubble" onclick="switchOpsView('hubble')">
+            <span class="ops-nav-icon">🐝</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_hubble">Hubble Servis Haritası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-doctor" onclick="switchOpsView('doctor')">
+            <span class="ops-nav-icon">🤖</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_doctor">Akıllı Teşhis & Onarım</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-trivy" onclick="switchOpsView('trivy')">
+            <span class="ops-nav-icon">🛡️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_trivy">İmaj Güvenliği (CVE)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cronjobs" onclick="switchOpsView('cronjobs')">
+            <span class="ops-nav-icon">⚡</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_cronjobs">CronJob & Zamanlanmış</span>
+          </div>
+        </nav>
+      </div>
+
+
+      <!-- SIDEBAR FOOTER: COPYRIGHT & APP VERSION -->
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-brand">
+          <span class="sidebar-footer-title">Shamssoftware</span>
+          <span class="sidebar-footer-ver">v2.4.0-EE</span>
+        </div>
+        <div class="sidebar-footer-copy" data-i18n="footer_copy">
+          &copy; 2026 Shamssoftware<br>Tüm hakları saklıdır.
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN WORKSPACE -->
+    <main class="app-main">
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="breadcrumb-trail">
+          <span class="breadcrumb-item" data-i18n="breadcrumb_infra">Altyapı Yönetimi</span>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-item" data-i18n="breadcrumb_clusters">RKE2 Kümeleri</span>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" id="breadcrumb-step-title">01 • Altyapı & Kurulum Modu</span>
+        </div>
+
+        <!-- GLOBAL WORKSPACE MODE SWITCHER -->
+        <div class="global-mode-switcher">
+          <button class="mode-pill-btn active" id="btn-mode-portal" onclick="switchGlobalView('portal')">
+            <span>🏠</span> <span data-i18n="mode_portal">Ana Giriş Portalı</span>
+          </button>
+          <button class="mode-pill-btn" id="btn-mode-wizard" onclick="switchGlobalView('wizard')">
+            <span>🚀</span> <span data-i18n="mode_wizard">Kurulum Sihirbazı</span>
+          </button>
+          <button class="mode-pill-btn" id="btn-mode-operations" onclick="switchGlobalView('operations')">
+            <span>🎛️</span> <span data-i18n="mode_operations">Küme Yönetim & Operasyon</span>
+          </button>
+        </div>
+
+        <div class="topbar-actions">
+          <!-- LANGUAGE SWITCHER (TR / EN) -->
+          <div class="lang-switch-group">
+            <button class="lang-pill-btn active" id="btn-lang-tr" onclick="setLanguage('tr')" title="Türkçe">🇹🇷 TR</button>
+            <button class="lang-pill-btn" id="btn-lang-en" onclick="setLanguage('en')" title="English">🇬🇧 EN</button>
+          </div>
+          <div class="topbar-chip" id="top-brand-badge">⚡ Cilium eBPF & Proxmox VE</div>
+          <div class="topbar-chip">
+            <span class="status-dot"></span>
+            <span id="nav-system-status" data-i18n="nav_system_ready">Sistem Hazır</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- SCROLLABLE WORKSPACE CONTENT -->
+      <div class="workspace-scroll">
+        <div class="workspace-content">
+
+          <!-- 0. GİRİŞ & KARŞILAMA PORTALİ -->
+          <div id="workspace-portal" class="workspace-view" style="display:block;">
+            <div class="portal-container">
+              <div class="portal-hero">
+                <div class="portal-badge-pill" data-i18n="portal_badge">🏛️ SHAMSSOFTWARE RKE2 & CILIUM HUB</div>
+                <h1 class="portal-title" data-i18n="portal_title">Shamssoftware Kubernetes Küme Portalı</h1>
+                <p class="portal-subtitle" data-i18n="portal_subtitle">
+                  Yüksek erişilebilir (HA) RKE2 & Cilium eBPF küme dağıtımı, canlı telemetri izleme, felaket kurtarma ve kurumsal Day-2 yaşam döngüsü yönetim masası.
+                </p>
+                <div class="portal-prompt-text" data-i18n="portal_prompt">Bugün hangi operasyonu gerçekleştirmek istiyorsunuz?</div>
+              </div>
+
+
+              <div class="portal-grid">
+                <!-- KART 1: YENİ KURULUM -->
+                <div class="portal-action-card primary" onclick="enterAppMode('wizard', 'new')">
+                  <div class="portal-card-glow"></div>
+                  <div class="portal-card-header">
+                    <div class="portal-icon-box blue">🚀</div>
+                    <span class="portal-chip" data-i18n="card1_chip">SIFIRDAN KURULUM</span>
+                  </div>
+                  <h2 class="portal-card-title" data-i18n="card1_title">Yeni Küme Kurulumu</h2>
+                  <p class="portal-card-desc" data-i18n="card1_desc">
+                    Proxmox VE, VMware vCenter veya Bare-Metal üzerinde 5 aşamalı akıllı sihirbaz ile sıfırdan tam yedekli RKE2 & Cilium eBPF kümesi kurun.
+                  </p>
+                  <ul class="portal-features-list">
+                    <li data-i18n="card1_f1">✔ Otomatik Proxmox & vCenter VM Sizing</li>
+                    <li data-i18n="card1_f2">✔ Anti-Affinity Çoklu Host Dağıtım Matrisi</li>
+                    <li data-i18n="card1_f3">✔ Cloud-Init Ubuntu 22.04 Altın Şablonları</li>
+                    <li data-i18n="card1_f4">✔ Canlı WebSocket Dağıtım Günlüğü</li>
+                  </ul>
+                  <div class="portal-card-footer">
+                    <button class="btn btn-primary portal-btn" onclick="enterAppMode('wizard', 'new'); event.stopPropagation();" data-i18n="card1_btn">
+                      Kurulum Sihirbazını Başlat ➔
+                    </button>
+                  </div>
+                </div>
+
+                <!-- KART 2: BAKIM & OPERASYON -->
+                <div class="portal-action-card emerald" onclick="enterAppMode('operations')">
+                  <div class="portal-card-glow"></div>
+                  <div class="portal-card-header">
+                    <div class="portal-icon-box green">🎛️</div>
+                    <span class="portal-chip green" data-i18n="card2_chip">DAY-2 OPERASYON</span>
+                  </div>
+                  <h2 class="portal-card-title" data-i18n="card2_title">Küme Yönetim & Bakım Merkezi</h2>
+                  <p class="portal-card-desc" data-i18n="card2_desc">
+                    Canlı üretim kümenizin telemetrisine, eBPF ağ güvenliğine, FinOps kaynak optimizasyonuna ve otomatik onarım araçlarına erişin.
+                  </p>
+                  <ul class="portal-features-list">
+                    <li data-i18n="card2_f1">✔ 22 Kurumsal Day-2 Operasyon Modülü</li>
+                    <li data-i18n="card2_f2">✔ Hubble eBPF Servis Haritası & Akış Analizi</li>
+                    <li data-i18n="card2_f3">✔ Velero S3 Tam Küme & PVC Yedekleme</li>
+                    <li data-i18n="card2_f4">✔ AI Doctor Kendi Kendini İyileştirme & FinOps</li>
+                  </ul>
+                  <div class="portal-card-footer">
+                    <button class="btn btn-success portal-btn" onclick="enterAppMode('operations'); event.stopPropagation();" data-i18n="card2_btn">
+                      Operasyon Merkezine Gir ➔
+                    </button>
+                  </div>
+                </div>
+
+                <!-- KART 3: ÖLÇEKLEME -->
+                <div class="portal-action-card purple" onclick="enterAppMode('wizard', 'scale')">
+                  <div class="portal-card-glow"></div>
+                  <div class="portal-card-header">
+                    <div class="portal-icon-box purple">📈</div>
+                    <span class="portal-chip purple" data-i18n="card3_chip">KAPASİTE GENİŞLETME</span>
+                  </div>
+                  <h2 class="portal-card-title" data-i18n="card3_title">Küme Genişletme & Düğüm Ekleme</h2>
+                  <p class="portal-card-desc" data-i18n="card3_desc">
+                    Çalışmakta olan mevcut RKE2 kümenize iş yükü talebine göre kesintisiz yeni Worker veya Master düğümleri dahil edin.
+                  </p>
+                  <ul class="portal-features-list">
+                    <li data-i18n="card3_f1">✔ Canlı Kümeye Sıfır Kesintili Scale-Out</li>
+                    <li data-i18n="card3_f2">✔ Otomatik Token & Join Script Üretimi</li>
+                    <li data-i18n="card3_f3">✔ Otomatik Yük Dengeleme Entegrasyonu</li>
+                    <li data-i18n="card3_f4">✔ Worker Kaynak Havuzunu Genişletme</li>
+                  </ul>
+                  <div class="portal-card-footer">
+                    <button class="btn btn-secondary portal-btn" style="background:rgba(168,85,247,0.2); border-color:rgba(168,85,247,0.4); color:#E9D5FF;" onclick="enterAppMode('wizard', 'scale'); event.stopPropagation();" data-i18n="card3_btn">
+                      Ölçekleme Modunu Aç ➔
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ALT HIZLI BAĞLANTI & KÜME SEÇİCİ KARTI -->
+              <div class="portal-quick-connect" style="flex-direction:column; align-items:stretch;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.4rem;">🌐</span>
+                    <div>
+                      <div style="font-size:0.86rem; font-weight:700; color:#fff;" data-i18n="quick_connect_title">Mevcut Canlı Kümeye Hızlı Bağlan</div>
+                      <div style="font-size:0.75rem; color:var(--text-muted);" data-i18n="quick_connect_desc">Master IP ve SSH bilgilerini girerek doğrudan operasyon masasını canlı verilerle açabilirsiniz:</div>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <input type="text" id="portal-quick-ip" placeholder="Master IP (Örn: 10.0.10.11)" data-i18n-placeholder="quick_connect_ip_ph" style="padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-input); color:#fff; font-size:0.78rem; width:150px; font-family:'JetBrains Mono';">
+                    <input type="text" id="portal-quick-user" placeholder="Kullanıcı (root)" value="root" data-i18n-placeholder="quick_connect_user_ph" style="padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-input); color:#fff; font-size:0.78rem; width:110px;">
+                    <input type="password" id="portal-quick-pass" placeholder="SSH Şifresi" data-i18n-placeholder="quick_connect_pass_ph" style="padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-input); color:#fff; font-size:0.78rem; width:120px;">
+                    <button class="btn btn-primary btn-sm" id="btn-portal-quick-connect" style="padding:6px 12px; font-size:0.78rem;" onclick="connectAndEnterOps()" data-i18n="quick_connect_btn">⚡ Doğrudan Bağlan & Aç</button>
+                  </div>
+                </div>
+
+                <!-- CANLI BAĞLANTI LOG TERMİNALİ -->
+                <div id="portal-quick-log-box" style="display:none; margin-top:14px; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+                  <div class="terminal-window" style="box-shadow:0 8px 24px rgba(0,0,0,0.5); border:1px solid rgba(56,189,248,0.3); border-radius:var(--radius-sm); overflow:hidden;">
+                    <div class="terminal-header" style="padding:6px 12px; background:rgba(15,23,42,0.95); display:flex; justify-content:space-between; align-items:center;">
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <div class="terminal-dots">
+                          <span class="terminal-dot red"></span>
+                          <span class="terminal-dot yellow"></span>
+                          <span class="terminal-dot green"></span>
+                        </div>
+                        <span class="terminal-title" style="font-size:0.75rem; font-family:'JetBrains Mono'; color:#38BDF8;" id="portal-quick-log-title">ssh: connecting...</span>
+                      </div>
+                      <div style="display:flex; gap:8px; align-items:center;">
+                        <span id="portal-quick-log-status" style="font-size:0.72rem; color:var(--text-dim);">Bekliyor</span>
+                        <button onclick="closeQuickLogBox()" title="Kapat" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; padding:0 4px;">✕</button>
+                      </div>
+                    </div>
+                    <div class="terminal-body" id="portal-quick-log-content" style="min-height:130px; max-height:220px; font-size:0.76rem; padding:10px 12px; font-family:'JetBrains Mono'; background:#0B0F19; overflow-y:auto; line-height:1.5;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1. KURULUM SİHİRBAZI ÇALIŞMA ALANI -->
+          <div id="workspace-wizard" style="display:none;">
+
+
+
+    <!-- ============================================================= -->
+    <!-- ADIM 1: SAĞLAYICI SEÇİMİ                                      -->
+    <!-- ============================================================= -->
+    <div class="wizard-step active" id="step-1">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill" data-i18n="step1_badge">ADIM 01 / 05 • PLATFORM & KURULUM MODU</span>
+          <h2 class="card-title" data-i18n="step1_card_title">Kubernetes Kurulum Modu & Altyapı Sağlayıcısı</h2>
+          <p class="card-desc" data-i18n="step1_card_desc">İşlem hedefinizi (Sıfırdan tam yedekli HA küme veya çalışan kümeye scale-out genişletme) ve hedef sanallaştırma ortamını belirleyin.</p>
+        </div>
+
+        <!-- İŞLEM TÜRÜ SEÇİMİ (YENİ KURULUM / DÜĞÜM EKLEME) -->
+        <div style="margin-bottom: 28px;">
+          <label style="font-size:0.8rem; font-weight:700; letter-spacing:0.05em; color:var(--primary-glow); text-transform:uppercase; margin-bottom:12px; display:block;" data-i18n="step1_mode_lbl">
+            🎯 Yapılacak İşlem Türünü Seçin
+          </label>
+          <div class="mode-grid">
+            <!-- Yeni Kurulum -->
+            <div class="mode-card selected" id="mode-new" onclick="selectOperationMode('new')">
+              <div style="display:flex; align-items:flex-start; gap:14px;">
+                <div style="font-size:2rem; line-height:1;">🚀</div>
+                <div>
+                  <div style="font-weight:700; font-size:1.05rem; color:#fff; margin-bottom:4px;" data-i18n="mode_new_title">Yeni Küme Kurulumu (İlk Kurulum)</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;" data-i18n="mode_new_desc">
+                    Sıfırdan tam yedekli High-Availability (HA) Master & Worker kümesi oluşturun ve Cilium eBPF CNI'yı kurun.
+                  </div>
+                </div>
+              </div>
+              <span class="mode-badge">İlk Kurulum</span>
+            </div>
+
+            <!-- Düğüm Ekleme (Scale-out) -->
+            <div class="mode-card" id="mode-scale" onclick="selectOperationMode('scale')">
+              <div style="display:flex; align-items:flex-start; gap:14px;">
+                <div style="font-size:2rem; line-height:1;">➕</div>
+                <div>
+                  <div style="font-weight:700; font-size:1.05rem; color:#fff; margin-bottom:4px;" data-i18n="mode_scale_title">Mevcut Kümeye Düğüm Ekle (Scale-Out)</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;" data-i18n="mode_scale_desc">
+                    Çalışan bir RKE2 kümesine yeni Master (Control-Plane) veya Worker düğümleri dahil ederek kapasiteyi artırın.
+                  </div>
+                </div>
+              </div>
+              <span class="mode-badge">Düğüm Ekleme</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-header" style="margin-top: 10px; margin-bottom: 16px;">
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;" data-i18n="step1_prov_title">Sanallaştırma / Altyapı Sağlayıcısı</h3>
+          <p class="card-desc" data-i18n="step1_prov_desc">Yeni VM'lerin açılacağı platformu veya mevcut fiziksel/sanal sunucuları seçin.</p>
+        </div>
+
+        <div class="provider-grid">
+          <!-- Proxmox VE -->
+          <div class="provider-card selected" id="prov-proxmox" onclick="selectProvider('proxmox')">
+            <div class="provider-icon">🦊</div>
+            <div class="provider-name">Proxmox VE</div>
+            <div class="provider-desc" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;" data-i18n="prov_proxmox_desc">Proxmox REST API ile otomatik VM klonlama ve Cloud-Init</div>
+            <span class="provider-badge">API v2 Entegrasyonu</span>
+          </div>
+
+          <!-- VMware vCenter -->
+          <div class="provider-card" id="prov-vcenter" onclick="selectProvider('vcenter')">
+            <div class="provider-icon">🔷</div>
+            <div class="provider-name">VMware vCenter</div>
+            <div class="provider-desc" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;" data-i18n="prov_vcenter_desc">vSphere / vCenter REST API ile ESXi hostlara otomatik dağıtım</div>
+            <span class="provider-badge">vSphere 7/8 API</span>
+          </div>
+
+          <!-- Manuel Sunucular -->
+          <div class="provider-card" id="prov-manual" onclick="selectProvider('manual')">
+            <div class="provider-icon">💻</div>
+            <div class="provider-name">Mevcut Sunucular</div>
+            <div class="provider-desc" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;" data-i18n="prov_manual_desc">Halihazırda açık olan Linux sunucularınızın IP'lerini girerek kurun</div>
+            <span class="provider-badge">Doğrudan SSH</span>
+          </div>
+        </div>
+
+        <div class="btn-row" style="justify-content: flex-end;">
+          <button class="btn btn-primary" onclick="goToStep(2)" data-i18n="btn_next_step2">
+            Devam Et &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 2: BAĞLANTI & SUNUCU KEŞFİ                              -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-2">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 02 / 05 • BAĞLANTI & SUNUCU KEŞFİ</span>
+          <h2 class="card-title" id="step2-title">Proxmox VE Bağlantısı & Sunucu Keşfi</h2>
+          <p class="card-desc" id="step2-desc">API üzerinden bağlanarak ortamdaki aktif fiziksel sunucuları ve şablonları keşfedin.</p>
+        </div>
+
+        <!-- Dynamic Form (Proxmox vs vCenter vs Manual) -->
+        <div id="conn-form-container">
+          <div class="form-grid">
+            <div class="form-group" style="grid-column: span 2;">
+              <label id="lbl-host">Proxmox Sunucu IP / Hostname</label>
+              <input type="text" id="api-host" placeholder="10.0.20.1 veya 10.0.20.1, 10.0.20.2, 10.0.20.3, 10.0.20.4">
+              <span id="lbl-hint" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+                💡 <strong>İpucu:</strong> Eğer 4 sunucunuz Proxmox Cluster (Datacenter) halindeyse <strong>sadece bir tanesinin IP'sini girmeniz yeterlidir</strong>; sistem arka plandaki diğer tüm fiziksel sunucuları otomatik keşfeder. Sunucularınız henüz cluster değilse IP'leri virgülle yazabilirsiniz.
+              </span>
+            </div>
+            <div class="form-group">
+              <label id="lbl-port">Port</label>
+              <input type="number" id="api-port" value="8006">
+            </div>
+            <div class="form-group">
+              <label id="lbl-user">Kullanıcı Adı</label>
+              <input type="text" id="api-user" placeholder="root veya root@pam">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label>Şifre</label>
+              <input type="password" id="api-pass" placeholder="••••••••">
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; display:flex; justify-content:flex-end;">
+            <button class="btn btn-secondary" id="btn-test-conn" onclick="connectProvider()">
+              <span id="conn-btn-text">⚡ Bağlan & Sunucuları Keşfet</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Keşfedilen Düğümler -->
+        <div id="discovered-nodes-area" style="display:none;">
+          <div class="nodes-discovery-header">
+            <h3 style="font-size:1.05rem; font-weight:700;" id="lbl-nodes-pool">Tespit Edilen Fiziksel Sunucular (Node Pool)</h3>
+            <span class="brand-badge" id="nodes-count-badge">0 Node Aktif</span>
+          </div>
+
+          <div class="nodes-grid" id="nodes-cards-container">
+            <!-- Node cards injected via JS -->
+          </div>
+
+          <!-- Template & Storage Seçimi -->
+          <div class="form-grid" style="margin-top: 20px;" id="template-selector-row">
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <label id="lbl-template" style="margin-bottom:0;">Klonlanacak Cloud-Init Şablonu (Template)</label>
+                <button type="button" onclick="openTemplateModal()" style="background:none; border:none; color:var(--primary-glow); font-size:0.75rem; cursor:pointer; text-decoration:underline;">
+                  🪄 Şablon Yok mu? Otomatik Oluştur
+                </button>
+              </div>
+              <select id="selected-template">
+                <option value="">Şablonlar taranıyor...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="lbl-storage">Hedef Disk / Depolama Havuzu (Storage)</label>
+              <select id="selected-storage">
+                <option value="">Depolama alanları taranıyor...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(1)">&larr; Geri</button>
+          <button class="btn btn-primary" id="btn-step2-next" onclick="goToStep(3)">Küme Ayarlarına Geç &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 3: KÜME MİMARİSİ VE BOYUTLANDIRMA                       -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-3">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 03 / 05 • KÜME MİMARİSİ & KAYNAKLAR</span>
+          <h2 class="card-title" id="step3-title">Kubernetes Mimarisi & Boyutlandırma</h2>
+          <p class="card-desc" id="step3-desc">Master ve Worker sayılarını, IP bloğunuzu ve yüksek erişilebilirlik ayarlarını belirleyin.</p>
+        </div>
+
+        <!-- Scale-out Bilgi Paneli (Yalnızca Düğüm Ekleme Modunda Görünür) -->
+        <div id="scale-info-banner" style="display:none; background:rgba(52, 211, 153, 0.08); border:1px solid rgba(52, 211, 153, 0.25); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:22px; font-size:0.86rem; line-height:1.5;">
+          <div style="font-weight:700; color:#34D399; margin-bottom:4px;">➕ Mevcut RKE2 Kümesine Düğüm Ekleme Modu Aktif</div>
+          <div style="color:var(--text-muted);">
+            Mevcut kümenizin API/Join adresini ve <code>/var/lib/rancher/rke2/server/node-token</code> dosyasındaki Join Token'ını girin. Yeni açılacak düğümler otomatik olarak mevcut kümeye dahil edilecektir.
+          </div>
+        </div>
+
+        <!-- Canlı Küme Kaynak Göstergesi (Özet Çubuğu) -->
+        <div class="cluster-summary-bar">
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">☸️</div>
+            <div>
+              <div class="summary-stat-label">Toplam Düğüm</div>
+              <div class="summary-stat-val" id="sum-total-nodes">8 Düğüm</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">⚡</div>
+            <div>
+              <div class="summary-stat-label">Toplam Kapasite</div>
+              <div class="summary-stat-val" id="sum-total-specs">64 Cores / 128 GB RAM</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">🛡️</div>
+            <div>
+              <div class="summary-stat-label">Yüksek Erişilebilirlik</div>
+              <div class="summary-stat-val" id="sum-ha-status" style="color:var(--success); font-size:0.95rem;">✔ HA Quorum Aktif</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 1: DÜĞÜM KAPASİTESİ (İNTERAKTİF STEPPER KARTLARI) -->
+        <div class="config-section-card">
+          <div class="section-badge-title">
+            <span class="section-icon">👑</span>
+            <span>Düğüm Rolleri & Kapasite Boyutlandırma</span>
+          </div>
+
+          <div class="node-sizers-grid">
+            <!-- Master Card -->
+            <div class="node-sizer-box master-box">
+              <div class="node-sizer-header">
+                <div>
+                  <div class="node-sizer-title" id="lbl-master-count">Master (Control-Plane)</div>
+                  <div class="node-sizer-subtitle" id="hint-master-count">Kubernetes API, etcd ve Scheduler</div>
+                </div>
+                <span class="role-tag violet">ETCD HA</span>
+              </div>
+              <div class="stepper-row">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-master-count', -1)">−</button>
+                <div class="stepper-val-display" id="display-master-count">3</div>
+                <input type="number" id="cfg-master-count" value="3" min="0" max="7" class="stepper-number-input" onchange="syncStepDisplay('master')">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-master-count', 1)">+</button>
+              </div>
+              <div class="preset-pills-row" id="preset-row-master">
+                <button type="button" class="preset-pill" onclick="setCount('cfg-master-count', 1, this)">1 Single</button>
+                <button type="button" class="preset-pill active" onclick="setCount('cfg-master-count', 3, this)">3 HA (Önerilen)</button>
+                <button type="button" class="preset-pill" onclick="setCount('cfg-master-count', 5, this)">5 Enterprise</button>
+              </div>
+            </div>
+
+            <!-- Worker Card -->
+            <div class="node-sizer-box worker-box">
+              <div class="node-sizer-header">
+                <div>
+                  <div class="node-sizer-title" id="lbl-worker-count">Worker (Uygulama Düğümleri)</div>
+                  <div class="node-sizer-subtitle" id="hint-worker-count">Mikroservisler ve veritabanı yükleri</div>
+                </div>
+                <span class="role-tag cyan">WORKLOADS</span>
+              </div>
+              <div class="stepper-row">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-worker-count', -1)">−</button>
+                <div class="stepper-val-display" id="display-worker-count">5</div>
+                <input type="number" id="cfg-worker-count" value="5" min="0" max="50" class="stepper-number-input" onchange="syncStepDisplay('worker')">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-worker-count', 1)">+</button>
+              </div>
+              <div class="preset-pills-row" id="preset-row-worker">
+                <button type="button" class="preset-pill" onclick="setCount('cfg-worker-count', 2, this)">2 Test</button>
+                <button type="button" class="preset-pill active" onclick="setCount('cfg-worker-count', 5, this)">5 Standart</button>
+                <button type="button" class="preset-pill" onclick="setCount('cfg-worker-count', 10, this)">10 Yoğun Yük</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- VM ID ve Numaralandırma -->
+          <div class="form-grid" style="margin-top: 14px;">
+            <div class="form-group">
+              <label>Sanal Makine Başlangıç ID (Proxmox/ESXi VMID)</label>
+              <input type="number" id="cfg-start-vmid" value="100">
+            </div>
+            <!-- Düğüm İsimlendirme / Başlangıç Sıra No (Yalnızca Düğüm Ekleme Modunda) -->
+            <div class="form-group" id="row-scale-indexing" style="display:none;">
+              <label>Yeni Düğümler Başlangıç Sıra No (Master / Worker)</label>
+              <div style="display:flex; gap:10px;">
+                <input type="number" id="cfg-start-master-num" value="4" min="1" placeholder="Master No (örn: 4)">
+                <input type="number" id="cfg-start-worker-num" value="6" min="1" placeholder="Worker No (örn: 6)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 2: AĞ & GİRİŞ KAPISI (VIP & TOKEN) -->
+        <div class="config-section-card">
+          <div class="section-badge-title">
+            <span class="section-icon">🌐</span>
+            <span>Ağ Yapılandırması & Giriş Kapısı (VIP / Token)</span>
+          </div>
+
+          <div class="form-grid col-3" style="margin-bottom: 20px;">
+            <div class="form-group">
+              <label>IP Subnet Ön Eki</label>
+              <input type="text" id="cfg-subnet-base" value="10.0.10" placeholder="10.0.10" oninput="updateLiveSummary()">
+            </div>
+            <div class="form-group">
+              <label id="lbl-start-host">Başlangıç Host IP No</label>
+              <input type="number" id="cfg-start-host" value="10" oninput="updateLiveSummary()">
+              <span id="hint-start-host" style="font-size:0.75rem; color:var(--text-dim);">İlk VM IP: <strong id="chip-first-ip" style="color:var(--primary-glow)">10.0.10.10</strong></span>
+            </div>
+            <div class="form-group">
+              <label>Ağ Ağ Geçidi (Gateway)</label>
+              <input type="text" id="cfg-gateway" value="10.0.10.1">
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom: 8px;">
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label id="lbl-vip" style="margin-bottom:0;">FortiGate VIP / Load Balancer IP</label>
+                <span style="font-size:0.7rem; color:var(--accent-glow); background:rgba(139, 92, 246, 0.15); padding:2px 8px; border-radius:4px;">HA ENTRYPOINT</span>
+              </div>
+              <input type="text" id="cfg-vip" value="10.0.10.100" placeholder="10.0.10.100">
+              <span id="hint-vip" style="font-size:0.75rem; color:var(--text-dim); display:none;">Mevcut kümenin API adresi (örn. İlk master IP'si veya VIP)</span>
+            </div>
+            <div class="form-group">
+              <label id="lbl-token">Cluster Secret Token</label>
+              <div class="input-with-action">
+                <input type="text" id="cfg-token" placeholder="Boş bırakılırsa otomatik üretilir">
+                <button type="button" class="input-action-btn" onclick="generateRandomToken()">
+                  🎲 Yeni Üret
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 3: CNI & PERFORMANS -->
+        <div class="config-section-card" id="row-cni-domain">
+          <div class="section-badge-title">
+            <span class="section-icon">⚡</span>
+            <span>CNI Ağ Modeli & Yüksek Performans</span>
+          </div>
+
+          <div class="form-grid col-3">
+            <div class="form-group">
+              <label>CNI Ağ Modeli</label>
+              <select id="cfg-cni">
+                <option value="cilium" selected>Cilium (eBPF - En Hızlı & Zero Latency)</option>
+                <option value="canal">Canal (Flannel / iptables)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Sunucu Başına Max Pod</label>
+              <input type="number" id="cfg-max-pods" value="500">
+            </div>
+            <div class="form-group">
+              <label>Cluster API Domain (SAN)</label>
+              <input type="text" id="cfg-domain" value="k8s.local">
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 4: VM DONANIMI & SSH -->
+        <div class="config-section-card">
+          <div class="section-badge-title">
+            <span class="section-icon">💻</span>
+            <span>Düğüm Donanım Kaynakları & SSH Kimlik Doğrulaması</span>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="margin-bottom:6px; display:block;">Hızlı Donanım Şablonları</label>
+            <div class="spec-preset-bar">
+              <button type="button" class="spec-chip" onclick="setNodeSpecs(4, 8192, 40, this)">4 CPU / 8 GB RAM / 40 GB</button>
+              <button type="button" class="spec-chip active" onclick="setNodeSpecs(8, 16384, 60, this)">8 CPU / 16 GB RAM / 60 GB (Önerilen)</button>
+              <button type="button" class="spec-chip" onclick="setNodeSpecs(16, 32768, 100, this)">16 CPU / 32 GB RAM / 100 GB</button>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom: 8px;">
+            <div class="form-group">
+              <label>CPU Çekirdek / RAM (MB) / Disk Boyutu (GB)</label>
+              <div style="display:flex; gap:10px;">
+                <input type="number" id="cfg-cores" value="8" placeholder="CPU Core" title="CPU Core" oninput="updateLiveSummary()">
+                <input type="number" id="cfg-ram" value="16384" placeholder="RAM MB" title="RAM MB" oninput="updateLiveSummary()">
+                <input type="number" id="cfg-disk" value="60" placeholder="Disk GB" title="VM Disk Boyutu (GB)">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>VM SSH Kullanıcı Adı & Şifresi</label>
+              <div style="display:flex; gap:10px;">
+                <input type="text" id="cfg-ssh-user" value="root" placeholder="Kullanıcı">
+                <div class="input-with-action" style="flex:1;">
+                  <input type="password" id="cfg-ssh-pass" placeholder="Şifre" style="padding-right:45px;">
+                  <button type="button" onclick="togglePassVisibility('cfg-ssh-pass', this)" style="position:absolute; right:10px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;" title="Şifreyi Göster/Gizle">
+                    👁️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(2)">&larr; Geri</button>
+          <button class="btn btn-primary" onclick="prepareDistributionPreview()">Dağıtım Planını Çıkar &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 4: DAĞITIM PLANI VE ÖNİZLEME (ANTI-AFFINITY)            -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-4">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 04 / 05 • TOPOLOJİ & DAĞITIM PLANI</span>
+          <h2 class="card-title">Akıllı Dağıtım Haritası (Anti-Affinity Matrisi)</h2>
+          <p class="card-desc">Master VM'lerin fiziksel sunucularda birbirini ezmemesi ve Worker'ların eşit yayılması için otomatik oluşturulan dağıtım planı.</p>
+        </div>
+
+        <!-- FİZİKSEL SUNUCU TOPOLOJİ KARTLARI (HANGİ VM HANGİ NODE'A GİDİYOR) -->
+        <div style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <label style="font-size:0.82rem; font-weight:700; letter-spacing:0.05em; color:var(--primary-glow); text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+              <span>🖥️ Fiziksel Sunucu (Host) Dağıtım Haritası</span>
+            </label>
+            <span id="anti-affinity-badge" style="font-size:0.75rem; color:var(--success); background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.25); padding:3px 10px; border-radius:12px; font-weight:600;">
+              ✔ Anti-Affinity Kuralı: Aktif
+            </span>
+          </div>
+          <div id="host-topology-container" class="host-topology-grid">
+            <!-- Injected by renderDistributionTable -->
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <label style="font-size:0.82rem; font-weight:700; letter-spacing:0.05em; color:var(--text-muted); text-transform:uppercase;">
+            📋 Detaylı Sanal Makine Dağıtım Listesi
+          </label>
+          <span style="font-size:0.75rem; color:var(--text-dim);">
+            💡 Tablodaki seçim kutusundan bir VM'in gideceği fiziksel host'u dilediğiniz gibi değiştirebilirsiniz.
+          </span>
+        </div>
+
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Rol</th>
+                <th>VM Adı</th>
+                <th>VM ID</th>
+                <th>Atanan IP Adresi</th>
+                <th>Hedef Fiziksel Sunucu (Host)</th>
+                <th>Yedeklilik Durumu</th>
+              </tr>
+            </thead>
+            <tbody id="distribution-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PRE-FLIGHT KONTROL SONUÇ PANELİ -->
+        <div id="preflight-results-panel" class="preflight-panel" style="display: none; margin-bottom: 20px;">
+          <div class="preflight-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="preflight-status-icon" id="preflight-main-icon">⏳</span>
+              <div>
+                <div class="preflight-title" id="preflight-main-title">Ağ & Kaynak Doğrulaması Çalıştırılıyor...</div>
+                <div class="preflight-subtitle" id="preflight-main-desc">IP çakışmaları, Gateway erişimi ve Disk depolama kapasitesi taranıyor.</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="runPreflightCheck()">🔄 Yeniden Tara</button>
+          </div>
+          <div class="preflight-grid" id="preflight-grid-content">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <div class="btn-row" style="flex-wrap: wrap; gap: 10px;">
+          <button class="btn btn-secondary" onclick="goToStep(3)">&larr; Geri</button>
+          <div style="display:flex; gap:10px; margin-left:auto; flex-wrap:wrap;">
+            <button class="btn btn-secondary" id="btn-preflight" onclick="runPreflightCheck()">
+              🛡️ Pre-Flight Ağ & Kaynak Doğrula
+            </button>
+            <button class="btn btn-secondary" id="btn-export-yaml" onclick="downloadClusterSpecYaml()">
+              📄 IaC Spec İndir (.yaml)
+            </button>
+            <button class="btn btn-success" id="btn-start-deploy" onclick="startDeployment()">
+              🚀 Kurulumu Başlat (Deploy Cluster)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 5: CANLI KURULUM TERMİNALİ (INSTALLATION LOGS)            -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-5">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 05 / 05 • CANLI DAĞITIM</span>
+          <h2 class="card-title">Canlı RKE2 & Cilium Kurulum Konsolu</h2>
+          <p class="card-desc">VM klonlama, Cloud-Init enjeksiyonu ve RKE2 + Cilium eBPF kurulum adımları saniye saniye canlı akmaktadır.</p>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-header">
+            <span id="progress-status-text">Kurulum hazırlanıyor...</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+            </div>
+            <span class="terminal-title">live-stream: rke2-deploy.log</span>
+            <span style="font-size:0.75rem; color:var(--text-dim);" id="term-status-badge">Bekliyor</span>
+          </div>
+          <div class="terminal-body" id="terminal-output">
+            <div class="log-line cyan">[SYSTEM] Kurulum başlatıldığında canlı akış burada görüntülenecektir.</div>
+          </div>
+        </div>
+
+        <div class="btn-row" id="final-btn-row" style="display:none; justify-content: space-between; align-items:center; margin-top:20px; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="color:var(--success-text); font-weight:700; font-size:0.95rem;">✔ RKE2 & Cilium Kurulumu Başarıyla Tamamlandı!</span>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary" onclick="downloadKubeconfig()">📥 Kubeconfig İndir (.yaml)</button>
+            <button class="btn btn-success" onclick="switchGlobalView('operations')">🎛️ Küme Yönetim Merkezine Geç &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- /workspace-wizard -->
+
+  <!-- ============================================================= -->
+  <!-- 2. KÜME YÖNETİM & DAY-2 OPERASYON MERKEZİ                     -->
+  <!-- ============================================================= -->
+  <div id="workspace-operations" style="display:none;">
+    <div class="glass-card">
+      <!-- OPERASYONEL ÜST BAĞLANTI & DURUM BANNERI -->
+      <div class="ops-header-banner" style="margin-bottom:24px; padding:18px 20px; background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="brand-icon" style="width:42px; height:42px;">
+            <svg viewBox="0 0 24 24" style="width:24px; height:24px;">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:1.05rem; font-weight:700; color:#fff;" id="ops-cluster-name">Enterprise RKE2 Cluster</span>
+              <span class="preflight-status-chip success" id="ops-cluster-status-badge">● Canlı & Aktif</span>
+            </div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
+              Master API: <strong style="color:#93C5FD; font-family:'JetBrains Mono';" id="ops-header-master-ip">10.0.10.10:6443</strong> 
+              • VIP: <strong style="color:var(--primary-glow); font-family:'JetBrains Mono';" id="ops-header-vip">10.0.10.100</strong>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm" onclick="fetchClusterLiveStatus()">🔄 Canlı Durumu Yenile</button>
+          <button class="btn btn-primary btn-sm" onclick="downloadKubeconfig()">📥 Kubeconfig İndir (.yaml)</button>
+        </div>
+      </div>
+
+      <!-- KUBECONFIG HIZLI ERİŞİM BANNERI -->
+      <div class="quick-access-banner" style="margin-bottom: 22px;">
+        <div class="quick-access-info">
+          <div style="font-weight:700; color:#fff; margin-bottom:4px; font-size:0.92rem;">💻 Lens, k9s & Terminal Bağlantı Komutu</div>
+          <div style="font-size:0.78rem; color:var(--text-muted);">İndirdiğiniz kubeconfig dosyasını terminalinizde doğrudan kullanmak için:</div>
+          <div class="code-snippet-row" style="margin-top:6px;">
+            <code id="kubeconfig-export-cmd">export KUBECONFIG=~/Downloads/rke2-cluster.yaml && kubectl get nodes -o wide</code>
+            <button class="copy-pill-btn" onclick="copyKubeconfigCmd()">📋 Kopyala</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPERASYONEL İÇERİK PANE'LERİ (10 ADET) -->
+
+      <!-- PANE 1: DÜĞÜMLER & PODLAR -->
+      <div id="ops-pane-nodes" class="ops-view-pane active">
+        <!-- CANLI TELEMETRİ METRİKLERİ -->
+        <div class="summary-stats-bar" style="margin-bottom: 20px;">
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">☸️</div>
+            <div>
+              <div class="summary-stat-label">Kubernetes Sürümü</div>
+              <div class="summary-stat-val" id="live-k8s-version">v1.30.4+rke2r1</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">🟢</div>
+            <div>
+              <div class="summary-stat-label">Hazır Düğümler (Ready)</div>
+              <div class="summary-stat-val" id="live-ready-nodes" style="color:var(--success-text);">- / -</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">🐝</div>
+            <div>
+              <div class="summary-stat-label">CNI Modeli</div>
+              <div class="summary-stat-val" id="live-cni-status" style="color:var(--primary-text);">Cilium eBPF (Active)</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">📦</div>
+            <div>
+              <div class="summary-stat-label">Toplam Pod Sayısı</div>
+              <div class="summary-stat-val" id="live-pods-count">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DÜĞÜM DETAY TABLOSU -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <label style="font-size:0.82rem; font-weight:700; letter-spacing:0.05em; color:var(--text-muted); text-transform:uppercase;">
+            🖥️ Küme Düğümleri & Bakım Yönetimi
+          </label>
+          <span style="font-size:0.75rem; color:var(--text-dim);">
+            💡 Düğüm üzerinde bakım yaparken 'Drain' ile iş yüklerini güvenle tahliye edebilirsiniz.
+          </span>
+        </div>
+
+        <div class="distribution-table-container" style="margin-bottom:20px;">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Düğüm Adı</th>
+                <th>Rol</th>
+                <th>Durum</th>
+                <th>Dahili IP</th>
+                <th>Kubelet Versiyon</th>
+                <th>OS / Çekirdek</th>
+                <th>Bakım Eylemi</th>
+              </tr>
+            </thead>
+            <tbody id="live-nodes-table-body">
+              <tr>
+                <td colspan="7" style="text-align:center; padding:24px; color:var(--text-dim);">
+                  Canlı düğüm verisi çekmek için yukarıdaki "🔄 Canlı Durumu Yenile" butonuna tıklayınız.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SİSTEM PODLARI DURUMU (KÜME SAĞLIĞI) -->
+        <div style="margin-bottom: 10px;">
+          <label style="font-size:0.82rem; font-weight:700; letter-spacing:0.05em; color:var(--text-muted); text-transform:uppercase;">
+            🧩 Kritik Sistem Servisleri (kube-system)
+          </label>
+        </div>
+        <div id="live-system-pods-container" class="system-pods-chips-grid">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- PANE 2: EKLENTİ KATALOĞU -->
+      <div id="ops-pane-addons" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom: 16px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Kurumsal Kubernetes Eklenti Kataloğu (11 Eklenti)</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Üretim ortamları için optimize edilmiş, tek tıkla kurulabilen ağ gözlemlenebilirliği, blok depolama, izleme, loglama ve güvenlik eklentileri.
+          </p>
+        </div>
+
+        <!-- KATEGORİ FİLTRELEME ÇUBUĞU -->
+        <div style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm active" id="filter-addon-all" onclick="filterAddons('all')">Tüm Eklentiler (11)</button>
+          <button class="btn btn-secondary btn-sm" id="filter-addon-networking" onclick="filterAddons('networking')">🌐 Ağ & LoadBalancer (2)</button>
+          <button class="btn btn-secondary btn-sm" id="filter-addon-storage" onclick="filterAddons('storage')">💾 Depolama & Veri (2)</button>
+          <button class="btn btn-secondary btn-sm" id="filter-addon-observability" onclick="filterAddons('observability')">📊 Gözlemlenebilirlik (3)</button>
+          <button class="btn btn-secondary btn-sm" id="filter-addon-security" onclick="filterAddons('security')">🛡️ Güvenlik & Politika (3)</button>
+          <button class="btn btn-secondary btn-sm" id="filter-addon-scaling" onclick="filterAddons('scaling')">⚖️ Ölçekleme & FinOps (1)</button>
+        </div>
+
+        <div class="addons-grid" id="addons-catalog-grid">
+          <!-- 1. CILIUM HUBBLE UI -->
+          <div class="addon-card" data-category="networking">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(37, 99, 235, 0.15); color: #60A5FA;">🐝</div>
+              <div>
+                <div class="addon-title">Cilium Hubble UI</div>
+                <div class="addon-category">eBPF AĞ & GÜVENLİK GÖZLEMLENEBİLİRLİK</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-hubble">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Çekirdek düzeyinde (kernel) eBPF ile podlar arası L3/L4/L7 ağ trafiğini, DNS sorgularını ve güvenlik engellemelerini görsel servis haritasında (Service Map) sunar.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">eBPF</span>
+              <span class="addon-tag">L7 Traffic</span>
+              <span class="addon-tag">Service Map</span>
+              <span class="addon-tag">Port 12000</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-hubble" onclick="installClusterAddon('hubble')">
+                ⚡ 1-Tıkla Aktif Et
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. METALLB ON-PREMISE LOADBALANCER -->
+          <div class="addon-card" data-category="networking">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(14, 165, 233, 0.15); color: #38BDF8;">🌐</div>
+              <div>
+                <div class="addon-title">MetalLB LoadBalancer Provider</div>
+                <div class="addon-category">ON-PREM LOADBALANCER IP HAVUZU</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-metallb">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Bulut sağlayıcıları olmadan (Proxmox / ESXi sanal ortamında) <code>type: LoadBalancer</code> servislerine yerel kurumsal ağınızdan gerçek statik/dinamik IP havuzu tahsis eder.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Layer 2 ARP</span>
+              <span class="addon-tag">BGP Peering</span>
+              <span class="addon-tag">VIP Pool</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-metallb" onclick="installClusterAddon('metallb')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. LONGHORN CSI -->
+          <div class="addon-card" data-category="storage">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(16, 185, 129, 0.15); color: #34D399;">💾</div>
+              <div>
+                <div class="addon-title">Longhorn Dağıtık Blok Depolama</div>
+                <div class="addon-category">HA PERSISTENT STORAGE CSI</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-longhorn">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Worker düğümlerin yerel disklerini küme genelinde yedekli (multi-replica) blok depolama havuzuna dönüştürür. Anlık snapshot, yedekleme ve NFS desteği sunar.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">CSI Driver</span>
+              <span class="addon-tag">Multi-Replica</span>
+              <span class="addon-tag">Snapshot</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-longhorn" onclick="installClusterAddon('longhorn')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 4. REDIS HA CLUSTER -->
+          <div class="addon-card" data-category="storage">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(239, 68, 68, 0.15); color: #F87171;">⚡</div>
+              <div>
+                <div class="addon-title">Redis In-Memory Önbellek</div>
+                <div class="addon-category">YÜKSEK ERİŞİLEBİLİR ÖNBELLEK & VERİ</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-redis">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Mikroservisler ve web iş yükleri için yüksek performanslı bellek içi anahtar-değer (Key-Value) veri deposu ve oturum yönetim servisi sağlar.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">In-Memory</span>
+              <span class="addon-tag">Session Cache</span>
+              <span class="addon-tag">Port 6379</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-redis" onclick="installClusterAddon('redis')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. METRICS-SERVER -->
+          <div class="addon-card" data-category="observability">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(245, 158, 11, 0.15); color: #FBBF24;">📈</div>
+              <div>
+                <div class="addon-title">Kubernetes Metrics-Server</div>
+                <div class="addon-category">KÜME KAYNAK İZLEME & HPA</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-metrics-server">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Düğümlerin ve podların anlık CPU/RAM kullanımını toplar. <code>kubectl top nodes</code> komutunu etkinleştirir ve Horizontal Pod Autoscaler (HPA) için zorunludur.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">kubectl top</span>
+              <span class="addon-tag">HPA Ready</span>
+              <span class="addon-tag">Core Metric</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-metrics-server" onclick="installClusterAddon('metrics-server')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. PROMETHEUS & GRAFANA STACK -->
+          <div class="addon-card" data-category="observability">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(239, 68, 68, 0.15); color: #F87171;">📊</div>
+              <div>
+                <div class="addon-title">Prometheus & Grafana Stack</div>
+                <div class="addon-category">TAM GÖZLEMLENEBİLİRLİK & ALARMLAR</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-prometheus">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Prometheus, Grafana, Alertmanager ve Node-Exporter'ı tek tıkla kurar. Küme kaynaklarını ve pod tüketimlerini görsel panolarda izler.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Prometheus</span>
+              <span class="addon-tag">Grafana</span>
+              <span class="addon-tag">Port 30300</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-prometheus" onclick="installClusterAddon('prometheus')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 7. GRAFANA LOKI & PROMTAIL -->
+          <div class="addon-card" data-category="observability">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B;">🪵</div>
+              <div>
+                <div class="addon-title">Grafana Loki & Promtail Stack</div>
+                <div class="addon-category">MERKEZİ LOG TOPLAMA & ANALİZ</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-loki">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Elasticsearch'e göre %80 daha az bellek harcayan hafif log indeksleme motoru. Tüm pod ve sistem loglarını merkezi olarak toplar ve LogQL ile sorgulatır.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Loki</span>
+              <span class="addon-tag">Promtail</span>
+              <span class="addon-tag">LogQL</span>
+              <span class="addon-tag">Port 3100</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-loki" onclick="installClusterAddon('loki')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 8. CERT-MANAGER -->
+          <div class="addon-card" data-category="security">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(139, 92, 246, 0.15); color: #A78BFA;">🔒</div>
+              <div>
+                <div class="addon-title">Cert-Manager</div>
+                <div class="addon-category">OTOMATİK TLS / SSL SERTİFİKA YÖNETİCİSİ</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-cert-manager">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Kubernetes Ingress kaynakları için Let's Encrypt veya kurum içi CA üzerinden otomatik SSL/TLS sertifikası üretir ve süre bitmeden yeniler.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Let's Encrypt</span>
+              <span class="addon-tag">ACME</span>
+              <span class="addon-tag">Auto-Renew</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-cert-manager" onclick="installClusterAddon('cert-manager')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 9. KYVERNO POLICY ENGINE -->
+          <div class="addon-card" data-category="security">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(16, 185, 129, 0.15); color: #34D399;">🛡️</div>
+              <div>
+                <div class="addon-title">Kyverno Policy Engine</div>
+                <div class="addon-category">KÜME GÜVENLİK POLİTİKASI (ADMISSION CONTROLLER)</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-kyverno">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Karmaşık kodlama gerektirmeden saf YAML politikalarıyla root pod çalıştırmayı engelleyen, etiketleri zorunlu kılan kurumsal Zero-Trust kabul denetleyicisi.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Admission Webhook</span>
+              <span class="addon-tag">Pod Security</span>
+              <span class="addon-tag">Zero-Trust</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-kyverno" onclick="installClusterAddon('kyverno')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 10. TRIVY OPERATOR -->
+          <div class="addon-card" data-category="security">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(244, 63, 94, 0.15); color: #FB7185;">🔍</div>
+              <div>
+                <div class="addon-title">Trivy Operator (Sürekli CVE Tarayıcı)</div>
+                <div class="addon-category">SÜREKLİ DEVSECOPS & GÜVENLİK TARAMASI</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-trivy-operator">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Kümeye dağıtılan her pod ve Deployment için arka planda sürekli güvenlik açığı (CVE), RBAC zafiyeti ve CIS yapılandırma kontrolü yaparak CRD olarak kaydeder.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Continuous Scan</span>
+              <span class="addon-tag">Vulnerability CRD</span>
+              <span class="addon-tag">DevSecOps</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-trivy-operator" onclick="installClusterAddon('trivy-operator')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- 11. KEDA EVENT-DRIVEN AUTOSCALING -->
+          <div class="addon-card" data-category="scaling">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background: rgba(168, 85, 247, 0.15); color: #C084FC;">⚖️</div>
+              <div>
+                <div class="addon-title">KEDA (Event-Driven Autoscaler)</div>
+                <div class="addon-category">OTOMATİK ÖLÇEKLEME & FINOPS</div>
+              </div>
+              <span class="addon-status-pill" id="addon-badge-keda">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Sadece CPU/RAM değil; RabbitMQ, Kafka, PostgreSQL veya Cron zamanlamasına göre podları 0'a kadar küçülten (Scale-to-Zero) akıllı orkestrasyon motoru.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Scale-to-Zero</span>
+              <span class="addon-tag">Kafka / MQ Scaler</span>
+              <span class="addon-tag">FinOps</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-addon-keda" onclick="installClusterAddon('keda')">
+                ⚡ 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 3: HARİCİ NFS DEPOLAMA SİHİRBAZI -->
+      <div id="ops-pane-nfs" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Harici NFS Depolama & Dinamik RWX StorageClass</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            TrueNAS, Synology, QNAP veya Linux NFS sunucunuzu bağlayarak çoklu podların aynı anda okuyup yazabildiği (ReadWriteMany) paylaşımlı depolama sınıfı oluşturun.
+          </p>
+        </div>
+
+        <div class="config-section-card" style="margin-bottom:20px;">
+          <div class="form-grid col-3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>NFS Sunucu IP Adresi</label>
+              <input type="text" id="nfs-server-ip" placeholder="Örn: 10.0.10.250">
+            </div>
+            <div class="form-group">
+              <label>NFS Export Paylaşım Yolu</label>
+              <input type="text" id="nfs-share-path" placeholder="Örn: /mnt/tank/k8s-data">
+            </div>
+            <div class="form-group">
+              <label>Oluşturulacak StorageClass Adı</label>
+              <input type="text" id="nfs-sc-name" value="nfs-client" placeholder="nfs-client">
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <span style="font-size:0.78rem; color:var(--text-dim);">
+              💡 Helm üzerinden <code>nfs-subdir-external-provisioner</code> kurulacak ve PVC'ler anında otomatik provizyon edilecektir.
+            </span>
+            <button class="btn btn-primary" id="btn-create-nfs" onclick="createNfsStorageClass()">
+              ⚡ 1-Tıkla RWX StorageClass Oluştur
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 4: 1-TIKLA UYGULAMA MAĞAZASI -->
+      <div id="ops-pane-apps" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">1-Tıkla Hazır Kurumsal Uygulama Mağazası</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Kümeniz üzerinde anında çalıştırabileceğiniz üretime hazır operasyonel ve test uygulamaları.
+          </p>
+        </div>
+
+        <div class="addons-grid">
+          <!-- ARGOCD -->
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(236,72,153,0.15); color:#F472B6;">🐙</div>
+              <div>
+                <div class="addon-title">ArgoCD</div>
+                <div class="addon-category">GITOPS SÜREKLİ DAĞITIM (CD)</div>
+              </div>
+              <span class="addon-status-pill" id="app-badge-argocd">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Git depolarındaki Kubernetes tanımlarını otomatik senkronize eden, sürüm geçmişi ve görsel roll-out takibi sunan endüstri standardı GitOps platformu.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">GitOps</span>
+              <span class="addon-tag">NodePort 30080</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-app-argocd" onclick="deployClusterApp('argocd')">
+                🚀 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- PORTAINER CE -->
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(6,182,212,0.15); color:#22D3EE;">🐳</div>
+              <div>
+                <div class="addon-title">Portainer CE</div>
+                <div class="addon-category">GÖRSEL WEB YÖNETİM PANELİ</div>
+              </div>
+              <span class="addon-status-pill" id="app-badge-portainer">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Kubernetes podlarını, servislerini, depolama alanlarını ve kaynak tüketimlerini tarayıcı üzerinden kolayca yönetebileceğiniz görsel kullanıcı arayüzü.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">Web UI</span>
+              <span class="addon-tag">Port 30777</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-app-portainer" onclick="deployClusterApp('portainer')">
+                🚀 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- POSTGRESQL -->
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(59,130,246,0.15); color:#60A5FA;">🐘</div>
+              <div>
+                <div class="addon-title">PostgreSQL Database</div>
+                <div class="addon-category">İLİŞKİSEL VERİTABANI</div>
+              </div>
+              <span class="addon-status-pill" id="app-badge-postgres">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Uygulamalarınızın veri saklama ihtiyacı için cluster içi çalışan, hazır kullanıcı ve şifre tanımlı hafif PostgreSQL 15 veritabanı motoru.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">SQL</span>
+              <span class="addon-tag">Port 5432</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-app-postgres" onclick="deployClusterApp('postgres')">
+                🚀 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+
+          <!-- WHOAMI -->
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(168,85,247,0.15); color:#C084FC;">🌐</div>
+              <div>
+                <div class="addon-title">Whoami HTTP Test Servisi</div>
+                <div class="addon-category">AĞ & INGRESS TEST MİKROSERVİSİ</div>
+              </div>
+              <span class="addon-status-pill" id="app-badge-whoami">Hazır</span>
+            </div>
+            <p class="addon-desc">
+              Ingress yönlendirmesini, yük dengelemeyi ve HTTP başlıklarını (headers) anında test etmek için iki replikalı hafif web mikroservisi.
+            </p>
+            <div class="addon-tags">
+              <span class="addon-tag">HTTP Test</span>
+              <span class="addon-tag">NodePort 30088</span>
+            </div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" id="btn-app-whoami" onclick="deployClusterApp('whoami')">
+                🚀 1-Tıkla Kur
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 5: SMOKE TEST -->
+      <div id="ops-pane-smoke" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Otomatik Küme Sağlık Doğrulayıcısı (Smoke Test)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Düğüm kubelet durumları, Cilium eBPF CNI veri yolu, CoreDNS alan adı çözümü ve Pod-to-Service routing adımlarını anında test eder.
+            </p>
+          </div>
+          <button class="btn btn-primary" id="btn-run-smoke-test" onclick="runSmokeTest()">
+            🚀 Kümeyi Doğrula (Smoke Test Başlat)
+          </button>
+        </div>
+
+        <div class="smoke-steps-grid" id="smoke-steps-container">
+          <div class="smoke-step-card" id="smoke-card-nodes">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">🖥️</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">Düğüm Hazırlık Kontrolü (Node Readiness)</div>
+                <div class="smoke-step-desc">Master ve Worker düğümlerinin Kubernetes API ile iletişim kurması ve Ready durumunda olması.</div>
+              </div>
+              <span class="smoke-status-badge" id="smoke-badge-nodes">Bekliyor</span>
+            </div>
+          </div>
+          <div class="smoke-step-card" id="smoke-card-cni">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">🐝</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">Cilium eBPF Ağ Katmanı & Ajanları</div>
+                <div class="smoke-step-desc">Tüm hostlarda çekirdek düzeyinde eBPF paket yönlendirme daemonset ajanlarının çalışırlığı.</div>
+              </div>
+              <span class="smoke-status-badge" id="smoke-badge-cni">Bekliyor</span>
+            </div>
+          </div>
+          <div class="smoke-step-card" id="smoke-card-dns">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">🌐</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">CoreDNS Alan Adı Çözümleme</div>
+                <div class="smoke-step-desc">Küme içi servis discovery ve CoreDNS podlarının replikasyonu ve DNS yanıtı vermesi.</div>
+              </div>
+              <span class="smoke-status-badge" id="smoke-badge-dns">Bekliyor</span>
+            </div>
+          </div>
+          <div class="smoke-step-card" id="smoke-card-datapath">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">⚡</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">Pod & ClusterIP Servis İletişimi (Data Path)</div>
+                <div class="smoke-step-desc">Geçici test podu ve servisi açılarak ClusterIP servis yönlendirmesi doğrulanır ve temizlenir.</div>
+              </div>
+              <span class="smoke-status-badge" id="smoke-badge-datapath">Bekliyor</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:6px;">Detaylı Smoke Test Konsol Çıktısı:</div>
+          <div class="code-box" id="smoke-raw-output" style="max-height:160px; font-size:0.75rem;">Test başlatıldığında ham çıktı burada görünecektir.</div>
+        </div>
+      </div>
+
+      <!-- PANE 6: FORTIGATE SLB -->
+      <div id="ops-pane-fortigate" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">FortiGate Kurumsal Yük Dengeleme (SLB) & Güvenlik Duvarı</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              FortiOS için Master API (6443) ve Ingress (80/443) Server Load Balancing (SLB) Virtual IP, Real Server havuzu ve güvenlik politikalarını 1-tıkla üretir.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary btn-sm" onclick="fetchFortigateConfig()">🔄 Yenile</button>
+            <button class="btn btn-secondary btn-sm" onclick="copyFortigateConfig()">📋 Komutları Kopyala</button>
+            <button class="btn btn-primary btn-sm" onclick="downloadFortigateConfig()">📄 FortiOS .conf İndir</button>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div style="font-size:0.82rem; color:var(--text-muted);">
+            💡 <strong>Nasıl Uygulanır:</strong> FortiGate Web GUI'de sağ üstteki <strong>>_ CLI Console</strong> butonuna basıp aşağıdaki komut bloğunu doğrudan yapıştırabilirsiniz.
+          </div>
+          <span class="role-tag cyan">FORTIOS 7.X / 6.X UYUMLU</span>
+        </div>
+
+        <div class="code-box" id="fortigate-config-box" style="max-height:360px; font-size:0.78rem; line-height:1.6;">
+          Yapılandırma hazırlanıyor...
+        </div>
+      </div>
+
+      <!-- PANE 7: CIS BENCHMARK -->
+      <div id="ops-pane-cis" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">CIS Kubernetes Benchmark Güvenlik Raporu</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Center for Internet Security (CIS) RKE2 Hardened standartlarına göre küme güvenlik sıkılaştırma ve uyumluluk denetimi.
+            </p>
+          </div>
+          <button class="btn btn-primary" id="btn-run-cis" onclick="runCisBenchmark()">
+            🛡️ Güvenlik Taramasını Başlat
+          </button>
+        </div>
+
+        <div class="cis-score-banner" style="margin-bottom:20px;">
+          <div style="display:flex; align-items:center; gap:18px;">
+            <div class="cis-score-circle" id="cis-score-display">96%</div>
+            <div>
+              <div style="font-size:1.05rem; font-weight:700; color:#fff;" id="cis-score-title">Mükemmel Güvenlik Uyumluluğu</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);" id="cis-score-subtitle">48 Test Başarılı • 2 Öneri • 0 Kritik Güvenlik Açığı</div>
+            </div>
+          </div>
+          <span class="role-tag violet">CIS BENCHMARK v1.8</span>
+        </div>
+
+        <div class="cis-categories-grid" id="cis-categories-container">
+          <!-- Injected by JS -->
+        </div>
+
+        <div style="margin-top:20px; background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px;">
+          <div style="font-size:0.85rem; font-weight:700; color:#fff; margin-bottom:8px;">💡 Kurumsal Güvenlik Tavsiyeleri:</div>
+          <ul id="cis-recommendations-list" style="font-size:0.8rem; color:var(--text-muted); line-height:1.7; padding-left:18px;">
+            <li>Tüm üretim Ingress servisleri için Cert-Manager ile otomatik TLS/SSL sertifikası kullanınız.</li>
+            <li>Kubernetes NetworkPolicy kurallarını Cilium eBPF L7 enforcement modu ile sıkılaştırınız.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- PANE 8: RBAC KUBECONFIG GENERATOR -->
+      <div id="ops-pane-rbac" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Geliştiriciler İçin Kısıtlı RBAC Kubeconfig Üretici</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Kullanıcılara veya ekiplere <code>cluster-admin</code> (root) şifresi vermeden, yalnızca belirli bir namespace'e yetkili güvenli Kubeconfig dosyası üretin.
+          </p>
+        </div>
+
+        <div class="config-section-card" style="margin-bottom:20px;">
+          <div class="form-grid col-3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Kullanıcı Adı</label>
+              <input type="text" id="rbac-username" value="developer" placeholder="örn: ahmet-dev">
+            </div>
+            <div class="form-group">
+              <label>Hedef Namespace</label>
+              <input type="text" id="rbac-namespace" value="default" placeholder="örn: development">
+            </div>
+            <div class="form-group">
+              <label>Yetki Rolü (ClusterRole)</label>
+              <select id="rbac-role">
+                <option value="view">Salt Okunur (view - Yalnızca izleme)</option>
+                <option value="edit" selected>Geliştirici (edit - Pod/Deploy yönetimi)</option>
+                <option value="admin">Namespace Yöneticisi (admin - Tam yetki)</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" id="btn-generate-rbac" onclick="createRbacKubeconfig()">
+              🔒 Güvenli Kubeconfig Üret & İndir
+            </button>
+          </div>
+        </div>
+
+        <div id="rbac-result-box" style="display:none; margin-top:16px;">
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:4px;">Üretilen Kubeconfig Önizlemesi:</div>
+          <div class="code-box" id="rbac-result-content" style="max-height:180px;"></div>
+        </div>
+      </div>
+
+      <!-- PANE 9: WEB SHELL & KUBECTL -->
+      <div id="ops-pane-console" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:16px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Web Tabanlı kubectl & Sistem Konsolu</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Harici SSH programı açmaya gerek kalmadan Master düğüm üzerinde güvenli şekilde <code>kubectl</code> ve küme komutlarını çalıştırın.
+          </p>
+        </div>
+
+        <div class="console-preset-row" style="margin-bottom:12px; display:flex; flex-wrap:wrap; gap:8px;">
+          <span style="font-size:0.75rem; color:var(--text-dim); display:flex; align-items:center; margin-right:4px;">Hızlı Komutlar:</span>
+          <button class="preset-pill" onclick="setConsoleCommand('kubectl get nodes -o wide')">kubectl get nodes</button>
+          <button class="preset-pill" onclick="setConsoleCommand('kubectl get pods -A')">kubectl get pods -A</button>
+          <button class="preset-pill" onclick="setConsoleCommand('cilium status')">cilium status</button>
+          <button class="preset-pill" onclick="setConsoleCommand('kubectl get svc -A')">kubectl get svc -A</button>
+          <button class="preset-pill" onclick="setConsoleCommand('crictl ps')">crictl ps</button>
+          <button class="preset-pill" onclick="setConsoleCommand('kubectl top nodes')">kubectl top nodes</button>
+        </div>
+
+        <div class="console-input-row" style="margin-bottom:14px; display:flex; gap:10px;">
+          <input type="text" id="console-cmd-input" placeholder="Örn: kubectl get pods -n kube-system" value="kubectl get nodes -o wide" style="flex:1; font-family:'JetBrains Mono'; font-size:0.82rem;" onkeydown="if(event.key==='Enter') executeConsoleCommand()">
+          <button class="btn btn-primary" id="btn-exec-console" onclick="executeConsoleCommand()" style="flex-shrink:0;">
+            🚀 Çalıştır
+          </button>
+        </div>
+
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+            </div>
+            <span class="terminal-title">master-shell: session-active</span>
+            <span id="console-status-badge" style="font-size:0.75rem; color:var(--text-dim);">Hazır</span>
+          </div>
+          <div class="terminal-body" id="console-terminal-body" style="min-height:240px;">
+            <div class="log-line cyan">[SYSTEM] Web Terminal oturumu hazır. Yukarıdaki komutlardan birini seçebilir veya kendi kubectl komutunuzu yazabilirsiniz.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 10: ETCD & BAKIM -->
+      <div id="ops-pane-etcd" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">etcd Durum Veritabanı & Felaket Kurtarma</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              RKE2 kümesinin tüm durumunu saklayan etcd veritabanının anlık snapshot'larını alın ve listesini görüntüleyin.
+            </p>
+          </div>
+          <button class="btn btn-primary" id="btn-take-snapshot" onclick="triggerEtcdSnapshot()">
+            📸 Anlık etcd Snapshot Al
+          </button>
+        </div>
+
+        <div class="distribution-table-container" style="margin-bottom: 24px;">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Snapshot Dosya Adı</th>
+                <th>Boyut</th>
+                <th>Oluşturulma Zamanı</th>
+                <th>Konum</th>
+                <th>Durum</th>
+              </tr>
+            </thead>
+            <tbody id="etcd-snapshots-table-body">
+              <tr>
+                <td colspan="5" style="text-align:center; padding:20px; color:var(--text-dim);">
+                  Snapshot listesi yükleniyor veya henüz snapshot alınmadı.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:18px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span style="font-size:1.1rem;">🛠️</span>
+            <h4 style="font-size:0.92rem; font-weight:700; color:#fff;">Fiziksel Sunucu Bakımı (Node Evacuation / Drain) Rehberi</h4>
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-muted); line-height:1.6; margin-bottom:12px;">
+            Proxmox veya ESXi fiziksel sunucunuzu yeniden başlatmanız ya da donanım bakımı yapmanız gerektiğinde:
+          </p>
+          <ol style="font-size:0.82rem; color:var(--text-muted); line-height:1.7; padding-left:20px;">
+            <li><strong>Düğümü Bakıma Alın (Cordon):</strong> Yeni podların bu düğüme atanmasını engeller.</li>
+            <li><strong>İş Yüklerini Tahliye Edin (Drain):</strong> Çalışan podları kümedeki diğer sağlıklı düğümlere kesintisiz şekilde aktarır.</li>
+            <li><strong>Bakımı Tamamlayın:</strong> Fiziksel sunucunuzu güncelleyip yeniden başlattıktan sonra <strong>Uncordon</strong> ile düğümü tekrar aktif edin.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- PANE 11: CILIUM NETWORKPOLICY EDİTÖRÜ -->
+      <div id="ops-pane-netpol" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Cilium eBPF Görsel NetworkPolicy & L7 Güvenlik Duvarı</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Karmaşık YAML yazmaya gerek kalmadan, mikroservisler arası ağ erişimini çekirdek (kernel) düzeyinde eBPF ile sınırlandırın.
+          </p>
+        </div>
+
+        <!-- HAZIR ŞABLONLAR (PRESETS) -->
+        <div style="margin-bottom:16px;">
+          <label style="font-size:0.75rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; display:block; margin-bottom:8px;">
+            ⚡ Kurumsal Güvenlik Şablonları (Presets):
+          </label>
+          <div class="preset-pills-row">
+            <button class="preset-pill" onclick="loadNetPolPreset('default-deny')">🚫 Default Deny All (Tam İzolasyon)</button>
+            <button class="preset-pill" onclick="loadNetPolPreset('db-isolate')">🐘 PostgreSQL Veritabanı İzolasyonu</button>
+            <button class="preset-pill" onclick="loadNetPolPreset('intra-namespace')">🔒 Sadece Namespace İçi İletişim</button>
+            <button class="preset-pill" onclick="loadNetPolPreset('l7-http-filter')">🐝 eBPF L7 HTTP GET Filtresi</button>
+          </div>
+        </div>
+
+        <!-- KURAL EDİTÖRÜ FORMU -->
+        <div class="config-section-card" style="margin-bottom:20px;">
+          <div class="form-grid col-3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Kural Adı (Policy Name)</label>
+              <input type="text" id="netpol-name" value="frontend-security-policy">
+            </div>
+            <div class="form-group">
+              <label>Hedef Namespace</label>
+              <input type="text" id="netpol-namespace" value="default">
+            </div>
+            <div class="form-group">
+              <label>Hedef Pod Etiketi (Target Pod Selector)</label>
+              <input type="text" id="netpol-target-pod" value="app: frontend" placeholder="app: frontend">
+            </div>
+          </div>
+
+          <div class="form-grid col-3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>İzin Verilen Kaynak Pod (Allowed From)</label>
+              <input type="text" id="netpol-from-pod" value="app: ingress" placeholder="app: ingress">
+            </div>
+            <div class="form-group">
+              <label>İzin Verilen TCP Portları</label>
+              <input type="text" id="netpol-ports" value="80, 443" placeholder="Örn: 80, 443, 8080">
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-bottom:10px;">
+                <input type="checkbox" id="netpol-egress-dns" checked style="width:16px; height:16px;">
+                <span style="font-size:0.8rem; color:#fff;">CoreDNS (Port 53) Egress İzni</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <button class="btn btn-secondary btn-sm" onclick="generateNetworkPolicyYaml()">🔄 YAML'ı Yeniden Oluştur</button>
+            <div style="display:flex; gap:10px;">
+              <button class="btn btn-secondary btn-sm" onclick="copyNetPolYaml()">📋 Kopyala</button>
+              <button class="btn btn-secondary btn-sm" onclick="downloadNetPolYaml()">📥 .yaml İndir</button>
+              <button class="btn btn-primary btn-sm" id="btn-apply-netpol" onclick="applyNetworkPolicyToCluster()">🚀 1-Tıkla Kümeye Uygula</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:6px;">Oluşturulan CiliumNetworkPolicy Manifesti:</div>
+          <div class="code-box" id="netpol-yaml-preview" style="max-height:220px; font-size:0.78rem;"></div>
+        </div>
+      </div>
+
+      <!-- PANE 12: SIFIR KESİNTİLİ ROLLING UPGRADE -->
+      <div id="ops-pane-upgrade" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Sıfır Kesintili Küme Güncelleme Orkestratörü (Rolling Upgrade)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Uygulamalar kesintiye uğramadan, Master ve Worker düğümleri tek tek tahliye ederek (Drain) RKE2 sürümünü güvenle yükseltin.
+            </p>
+          </div>
+          <button class="btn btn-primary" id="btn-start-upgrade" onclick="startClusterUpgrade()">
+            🚀 Yükseltmeyi Başlat (Rolling Upgrade)
+          </button>
+        </div>
+
+        <!-- SÜRÜM SEÇİM KARTI -->
+        <div class="config-section-card" style="margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+            <div style="display:flex; align-items:center; gap:16px;">
+              <div>
+                <span style="font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; display:block;">Mevcut RKE2 Sürümü</span>
+                <span class="role-tag cyan" style="font-size:0.9rem; font-family:'JetBrains Mono';" id="upgrade-current-ver">v1.30.4+rke2r1</span>
+              </div>
+              <div style="font-size:1.4rem; color:var(--text-dim);">&rarr;</div>
+              <div>
+                <span style="font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; display:block;">Hedef Sürüm</span>
+                <select id="upgrade-target-ver" style="padding:6px 12px; font-family:'JetBrains Mono'; font-size:0.85rem;">
+                  <option value="v1.30.5+rke2r1">v1.30.5+rke2r1 (Patch Release)</option>
+                  <option value="v1.31.2+rke2r1" selected>v1.31.2+rke2r1 (Önerilen Stable)</option>
+                  <option value="v1.32.0+rke2r1">v1.32.0+rke2r1 (En Yeni Özellikler)</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="preflight-status-chip success">✔ etcd Quorum Güvenli (3 Master)</span>
+              <span class="preflight-status-chip success">✔ Rolling Drain Aktif</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- YÜKSELTME ADIMLARI GRID -->
+        <div class="smoke-steps-grid" id="upgrade-stages-container" style="margin-bottom:20px;">
+          <!-- Injected by JS or initial template -->
+          <div class="smoke-step-card" id="upg-stage-1">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">1️⃣</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">1. Sürüm Uyumluluk & etcd Quorum Denetimi</div>
+                <div class="smoke-step-desc">Yükseltme rotası ve veritabanı sağlık kontrolü yapılır.</div>
+              </div>
+              <span class="smoke-status-badge" id="upg-badge-1">Bekliyor</span>
+            </div>
+          </div>
+          <div class="smoke-step-card" id="upg-stage-2">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">2️⃣</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">2. Bootstrap Master (Master-01) Güncellemesi</div>
+                <div class="smoke-step-desc">Master-01 cordon & drain edilir, yeni binary kurulur ve uncordon edilir.</div>
+              </div>
+              <span class="smoke-status-badge" id="upg-badge-2">Bekliyor</span>
+            </div>
+          </div>
+          <div class="smoke-step-card" id="upg-stage-3">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">3️⃣</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">3. Diğer Control-Plane (Master-02 / Master-03) Güncellemeleri</div>
+                <div class="smoke-step-desc">Kalan master düğümler sırayla güncellenir ve quorum korunur.</div>
+              </div>
+              <span class="smoke-status-badge" id="upg-badge-3">Bekliyor</span>
+            </div>
+          </div>
+          <div class="smoke-step-card" id="upg-stage-4">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">4️⃣</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">4. Worker Düğümleri Kesintisiz Tahliye & Güncelleme</div>
+                <div class="smoke-step-desc">İş yükleri taşınarak worker düğümler teker teker güncellenir.</div>
+              </div>
+              <span class="smoke-status-badge" id="upg-badge-4">Bekliyor</span>
+            </div>
+          </div>
+          <div class="smoke-step-card" id="upg-stage-5">
+            <div class="smoke-step-header">
+              <span class="smoke-step-icon">5️⃣</span>
+              <div style="flex:1;">
+                <div class="smoke-step-title">5. Cilium eBPF Veri Yolu & Sağlık Kontrolü</div>
+                <div class="smoke-step-desc">Tüm düğümlerin hazır olduğu ve pod iletişiminin çalıştığı doğrulanır.</div>
+              </div>
+              <span class="smoke-status-badge" id="upg-badge-5">Bekliyor</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:6px;">Canlı Yükseltme Logları:</div>
+          <div class="code-box" id="upgrade-console-log" style="max-height:160px; font-size:0.75rem;">Yükseltme başlatıldığında canlı konsol çıktısı burada görüntülenecektir.</div>
+        </div>
+      </div>
+
+      <!-- PANE 13: CANLI KÜME OLAY AKIŞI (TIMELINE) -->
+      <div id="ops-pane-events" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Canlı Küme Olay Akışı & Zaman Çizelgesi (Audit Timeline)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Kubernetes pod, düğüm ve servis olaylarını renk kodlu ve filtrelenebilir zaman çizelgesinde anlık izleyin.
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fetchClusterEvents()">🔄 Olayları Yenile</button>
+        </div>
+
+        <!-- FİLTRELEME ÇUBUĞU -->
+        <div style="display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; align-items:center;">
+          <input type="text" id="events-filter-search" placeholder="Olay ara (pod adı, namespace, hata)..." style="flex:1; min-width:220px;" oninput="applyEventsFilter()">
+          <select id="events-filter-type" style="width:160px;" onchange="applyEventsFilter()">
+            <option value="all">Tüm Tipler</option>
+            <option value="Warning">Yalnızca Uyarılar (Warning)</option>
+            <option value="Normal">Yalnızca Normaller (Normal)</option>
+          </select>
+        </div>
+
+        <!-- TIMELINE LISTESİ -->
+        <div id="events-timeline-container" class="events-timeline-wrap">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- PANE 14: AKILLI ALARM & BİLDİRİMLER -->
+      <div id="ops-pane-alerts" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Akıllı Alarm & Bildirim Merkezi (Telegram & Webhook)</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Düğüm düşmesi, pod CrashLoop, disk doluluğu veya etcd quorum kaybında Telegram veya kurumsal Webhook adresinize anında Türkçe uyarılar gönderin.
+          </p>
+        </div>
+
+        <div class="config-section-card" style="margin-bottom:20px;">
+          <div style="display:flex; gap:10px; margin-bottom:16px;">
+            <button class="mode-pill-btn active" id="btn-alert-chan-telegram" onclick="switchAlertChannel('telegram')">📱 Telegram Bot</button>
+            <button class="mode-pill-btn" id="btn-alert-chan-webhook" onclick="switchAlertChannel('webhook')">🌐 Slack / Teams / Webhook</button>
+          </div>
+
+          <!-- TELEGRAM FORMU -->
+          <div id="alert-form-telegram">
+            <div class="form-grid col-2" style="margin-bottom:16px;">
+              <div class="form-group">
+                <label>Telegram Bot Token</label>
+                <input type="text" id="alert-tg-token" placeholder="Örn: 678912345:AAFnkX_exampleToken">
+              </div>
+              <div class="form-group">
+                <label>Telegram Chat ID (Grup veya Kullanıcı ID)</label>
+                <input type="text" id="alert-tg-chatid" placeholder="Örn: -1001234567890">
+              </div>
+            </div>
+          </div>
+
+          <!-- WEBHOOK FORMU -->
+          <div id="alert-form-webhook" style="display:none;">
+            <div class="form-group" style="margin-bottom:16px;">
+              <label>Incoming Webhook URL</label>
+              <input type="text" id="alert-webhook-url" placeholder="https://hooks.slack.com/services/... veya https://webhook.site/...">
+            </div>
+          </div>
+
+          <!-- TETİKLEME KURALLARI -->
+          <div style="margin-top:10px; margin-bottom:18px;">
+            <label style="font-size:0.78rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; display:block; margin-bottom:8px;">
+              🔔 Aktif Alarm Tetikleyicileri:
+            </label>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px;">
+              <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#fff; cursor:pointer;">
+                <input type="checkbox" checked style="width:16px; height:16px;"> 🚨 Düğüm NotReady / Heartbeat Kaybı
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#fff; cursor:pointer;">
+                <input type="checkbox" checked style="width:16px; height:16px;"> 💥 Pod CrashLoopBackOff & OOMKilled
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#fff; cursor:pointer;">
+                <input type="checkbox" checked style="width:16px; height:16px;"> 💾 Disk Doluluk Oranı > %85
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#fff; cursor:pointer;">
+                <input type="checkbox" checked style="width:16px; height:16px;"> 🛡️ etcd Quorum Bozulması
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <button class="btn btn-secondary" onclick="saveAlertSettings()">💾 Ayarları Kaydet</button>
+            <button class="btn btn-primary" id="btn-test-alert" onclick="sendTestClusterAlert()">
+              🚨 Canlı Test Bildirimi Gönder
+            </button>
+          </div>
+        </div>
+
+        <div id="alert-result-box" style="display:none;">
+          <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:4px;">Gönderilen Bildirim Çıktısı:</div>
+          <div class="code-box" id="alert-result-content" style="max-height:180px; font-size:0.78rem;"></div>
+        </div>
+      </div>
+
+      <!-- PANE 15: KAYNAK SIKILAŞTIRMA & FINOPS (RIGHTSIZING) -->
+      <div id="ops-pane-rightsizing" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Kaynak Sıkılaştırma & FinOps Tasarruf Tavsiyecisi (Rightsizing)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Podların rezerve ettiği CPU/RAM ile gerçek pik tüketimlerini analiz ederek kaynak israfını önleyin ve donanım tasarrufu sağlayın.
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fetchRightsizingAnalysis()">🔄 Analizi Yenile</button>
+        </div>
+
+        <!-- FINOPS STATS CARDS -->
+        <div class="summary-stats-bar" style="margin-bottom:20px;">
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">💾</div>
+            <div>
+              <div class="summary-stat-label">Toplam Rezerve RAM</div>
+              <div class="summary-stat-val" id="rs-total-mem">32 GB</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">📉</div>
+            <div>
+              <div class="summary-stat-label">Gerçek Pik Tüketim</div>
+              <div class="summary-stat-val" id="rs-used-mem" style="color:#60A5FA;">9.8 GB</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">💰</div>
+            <div>
+              <div class="summary-stat-label">Potansiyel RAM Tasarrufu</div>
+              <div class="summary-stat-val" id="rs-savings-mem" style="color:var(--success-text);">18.2 GB (%56.8)</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">⚡</div>
+            <div>
+              <div class="summary-stat-label">Tahmini Tasarruf</div>
+              <div class="summary-stat-val" id="rs-monthly-savings" style="color:var(--primary-glow); font-size:0.95rem;">$185 / ay</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAVSİYELER TABLOSU -->
+        <div class="distribution-table-container" style="margin-bottom:20px;">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Namespace</th>
+                <th>Pod Adı</th>
+                <th>Mevcut Rezerve (Req)</th>
+                <th>Pik Gerçek Tüketim</th>
+                <th>Önerilen Rezerve</th>
+                <th>Tasarruf</th>
+                <th>Durum</th>
+              </tr>
+            </thead>
+            <tbody id="rightsizing-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end;">
+          <button class="btn btn-secondary" onclick="downloadOptimizedSpecYaml()">
+            📥 Optimize Edilmiş Deployment Spec İndir (.yaml)
+          </button>
+        </div>
+      </div>
+
+      <!-- PANE 16: TLS / SSL SERTİFİKA YÖNETİCİSİ -->
+      <div id="ops-pane-certs" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">TLS / SSL Sertifikaları & Cert-Manager Takipçisi</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Kümedeki tüm Ingress alan adlarının SSL/TLS sertifikalarını, kalan günlerini ve Let's Encrypt ClusterIssuer durumlarını izleyin.
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fetchTlsCertificates()">🔄 Sertifikaları Yenile</button>
+        </div>
+
+        <!-- SERTİFİKA KARTLARI -->
+        <div class="addons-grid" id="certs-cards-grid" style="margin-bottom:24px;">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- YENİ CLUSTERISSUER OLUŞTURUCU -->
+        <div class="config-section-card">
+          <h4 style="font-size:0.95rem; font-weight:700; color:#fff; margin-bottom:6px;">🪄 1-Tıkla Otomatik Let's Encrypt ClusterIssuer Oluştur</h4>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+            Cilium Ingress denetleyicisi ile Let's Encrypt HTTP-01 doğrulamasını entegre eden küme geneli sertifika sağlayıcısı tanımlar.
+          </p>
+          <div class="form-grid col-3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Yönetici E-Posta Adresi</label>
+              <input type="email" id="issuer-email" value="admin@sirketiniz.com">
+            </div>
+            <div class="form-group">
+              <label>Sağlayıcı Ortamı (Environment)</label>
+              <select id="issuer-type">
+                <option value="letsencrypt-prod" selected>Let's Encrypt Production (Geçerli SSL)</option>
+                <option value="letsencrypt-staging">Let's Encrypt Staging (Test Amaçlı)</option>
+              </select>
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <button class="btn btn-primary" id="btn-create-issuer" onclick="createLetEncryptIssuer()" style="width:100%;">
+                ⚡ ClusterIssuer Oluştur
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 17: CANLI POD LOG AKIŞI -->
+      <div id="ops-pane-logs" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:16px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Canlı Pod Log Akışı & Hata Ayıklayıcı</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Seçtiğiniz mikroservis podunun konsol çıktılarını anlık olarak izleyin, hata satırlarını filtreleyin veya çöken pod geçmişini inceleyin.
+          </p>
+        </div>
+
+        <!-- FİLTRELEME VE SEÇİM KONTROLLERİ -->
+        <div style="display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap; align-items:center;">
+          <select id="log-select-namespace" style="width:160px;" onchange="updatePodSelectorList()">
+            <option value="default" selected>default</option>
+            <option value="database">database</option>
+            <option value="argocd">argocd</option>
+            <option value="kube-system">kube-system</option>
+          </select>
+          <select id="log-select-pod" style="width:260px;" onchange="fetchPodLogStream()">
+            <option value="whoami-test-79d75c968f-k2l8x">whoami-test-79d75c968f-k2l8x</option>
+          </select>
+          <input type="text" id="log-filter-search" placeholder="Log satırlarında ara (regex / kelime)..." style="flex:1; min-width:200px;" oninput="applyLogFilter()">
+          <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-muted); cursor:pointer;">
+            <input type="checkbox" id="log-toggle-previous" onchange="fetchPodLogStream()" style="width:15px; height:15px;">
+            <span>Çöken Pod (--previous)</span>
+          </label>
+          <button class="btn btn-secondary btn-sm" onclick="fetchPodLogStream()">🔄 Yenile</button>
+        </div>
+
+        <!-- LOG TERMİNALİ -->
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+            </div>
+            <span class="terminal-title" id="log-terminal-title">kubectl logs -f whoami-test-79d75c968f-k2l8x</span>
+            <span style="font-size:0.75rem; color:var(--text-dim);" id="log-status-badge">Canlı Akış Aktif</span>
+          </div>
+          <div class="terminal-body" id="pod-log-terminal-body" style="min-height:280px; max-height:380px;">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 18: VELERO & S3 FELAKET KURTARMA -->
+      <div id="ops-pane-velero" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Velero & S3 Tam Küme ve PVC Yedekleme (Disaster Recovery)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Kubernetes kaynakları ile birlikte podların disk verilerini (Persistent Volume / PVC) harici S3/TrueNAS havuzuna yedekleyin ve tek tıkla kurtarın.
+            </p>
+          </div>
+          <button class="btn btn-primary" id="btn-create-velero" onclick="triggerVeleroBackup()">
+            📸 1-Tıkla Full Cluster Yedeği Al
+          </button>
+        </div>
+
+        <!-- S3 HEDEF BİLGİSİ BANNERI -->
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <span style="font-size:1.8rem;">🪣</span>
+            <div>
+              <div style="font-size:0.92rem; font-weight:700; color:#fff;">Hedef S3 Depolama Havuzu: <code style="color:var(--primary-glow);">k8s-backups</code></div>
+              <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Uç Nokta (Endpoint): <span style="font-family:'JetBrains Mono'; color:#93C5FD;">https://s3.truenas.local:9000</span> • Şifreleme: AES-256</div>
+            </div>
+          </div>
+          <span class="role-tag success">S3 BAĞLANTISI AKTİF</span>
+        </div>
+
+        <!-- YEDEK GEÇMİŞİ TABLOSU -->
+        <div class="distribution-table-container" style="margin-bottom:24px;">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Yedek Adı (Backup Name)</th>
+                <th>Kapsam</th>
+                <th>PVC Disk Sayısı</th>
+                <th>Boyut</th>
+                <th>Oluşturulma</th>
+                <th>Geçerlilik</th>
+                <th>Durum</th>
+                <th>Eylem</th>
+              </tr>
+            </thead>
+            <tbody id="velero-backups-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PANE 19: HUBBLE eBPF SERVİS HARİTASI & CANLI AĞ AKIŞI -->
+      <div id="ops-pane-hubble" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Hubble eBPF Canlı Ağ Akışı & Servis Haritası (Service Topology)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Cilium eBPF çekirdek seviyesindeki L3/L4 paket akışlarını, L7 HTTP çağrılarını ve servisler arası bağımlılık grafiğini anlık gözlemleyin.
+            </p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="fetchHubbleFlows()">
+            🔄 Akışı Yenile
+          </button>
+        </div>
+
+        <!-- TELEMETRİ METRİK KARTLARI -->
+        <div class="metrics-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
+          <div class="metric-card">
+            <div class="metric-title">Toplam eBPF Akışı (Dakika)</div>
+            <div class="metric-val text-accent" id="hubble-total-flows">18,450</div>
+            <div class="metric-sub" style="color:var(--text-dim);">L3/L4/L7 Çekirdek Paketi</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">İletim Oranı (Forwarded)</div>
+            <div class="metric-val text-success" id="hubble-forward-rate">99.7%</div>
+            <div class="metric-sub" style="color:var(--success);">Tüm Güvenlik Kuralları İzinli</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">Engellenen (Dropped Flows)</div>
+            <div class="metric-val" style="color:#EF4444;" id="hubble-dropped-count">42</div>
+            <div class="metric-sub" style="color:#EF4444;">NetworkPolicy İhlali</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title">Ortalama Gecikme (Latency)</div>
+            <div class="metric-val" style="color:#38BDF8;" id="hubble-avg-latency">1.4ms</div>
+            <div class="metric-sub" style="color:var(--text-dim);">eBPF Host Yönlendirme</div>
+          </div>
+        </div>
+
+        <!-- SERVİS HARİTASI GÖRSEL PANELİ -->
+        <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px; margin-bottom:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h4 style="font-size:0.92rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
+              <span>🌐 Canlı Mikroservis Bağlantı Topolojisi</span>
+            </h4>
+            <span style="font-size:0.75rem; color:var(--text-dim);">Cilium Hubble Flow Daemon</span>
+          </div>
+
+          <div id="hubble-service-graph-container" style="background:#0b0f19; border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius-sm); padding:24px; min-height:180px; display:flex; justify-content:space-around; align-items:center; flex-wrap:wrap; gap:16px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- CANLI FLOW TABLOSU VE FİLTRE -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-secondary btn-sm active" id="btn-flow-filter-all" onclick="filterHubbleVerdict('all')">Tüm Akışlar</button>
+            <button class="btn btn-secondary btn-sm" id="btn-flow-filter-fwd" onclick="filterHubbleVerdict('forwarded')">🟢 İzin Verilen (Forwarded)</button>
+            <button class="btn btn-secondary btn-sm" id="btn-flow-filter-drop" onclick="filterHubbleVerdict('dropped')">🔴 Engellenen (Dropped)</button>
+          </div>
+          <span style="font-size:0.78rem; color:var(--text-muted);" id="hubble-filter-info">Son 5 eBPF soket akışı gösteriliyor</span>
+        </div>
+
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Zaman</th>
+                <th>Kaynak (Source)</th>
+                <th>Hedef (Destination)</th>
+                <th>Protokol & Port</th>
+                <th>L7 Detay (HTTP / DNS / SQL)</th>
+                <th>Durum</th>
+                <th>Gecikme</th>
+                <th>Kural / Neden</th>
+              </tr>
+            </thead>
+            <tbody id="hubble-flows-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PANE 20: K8S AKILLI TEŞHİS & KENDİ KENDİNE ONARIM (AI DOCTOR) -->
+      <div id="ops-pane-doctor" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Akıllı Küme Teşhisi & Kendi Kendini İyileştirici (AI Doctor)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              CrashLoopBackOff, OOMKilled, DiskPressure ve bozuk servis durumlarını otomatik analiz eder ve tek tıkla onarır.
+            </p>
+          </div>
+          <button class="btn btn-primary" onclick="fetchDoctorDiagnosis()">
+            🩺 Kümeyi Yeniden Teşhis Et
+          </button>
+        </div>
+
+        <!-- SAĞLIK SKOR KARTI -->
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+          <div style="display:flex; align-items:center; gap:18px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:conic-gradient(var(--primary-glow) 302deg, rgba(255,255,255,0.1) 0deg); display:flex; align-items:center; justify-content:center; box-shadow:0 0 15px rgba(56,189,248,0.25);">
+              <span style="font-size:1.2rem; font-weight:800; color:#fff;" id="doctor-health-score">84%</span>
+            </div>
+            <div>
+              <div style="font-size:1rem; font-weight:700; color:#fff;">Küme Sağlık ve Dayanıklılık Puanı: <span style="color:#38BDF8;">İyi (84 / 100)</span></div>
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-top:3px;">
+                <span style="color:#EF4444; font-weight:600;">1 Kritik Hata</span> • <span style="color:#F59E0B; font-weight:600;">2 Uyarı</span> • <span style="color:#10B981; font-weight:600;">18 Sağlıklı İş Yükü</span>
+              </div>
+            </div>
+          </div>
+          <span class="role-tag warning">3 EYLEM ÖNERİSİ BULUNDU</span>
+        </div>
+
+        <!-- ONARIM BİLDİRİM BANNERI -->
+        <div id="doctor-action-alert" style="display:none; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:var(--radius-sm); padding:12px 18px; margin-bottom:20px; font-size:0.85rem; color:#A7F3D0;">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- TESPİT EDİLEN SORUNLAR VE ONARIM AKSİYONLARI -->
+        <div id="doctor-issues-container" style="display:flex; flex-direction:column; gap:16px;">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- PANE 21: TRIVY KONTEYNER İMAJ GÜVENLİK VE CVE TARAYICISI -->
+      <div id="ops-pane-trivy" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Konteyner İmaj Güvenlik Açığı & CVE Tarayıcısı (Trivy)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Çalışan konteyner imajlarındaki bilinen güvenlik zafiyetlerini (CVE), etkilenen paketleri ve yama sürümlerini denetleyin.
+            </p>
+          </div>
+          <button class="btn btn-primary" onclick="fetchTrivyScan()">
+            🛡️ İmaj Güvenliğini Tara
+          </button>
+        </div>
+
+        <!-- GÜVENLİK ÖZET BANNERI -->
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div style="width:52px; height:52px; border-radius:12px; background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.4); display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:800; color:#F59E0B;">
+              B+
+            </div>
+            <div>
+              <div style="font-size:0.95rem; font-weight:700; color:#fff;">Genel Güvenlik Seviyesi: <span style="color:#F59E0B;">B+ (84 / 100)</span></div>
+              <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
+                Taranan: 8 İmaj • <span style="color:#EF4444; font-weight:600;">1 Kritik</span> • <span style="color:#F97316; font-weight:600;">1 Yüksek</span> • <span style="color:#FBBF24; font-weight:600;">1 Orta</span> • <span style="color:#94A3B8; font-weight:600;">1 Düşük</span>
+              </div>
+            </div>
+          </div>
+          <span class="role-tag info">STANDART: NIST & CIS K8S</span>
+        </div>
+
+        <!-- CVE TABLOSU -->
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>CVE ID</th>
+                <th>Şiddet (Severity)</th>
+                <th>CVSS</th>
+                <th>Etkilenen Paket</th>
+                <th>Mevcut Sürüm</th>
+                <th>Çözüm Sürümü</th>
+                <th>İlgili İmaj & Namespace</th>
+                <th>Açıklama & Düzeltme</th>
+              </tr>
+            </thead>
+            <tbody id="trivy-cve-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PANE 22: KUBERNETES CRONJOB & ZAMANLANMIŞ GÖREV MERKEZİ -->
+      <div id="ops-pane-cronjobs" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Zamanlanmış Görev & CronJob Orkestrasyon Merkezi</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Veritabanı yedekleri, günlük log temizlikleri ve zamanlanmış batch işlerini yönetin, anlık tetikleyin veya durdurun.
+            </p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="fetchCronJobs()">
+            🔄 Listeyi Yenile
+          </button>
+        </div>
+
+        <!-- BİLGİLENDİRME BİLDİRİMİ -->
+        <div id="cronjob-action-alert" style="display:none; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); border-radius:var(--radius-sm); padding:12px 18px; margin-bottom:20px; font-size:0.85rem; color:#BAE6FD;">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- CRONJOB TABLOSU -->
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>CronJob Adı</th>
+                <th>Namespace</th>
+                <th>Zamanlama (Cron Schedule)</th>
+                <th>Açıklama</th>
+                <th>Durum</th>
+                <th>Son Çalışma</th>
+                <th>Sonraki Tetiklenme</th>
+                <th>Konteyner İmajı</th>
+                <th>Hızlı Eylemler</th>
+              </tr>
+            </thead>
+            <tbody id="cronjobs-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div> <!-- /workspace-operations -->
+
+        </div> <!-- /workspace-content -->
+      </div> <!-- /workspace-scroll -->
+    </main> <!-- /app-main -->
+  </div> <!-- /app-layout -->
+
+  <!-- MODAL: CLOUD-INIT ŞABLON OLUŞTURUCU -->
+  <div class="modal-overlay" id="template-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">🪄 Otomatik Cloud-Init Şablonu Oluştur</div>
+        <button class="modal-close" onclick="closeTemplateModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-tabs" id="modal-tabs-bar">
+          <button class="modal-tab-btn active" id="tab-btn-auto" onclick="switchTemplateTab('auto')">⚡ 1-Tıkla Otomatik Kur</button>
+          <button class="modal-tab-btn" id="tab-btn-manual" onclick="switchTemplateTab('manual')">📋 Proxmox Shell Komutu</button>
+        </div>
+
+        <!-- PROXMOX TAB 1: OTOMATIK -->
+        <div id="tab-auto-content">
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 16px;">
+            Proxmox sunucunuza bağlanarak resmi Ubuntu Cloud Image'ı doğrudan indirir ve Cloud-Init şablonu (Golden Image) haline getirir.
+          </p>
+          <div class="form-grid" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label>İşletim Sistemi Sürümü</label>
+              <select id="tpl-os-version" onchange="updateSnippet()">
+                <option value="22.04" selected>Ubuntu 22.04 LTS (Jammy - Önerilen)</option>
+                <option value="24.04">Ubuntu 24.04 LTS (Noble)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Şablon VM ID</label>
+              <input type="number" id="tpl-vmid" value="9000" oninput="updateSnippet()">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label>Hedef Storage Havuzu</label>
+            <select id="tpl-storage" onchange="updateSnippet()">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+
+          <div id="tpl-log-box" style="display:none; margin-bottom: 16px;">
+            <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:4px;">İşlem Günlüğü:</div>
+            <div class="code-box" id="tpl-log-content">İşlem başlatılıyor...</div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn btn-secondary" onclick="closeTemplateModal()">İptal</button>
+            <button class="btn btn-primary" id="btn-create-tpl" onclick="executeCreateTemplate()">🚀 İndir & Şablonu Oluştur</button>
+          </div>
+        </div>
+
+        <!-- PROXMOX TAB 2: SHELL 1-LINER -->
+        <div id="tab-manual-content" style="display:none;">
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 12px;">
+            Proxmox Web GUI'de sunucunuza tıklayıp sağ üstteki <strong>>_ Shell</strong> butonuna basın ve aşağıdaki komut bloğunu yapıştırın:
+          </p>
+          <div class="code-box" id="code-snippet-proxmox"></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 14px;">
+            <span id="copy-status-text" style="font-size:0.8rem; color:var(--success);"></span>
+            <button class="btn btn-primary" onclick="copyTemplateSnippet()">📋 Komutu Kopyala</button>
+          </div>
+        </div>
+
+        <!-- VCENTER CONTENT -->
+        <div id="tab-vcenter-content" style="display:none;">
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 16px;">
+            VMware vCenter için Canonical tarafından resmi olarak optimize edilmiş ve <strong>open-vm-tools + Cloud-Init</strong> gömülü <strong>vSphere OVA</strong> şablonu kullanılır.
+          </p>
+          
+          <div style="margin-bottom: 16px;">
+            <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px;">Resmi Ubuntu 22.04 LTS vSphere OVA URL'si:</label>
+            <div class="code-box" id="vcenter-ova-url" style="padding:10px; font-size:0.8rem;">https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova</div>
+            <div style="display:flex; justify-content:flex-end; margin-top:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="copyVcenterOvaUrl()">📋 OVA URL'sini Kopyala</button>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:16px; margin-bottom:20px;">
+            <h4 style="font-size:0.9rem; margin-bottom:10px; color:var(--primary-glow);">vCenter'a 2 Dakikada Nasıl Eklenir?</h4>
+            <ol style="font-size:0.82rem; color:var(--text-muted); padding-left:18px; line-height:1.7;">
+              <li>vCenter Web Client'ta cluster veya ESXi host'unuza sağ tıklayın: <strong>"Deploy OVF Template..."</strong></li>
+              <li>Açılan pencerede <strong>URL</strong> kutucuğuna yukarıdaki linki yapıştırın (Bilgisayarınıza indirmenize gerek yoktur, vCenter doğrudan çeker).</li>
+              <li>Sanal makineye isim verin (Örn: <code style="color:#38BDF8;">ubuntu-2204-template</code>) ve hedef Datastore'u seçip tamamlayın.</li>
+              <li>Dağıtım bitince sanal makineye sağ tıklayın: <strong>Template &rarr; Convert to Template</strong> deyin.</li>
+            </ol>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" onclick="closeTemplateModal()">Anladım, Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULAR JAVASCRIPT SYSTEM -->
+  <script src="js/modules/i18n.js?v=20260910_40"></script>
+  <script src="js/app.js?v=20260910_25"></script>
+  <script src="js/modules/wizard.js?v=20260910_25"></script>
+  <script src="js/modules/operations.js?v=20260910_25"></script>
+</body>
+</html>
