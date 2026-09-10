@@ -28,14 +28,15 @@
   function updateVoiceTopbarButton() {
     const btn = document.getElementById('btn-toggle-voice-alerts');
     if (btn) {
+      const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en') || (window.currentLanguage === 'en');
       if (isVoiceEnabled) {
         btn.classList.add('active');
-        btn.innerHTML = '🔊 <span class="voice-btn-label">Ses: Açık</span>';
-        btn.title = 'Sesli Anons Sistemi Aktif. Tıklayarak Sessize Alın.';
+        btn.innerHTML = `🔊 <span class="voice-btn-label">${isEn ? 'Voice: On' : 'Ses: Açık'}</span>`;
+        btn.title = isEn ? 'Voice Alert System Active. Click to Mute.' : 'Sesli Anons Sistemi Aktif. Tıklayarak Sessize Alın.';
       } else {
         btn.classList.remove('active');
-        btn.innerHTML = '🔇 <span class="voice-btn-label">Ses: Kapalı</span>';
-        btn.title = 'Sesli Anons Sistemi Kapalı. Tıklayarak Açın.';
+        btn.innerHTML = `🔇 <span class="voice-btn-label">${isEn ? 'Voice: Off' : 'Ses: Kapalı'}</span>`;
+        btn.title = isEn ? 'Voice Alert System Muted. Click to Enable.' : 'Sesli Anons Sistemi Kapalı. Tıklayarak Açın.';
       }
     }
   }
@@ -45,7 +46,10 @@
    * @param {string} text 
    * @param {'tr'|'en'} lang 
    */
-  function speakAlert(text, lang = 'tr') {
+  function speakAlert(text, lang) {
+    if (!lang) {
+      lang = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en') || (window.currentLanguage === 'en') ? 'en' : 'tr';
+    }
     if (!isVoiceEnabled || !('speechSynthesis' in window)) return;
 
     // Cancel previous utterance if any

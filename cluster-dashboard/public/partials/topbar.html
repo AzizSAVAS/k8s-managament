@@ -18,26 +18,26 @@
 
         <div class="topbar-actions">
           <!-- DEMO / SIMULATION MODE TOGGLE -->
-          <button class="topbar-demo-btn" id="btn-toggle-demo-mode" onclick="toggleDemoMode()" title="Canlı Küme / Demo Simülasyonu Modu">
-            🟢 <span class="demo-btn-label">Canlı Küme</span>
+          <button class="topbar-demo-btn" id="btn-toggle-demo-mode" onclick="toggleDemoMode()" title="Canlı Küme / Demo Simülasyonu Modu" data-i18n-title="topbar_demo_title">
+            🟢 <span class="demo-btn-label" data-i18n="topbar_demo_live">Canlı Küme</span>
           </button>
 
           <!-- NOC VOICE ALERTING TOGGLE -->
-          <button class="topbar-demo-btn" id="btn-toggle-voice-alerts" onclick="toggleVoiceAlerts()" title="NOC Sesli Anons Sistemi">
-            🔇 <span class="voice-btn-label">Ses: Kapalı</span>
+          <button class="topbar-demo-btn" id="btn-toggle-voice-alerts" onclick="toggleVoiceAlerts()" title="NOC Sesli Anons Sistemi" data-i18n-title="topbar_voice_title">
+            🔇 <span class="voice-btn-label" data-i18n="topbar_voice_off">Ses: Kapalı</span>
           </button>
 
           <!-- QUICK SEARCH / COMMAND PALETTE TRIGGER -->
-          <button class="topbar-cmd-palette-btn" onclick="openCommandPalette()" title="Komut Paleti (Ctrl + K)">
+          <button class="topbar-cmd-palette-btn" onclick="openCommandPalette()" title="Komut Paleti (Ctrl + K)" data-i18n-title="topbar_cmd_title">
             <span>🔍</span>
             <span class="cmd-shortcut-badge">Ctrl K</span>
           </button>
 
           <!-- COMPACT MULTI-CLUSTER SELECTOR -->
           <div class="topbar-cluster-select-wrap">
-            <select id="topbar-cluster-select" onchange="handleClusterSelectChange(this.value)" class="topbar-cluster-dropdown" title="Aktif Küme">
-              <option value="active">☸️ Birincil Küme (Aktif)</option>
-              <option value="__add_new__">➕ Yeni Küme...</option>
+            <select id="topbar-cluster-select" onchange="handleClusterSelectChange(this.value)" class="topbar-cluster-dropdown" title="Aktif Küme" data-i18n-title="topbar_cluster_title">
+              <option value="active" data-i18n="topbar_cluster_primary">☸️ Birincil Küme (Aktif)</option>
+              <option value="__add_new__" data-i18n="topbar_cluster_add">➕ Yeni Küme...</option>
             </select>
           </div>
 
@@ -54,8 +54,8 @@
               <span class="user-name" id="topbar-username">admin</span>
               <span class="user-role-badge" id="topbar-user-role">cluster-admin</span>
             </div>
-            <button class="topbar-logout-btn" onclick="handleLogout()" title="Oturumu Kapat">
-              🚪 <span class="logout-label">Çıkış</span>
+            <button class="topbar-logout-btn" onclick="handleLogout()" title="Oturumu Kapat" data-i18n-title="topbar_logout_title">
+              🚪 <span class="logout-label" data-i18n="topbar_logout">Çıkış</span>
             </button>
           </div>
         </div>

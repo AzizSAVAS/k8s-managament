@@ -82,12 +82,14 @@ function drawOscilloscopeFrame(ctx, w, h, latestData) {
     ctx.stroke();
   }
 
+  const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en') || (window.currentLanguage === 'en');
+
   // Draw Time-Series Channels
   const channels = [
-    { key: 'cpu', color: '#38BDF8', label: 'CPU Yükü' },
-    { key: 'mem', color: '#C084FC', label: 'RAM Kullanımı' },
-    { key: 'disk', color: '#FBBF24', label: 'Disk I/O' },
-    { key: 'net', color: '#34D399', label: 'Ağ Bps' }
+    { key: 'cpu', color: '#38BDF8', label: isEn ? 'CPU Load' : 'CPU Yükü' },
+    { key: 'mem', color: '#C084FC', label: isEn ? 'RAM Usage' : 'RAM Kullanımı' },
+    { key: 'disk', color: '#FBBF24', label: isEn ? 'Disk IOPS' : 'Disk I/O' },
+    { key: 'net', color: '#34D399', label: isEn ? 'Network' : 'Ağ Bps' }
   ];
 
   const stepX = w / (MAX_OSCILLOSCOPE_POINTS - 1);
@@ -115,10 +117,10 @@ function drawOscilloscopeFrame(ctx, w, h, latestData) {
     const statEl = document.getElementById('oscilloscope-stats-live');
     if (statEl) {
       statEl.innerHTML = `
-        <span style="color:#38BDF8;">CPU: %${latestData.cpuPercent}</span> • 
-        <span style="color:#C084FC;">RAM: %${latestData.memoryPercent}</span> • 
+        <span style="color:#38BDF8;">CPU: ${isEn ? `${latestData.cpuPercent}%` : `%${latestData.cpuPercent}`}</span> • 
+        <span style="color:#C084FC;">RAM: ${isEn ? `${latestData.memoryPercent}%` : `%${latestData.memoryPercent}`}</span> • 
         <span style="color:#FBBF24;">Disk: ${latestData.diskIops} IOPS</span> • 
-        <span style="color:#34D399;">Ağ: ${latestData.networkMbps} MB/s</span>
+        <span style="color:#34D399;">${isEn ? 'Net' : 'Ağ'}: ${latestData.networkMbps} MB/s</span>
       `;
     }
   }

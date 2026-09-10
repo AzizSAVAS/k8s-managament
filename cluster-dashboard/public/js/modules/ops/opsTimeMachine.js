@@ -22,14 +22,16 @@ function renderTimeMachine(data) {
   const container = document.getElementById('time-machine-content');
   if (!container) return;
 
+  const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en') || (window.currentLanguage === 'en');
+
   let html = `
     <!-- Top Header -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
       <div>
-        <span style="font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; font-weight:700;">Seçili Kaynak:</span>
+        <span style="font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; font-weight:700;">${isEn ? 'Selected Resource:' : 'Seçili Kaynak:'}</span>
         <span style="font-family:'JetBrains Mono',monospace; font-weight:700; color:#38BDF8; font-size:1.05rem;"> ${data.resource}</span>
       </div>
-      <button class="btn btn-secondary" onclick="fetchTimeMachineHistory()" style="padding:4px 10px; font-size:0.75rem;">🔄 Revizyonları Yenile</button>
+      <button class="btn btn-secondary" onclick="fetchTimeMachineHistory()" style="padding:4px 10px; font-size:0.75rem;">${isEn ? '🔄 Refresh Revisions' : '🔄 Revizyonları Yenile'}</button>
     </div>
 
     <!-- Revisions List & Visual Diff -->
@@ -45,21 +47,21 @@ function renderTimeMachine(data) {
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
           <div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-weight:700; font-size:1rem; color:#FFFFFF;">Revizyon #${rev.revision}</span>
-              ${isCurrent ? '<span style="background:rgba(239,68,68,0.15); color:#F87171; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:4px;">ŞU ANKİ CANLI (HATALI)</span>' : ''}
-              ${isStable ? '<span style="background:rgba(16,185,129,0.15); color:#34D399; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:4px;">KARARLI SÜRÜM</span>' : ''}
+              <span style="font-weight:700; font-size:1rem; color:#FFFFFF;">${isEn ? 'Revision #' : 'Revizyon #'}${rev.revision}</span>
+              ${isCurrent ? `<span style="background:rgba(239,68,68,0.15); color:#F87171; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:4px;">${isEn ? 'CURRENT LIVE (DEFECTIVE)' : 'ŞU ANKİ CANLI (HATALI)'}</span>` : ''}
+              ${isStable ? `<span style="background:rgba(16,185,129,0.15); color:#34D399; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:4px;">${isEn ? 'STABLE RELEASE' : 'KARARLI SÜRÜM'}</span>` : ''}
             </div>
             <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
-              🕒 ${rev.timestamp} • Yazar: <strong>${rev.author}</strong>
+              🕒 ${rev.timestamp} • ${isEn ? 'Author:' : 'Yazar:'} <strong>${rev.author}</strong>
             </div>
             <div style="font-size:0.82rem; color:#F8FAFC; margin-top:4px;">
-              📝 <strong>Değişiklik:</strong> ${rev.change}
+              📝 <strong>${isEn ? 'Change:' : 'Değişiklik:'}</strong> ${rev.change}
             </div>
           </div>
 
           ${!isCurrent ? `
             <button class="btn btn-success rbac-admin-only" onclick="rollbackToRevisionAction(${rev.revision})" style="padding:6px 14px; font-size:0.78rem;">
-              ⏪ Bu Sürüme Geri Al (Rollback)
+              ${isEn ? '⏪ Rollback to this Revision' : '⏪ Bu Sürüme Geri Al (Rollback)'}
             </button>
           ` : ''}
         </div>
