@@ -100,8 +100,7 @@
   <div class="app-layout" style="display:none;">
     <!-- LEFT WORKFLOW SIDEBAR -->
     <aside class="app-sidebar">
-      <div>
-        <div class="sidebar-header">
+      <div class="sidebar-header">
           <div class="brand-row">
             <div class="brand-icon">
               <svg viewBox="0 0 24 24">
@@ -217,6 +216,11 @@
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <div class="pipeline-title" style="padding-bottom:0;" data-i18n="sidebar_ops_title">Day-2 Yönetim Masası</div>
             <button onclick="switchGlobalView('portal')" data-i18n-title="sidebar_exit_btn" style="background:rgba(255,255,255,0.06); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; font-size:0.72rem; padding:3px 8px; border-radius:4px;"><span data-i18n="sidebar_exit_btn">🏠 Çıkış</span></button>
+          </div>
+
+          <!-- 40 MODÜL HIZLI ARAMA / FİLTRELEME -->
+          <div style="margin-bottom:10px;">
+            <input type="text" id="sidebar-ops-filter" placeholder="🔍 40 Modülde Hızlı Ara..." oninput="filterSidebarOpsModules(this.value)" style="width:100%; padding:6px 10px; font-size:0.75rem; background:rgba(15,23,42,0.6); border:1px solid var(--border-color); color:#fff; border-radius:var(--radius-sm); outline:none; transition:border-color 0.2s ease;">
           </div>
 
           <div class="ops-nav-item active" id="ops-nav-nodes" onclick="switchOpsView('nodes')">
@@ -382,7 +386,6 @@
             <span class="ops-nav-label">C-Level SLA Raporu</span>
           </div>
         </nav>
-      </div>
 
 
       <!-- SIDEBAR FOOTER: COPYRIGHT & APP VERSION -->

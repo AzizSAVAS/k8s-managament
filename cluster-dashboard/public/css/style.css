@@ -113,6 +113,7 @@ body {
 .app-sidebar {
   width: var(--sidebar-w);
   height: 100vh;
+  max-height: 100vh;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border-color);
   display: flex;
@@ -121,11 +122,13 @@ body {
   flex-shrink: 0;
   position: relative;
   z-index: 20;
+  overflow: hidden;
 }
 
 .sidebar-header {
   padding: 20px 22px;
   border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
 }
 
 .brand-row {
@@ -173,10 +176,31 @@ body {
 .sidebar-pipeline {
   padding: 18px 14px;
   flex: 1;
+  min-height: 0;
+  max-height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+/* Custom Scrollbar for Sidebar Pipeline */
+.sidebar-pipeline::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-pipeline::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+.sidebar-pipeline::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
+}
+
+.sidebar-pipeline::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.6);
 }
 
 .pipeline-title {

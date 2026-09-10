@@ -984,6 +984,15 @@ function switchOpsView(viewName) {
   }
 }
 
+function filterSidebarOpsModules(query) {
+  const q = (query || '').toLowerCase().trim();
+  const navItems = document.querySelectorAll('#sidebar-ops-nav .ops-nav-item');
+  navItems.forEach(item => {
+    const text = item.innerText.toLowerCase();
+    item.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
+  });
+}
+
 // ==============================================================================
 // 14. HARİCİ NFS DEPOLAMA (DYNAMIC RWX PROVISIONER)
 // ==============================================================================
