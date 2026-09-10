@@ -257,6 +257,12 @@
         </div>
 
         <div class="topbar-actions">
+          <!-- QUICK SEARCH / COMMAND PALETTE TRIGGER -->
+          <button class="topbar-cmd-palette-btn" onclick="openCommandPalette()" title="Komut Paleti (Ctrl + K)">
+            <span>🔍</span>
+            <span class="cmd-shortcut-badge">Ctrl K</span>
+          </button>
+
           <!-- COMPACT MULTI-CLUSTER SELECTOR -->
           <div class="topbar-cluster-select-wrap">
             <select id="topbar-cluster-select" onchange="handleClusterSelectChange(this.value)" class="topbar-cluster-dropdown" title="Aktif Küme">
@@ -980,6 +986,7 @@
           </div>
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-secondary btn-sm" onclick="generateExecutiveReport()" title="Yönetici Denetim Raporu Al (PDF/Yazdır)">📑 Denetim Raporu</button>
           <button class="btn btn-secondary btn-sm" onclick="fetchClusterLiveStatus()" data-i18n="ops_refresh_btn">🔄 Canlı Durumu Yenile</button>
           <button class="btn btn-primary btn-sm" onclick="downloadKubeconfig()" data-i18n="ops_download_kubeconfig">📥 Kubeconfig İndir (.yaml)</button>
         </div>
@@ -1753,6 +1760,7 @@
           <button class="preset-pill" onclick="setConsoleCommand('kubectl get svc -A')">kubectl get svc -A</button>
           <button class="preset-pill" onclick="setConsoleCommand('crictl ps')">crictl ps</button>
           <button class="preset-pill" onclick="setConsoleCommand('kubectl top nodes')">kubectl top nodes</button>
+          <button class="preset-pill" onclick="launchPodExec()" style="border-color:rgba(56,189,248,0.4); color:#38BDF8;">⚡ Pod Exec Shell</button>
         </div>
 
         <div class="console-input-row" style="margin-bottom:14px; display:flex; gap:10px;">
@@ -2709,12 +2717,32 @@
     </div>
   </div>
 
+  <!-- COMMAND PALETTE MODAL (Ctrl + K) -->
+  <div id="command-palette-modal" class="command-palette-overlay" style="display:none;" onclick="if(event.target===this) closeCommandPalette()">
+    <div class="command-palette-box">
+      <div class="command-palette-input-wrap">
+        <span class="command-palette-search-icon">🔍</span>
+        <input type="text" id="command-palette-input" class="command-palette-input" placeholder="Bir komut, modül veya eylem arayın... (örn: nodes, cve, etcd, copilot, rapor)" oninput="handleCommandSearch(this.value)" onkeydown="handleCommandKeydown(event)" autocomplete="off">
+        <span class="command-palette-esc-badge" onclick="closeCommandPalette()">ESC</span>
+      </div>
+      <div class="command-palette-results" id="command-palette-results">
+        <!-- Injected by commandPalette.js -->
+      </div>
+      <div class="command-palette-footer">
+        <div class="cmd-shortcut-hint"><span>↑</span><span>↓</span> gezin</div>
+        <div class="cmd-shortcut-hint"><span>↵</span> çalıştır</div>
+        <div class="cmd-shortcut-hint"><span>ESC</span> kapat</div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODULAR JAVASCRIPT SYSTEM -->
-  <script src="js/modules/i18n.js?v=20260910_65"></script>
-  <script src="js/app.js?v=20260910_65"></script>
-  <script src="js/modules/wizard.js?v=20260910_65"></script>
-  <script src="js/modules/operations.js?v=20260910_65"></script>
-  <script src="js/modules/aiCopilot.js?v=20260910_65"></script>
-  <script src="js/modules/multiCluster.js?v=20260910_65"></script>
+  <script src="js/modules/i18n.js?v=20260910_70"></script>
+  <script src="js/app.js?v=20260910_70"></script>
+  <script src="js/modules/wizard.js?v=20260910_70"></script>
+  <script src="js/modules/operations.js?v=20260910_70"></script>
+  <script src="js/modules/aiCopilot.js?v=20260910_70"></script>
+  <script src="js/modules/multiCluster.js?v=20260910_70"></script>
+  <script src="js/modules/commandPalette.js?v=20260910_70"></script>
 </body>
 </html>
