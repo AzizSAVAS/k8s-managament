@@ -964,7 +964,7 @@
           <div>
             <div style="display:flex; align-items:center; gap:8px;">
               <span style="font-size:1.05rem; font-weight:700; color:#fff;" id="ops-cluster-name">Enterprise RKE2 Cluster</span>
-              <span class="preflight-status-chip success" id="ops-cluster-status-badge">● Canlı & Aktif</span>
+              <span class="preflight-status-chip success" id="ops-cluster-status-badge" data-i18n="ops_live_badge">● Canlı & Aktif</span>
             </div>
             <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
               Master API: <strong style="color:#93C5FD; font-family:'JetBrains Mono';" id="ops-header-master-ip">10.0.10.10:6443</strong> 
@@ -973,19 +973,19 @@
           </div>
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn btn-secondary btn-sm" onclick="fetchClusterLiveStatus()">🔄 Canlı Durumu Yenile</button>
-          <button class="btn btn-primary btn-sm" onclick="downloadKubeconfig()">📥 Kubeconfig İndir (.yaml)</button>
+          <button class="btn btn-secondary btn-sm" onclick="fetchClusterLiveStatus()" data-i18n="ops_refresh_btn">🔄 Canlı Durumu Yenile</button>
+          <button class="btn btn-primary btn-sm" onclick="downloadKubeconfig()" data-i18n="ops_download_kubeconfig">📥 Kubeconfig İndir (.yaml)</button>
         </div>
       </div>
 
       <!-- KUBECONFIG HIZLI ERİŞİM BANNERI -->
       <div class="quick-access-banner" style="margin-bottom: 22px;">
         <div class="quick-access-info">
-          <div style="font-weight:700; color:#fff; margin-bottom:4px; font-size:0.92rem;">💻 Lens, k9s & Terminal Bağlantı Komutu</div>
-          <div style="font-size:0.78rem; color:var(--text-muted);">İndirdiğiniz kubeconfig dosyasını terminalinizde doğrudan kullanmak için:</div>
+          <div style="font-weight:700; color:#fff; margin-bottom:4px; font-size:0.92rem;" data-i18n="ops_kube_cmd_title">💻 Lens, k9s & Terminal Bağlantı Komutu</div>
+          <div style="font-size:0.78rem; color:var(--text-muted);" data-i18n="ops_kube_cmd_desc">İndirdiğiniz kubeconfig dosyasını terminalinizde doğrudan kullanmak için:</div>
           <div class="code-snippet-row" style="margin-top:6px;">
             <code id="kubeconfig-export-cmd">export KUBECONFIG=~/Downloads/rke2-cluster.yaml && kubectl get nodes -o wide</code>
-            <button class="copy-pill-btn" onclick="copyKubeconfigCmd()">📋 Kopyala</button>
+            <button class="copy-pill-btn" onclick="copyKubeconfigCmd()" data-i18n="ops_copy_btn">📋 Kopyala</button>
           </div>
         </div>
       </div>
@@ -2576,9 +2576,9 @@
   </div>
 
   <!-- MODULAR JAVASCRIPT SYSTEM -->
-  <script src="js/modules/i18n.js?v=20260910_40"></script>
-  <script src="js/app.js?v=20260910_25"></script>
-  <script src="js/modules/wizard.js?v=20260910_25"></script>
-  <script src="js/modules/operations.js?v=20260910_25"></script>
+  <script src="js/modules/i18n.js?v=20260910_55"></script>
+  <script src="js/app.js?v=20260910_55"></script>
+  <script src="js/modules/wizard.js?v=20260910_55"></script>
+  <script src="js/modules/operations.js?v=20260910_55"></script>
 </body>
 </html>

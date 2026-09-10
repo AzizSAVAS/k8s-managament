@@ -35,72 +35,74 @@ function selectOperationMode(mode) {
   const navStep4 = document.querySelector('#step-nav-4 .step-label, #step-nav-4 .h-step-title');
   const navStep5 = document.querySelector('#step-nav-5 .step-label, #step-nav-5 .h-step-title');
 
+  const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en');
+
   if (mode === 'scale') {
-    if (title) title.innerText = 'Mevcut Kümeye Düğüm Ekleme (Scale-Out)';
-    if (desc) desc.innerText = 'Mevcut kümenizin API/Join adresini, Join Token\'ını ve eklemek istediğiniz yeni Master/Worker adetlerini belirleyin.';
+    if (title) title.innerText = isEn ? 'Add Nodes to Existing Cluster (Scale-Out)' : 'Mevcut Kümeye Düğüm Ekleme (Scale-Out)';
+    if (desc) desc.innerText = isEn ? 'Specify existing API/Join address, Join Token, and the count of new Master/Worker nodes to add.' : 'Mevcut kümenizin API/Join adresini, Join Token\'ını ve eklemek istediğiniz yeni Master/Worker adetlerini belirleyin.';
     if (scaleBanner) scaleBanner.style.display = 'block';
 
-    if (lblMaster) lblMaster.innerText = 'Eklenecek Master Sayısı';
-    if (hintMaster) hintMaster.innerText = 'Yalnızca Worker ekleyecekseniz 0 yazabilirsiniz';
+    if (lblMaster) lblMaster.innerText = isEn ? 'Master Nodes to Add' : 'Eklenecek Master Sayısı';
+    if (hintMaster) hintMaster.innerText = isEn ? 'Enter 0 if only adding Worker nodes' : 'Yalnızca Worker ekleyecekseniz 0 yazabilirsiniz';
     if (inputMaster) inputMaster.value = '0';
 
-    if (lblWorker) lblWorker.innerText = 'Eklenecek Worker Sayısı';
-    if (hintWorker) hintWorker.innerText = 'Kümeye dahil edilecek yeni işçi düğümleri';
+    if (lblWorker) lblWorker.innerText = isEn ? 'Worker Nodes to Add' : 'Eklenecek Worker Sayısı';
+    if (hintWorker) hintWorker.innerText = isEn ? 'New worker nodes to join the cluster' : 'Kümeye dahil edilecek yeni işçi düğümleri';
     if (inputWorker) inputWorker.value = '2';
 
     if (inputVmid) inputVmid.value = '110';
     if (rowScaleIndexing) rowScaleIndexing.style.display = 'grid';
 
-    if (lblStartHost) lblStartHost.innerText = 'Yeni Düğümler Başlangıç Host IP';
-    if (hintStartHost) hintStartHost.innerText = 'Mevcut IP\'lerle çakışmamalı (Örn: 20 -> 10.0.10.20)';
+    if (lblStartHost) lblStartHost.innerText = isEn ? 'New Nodes Start Host IP' : 'Yeni Düğümler Başlangıç Host IP';
+    if (hintStartHost) hintStartHost.innerText = isEn ? 'Must not conflict with existing IPs (e.g. 20 -> 10.0.10.20)' : 'Mevcut IP\'lerle çakışmamalı (Örn: 20 -> 10.0.10.20)';
     if (inputStartHost) inputStartHost.value = '20';
 
-    if (lblVip) lblVip.innerText = 'Mevcut Küme API / Join Adresi (VIP veya Master IP)';
+    if (lblVip) lblVip.innerText = isEn ? 'Existing Cluster API / Join Address (VIP or Master IP)' : 'Mevcut Küme API / Join Adresi (VIP veya Master IP)';
     if (hintVip) hintVip.style.display = 'block';
-    if (inputVip) inputVip.placeholder = '10.0.10.100 veya İlk Master IP';
+    if (inputVip) inputVip.placeholder = isEn ? '10.0.10.100 or First Master IP' : '10.0.10.100 veya İlk Master IP';
 
-    if (lblToken) lblToken.innerText = 'Mevcut Küme Join Token (Zorunlu)';
-    if (inputToken) inputToken.placeholder = 'Mevcut master /var/lib/rancher/rke2/server/node-token içeriği';
+    if (lblToken) lblToken.innerText = isEn ? 'Existing Cluster Join Token (Required)' : 'Mevcut Küme Join Token (Zorunlu)';
+    if (inputToken) inputToken.placeholder = isEn ? 'Contents of /var/lib/rancher/rke2/server/node-token' : 'Mevcut master /var/lib/rancher/rke2/server/node-token içeriği';
 
     if (rowCniDomain) rowCniDomain.style.display = 'none';
 
-    if (navStep3) navStep3.innerText = 'Düğüm Ayarları';
-    if (navStep4) navStep4.innerText = 'Ekleme Planı';
-    if (navStep5) navStep5.innerText = 'Düğüm Kurulumu';
-    if (btnDeploy) btnDeploy.innerText = '🚀 Düğümleri Ekle & Kümeye Kat (Join)';
+    if (navStep3) navStep3.innerText = isEn ? 'Node Sizing' : 'Düğüm Ayarları';
+    if (navStep4) navStep4.innerText = isEn ? 'Scale Plan' : 'Ekleme Planı';
+    if (navStep5) navStep5.innerText = isEn ? 'Node Rollout' : 'Düğüm Kurulumu';
+    if (btnDeploy) btnDeploy.innerText = isEn ? '🚀 Deploy & Join Nodes to Cluster' : '🚀 Düğümleri Ekle & Kümeye Kat (Join)';
   } else {
-    if (title) title.innerText = 'Kubernetes Mimarisi & Boyutlandırma';
-    if (desc) desc.innerText = 'Master ve Worker sayılarını, IP bloğunuzu ve yüksek erişilebilirlik ayarlarını belirleyin.';
+    if (title) title.innerText = isEn ? 'Kubernetes Architecture & Sizing' : 'Kubernetes Mimarisi & Boyutlandırma';
+    if (desc) desc.innerText = isEn ? 'Define Master and Worker counts, IP subnet, and high availability settings.' : 'Master ve Worker sayılarını, IP bloğunuzu ve yüksek erişilebilirlik ayarlarını belirleyin.';
     if (scaleBanner) scaleBanner.style.display = 'none';
 
-    if (lblMaster) lblMaster.innerText = 'Master (Control-Plane) Sayısı';
-    if (hintMaster) hintMaster.innerText = 'HA etcd için 3 önerilir';
+    if (lblMaster) lblMaster.innerText = isEn ? 'Master (Control-Plane) Count' : 'Master (Control-Plane) Sayısı';
+    if (hintMaster) hintMaster.innerText = isEn ? '3 recommended for HA etcd quorum' : 'HA etcd için 3 önerilir';
     if (inputMaster) inputMaster.value = '3';
 
-    if (lblWorker) lblWorker.innerText = 'Worker Sayısı';
-    if (hintWorker) hintWorker.innerText = 'Uygulama yüklerini taşır';
+    if (lblWorker) lblWorker.innerText = isEn ? 'Worker Count' : 'Worker Sayısı';
+    if (hintWorker) hintWorker.innerText = isEn ? 'Carries application workloads' : 'Uygulama yüklerini taşır';
     if (inputWorker) inputWorker.value = '5';
 
     if (inputVmid) inputVmid.value = '100';
     if (rowScaleIndexing) rowScaleIndexing.style.display = 'none';
 
-    if (lblStartHost) lblStartHost.innerText = 'Başlangıç Host No';
-    if (hintStartHost) hintStartHost.innerText = 'İlk IP: 10.0.10.10';
+    if (lblStartHost) lblStartHost.innerText = isEn ? 'Start Host Number' : 'Başlangıç Host No';
+    if (hintStartHost) hintStartHost.innerText = isEn ? 'First IP: 10.0.10.10' : 'İlk IP: 10.0.10.10';
     if (inputStartHost) inputStartHost.value = '10';
 
-    if (lblVip) lblVip.innerText = 'FortiGate VIP / Load Balancer IP';
+    if (lblVip) lblVip.innerText = isEn ? 'FortiGate VIP / Load Balancer IP' : 'FortiGate VIP / Load Balancer IP';
     if (hintVip) hintVip.style.display = 'none';
     if (inputVip) inputVip.placeholder = '10.0.10.100';
 
-    if (lblToken) lblToken.innerText = 'Cluster Secret Token';
-    if (inputToken) inputToken.placeholder = 'Boş bırakılırsa otomatik üretilir';
+    if (lblToken) lblToken.innerText = isEn ? 'Cluster Secret Token' : 'Cluster Secret Token';
+    if (inputToken) inputToken.placeholder = isEn ? 'Auto-generated if left blank' : 'Boş bırakılırsa otomatik üretilir';
 
     if (rowCniDomain) rowCniDomain.style.display = 'grid';
 
-    if (navStep3) navStep3.innerText = 'Küme Ayarları';
-    if (navStep4) navStep4.innerText = 'Dağıtım Planı';
-    if (navStep5) navStep5.innerText = 'Canlı Kurulum';
-    if (btnDeploy) btnDeploy.innerText = '🚀 Kurulumu Başlat (Deploy Cluster)';
+    if (navStep3) navStep3.innerText = isEn ? 'Cluster Sizing' : 'Küme Ayarları';
+    if (navStep4) navStep4.innerText = isEn ? 'Topology Plan' : 'Dağıtım Planı';
+    if (navStep5) navStep5.innerText = isEn ? 'Live Rollout' : 'Canlı Kurulum';
+    if (btnDeploy) btnDeploy.innerText = isEn ? '🚀 Deploy Cluster' : '🚀 Kurulumu Başlat (Deploy Cluster)';
   }
 
   syncStepDisplay('master');

@@ -357,6 +357,8 @@ function renderClusterLiveStatus(data) {
     cniStatusEl.innerText = data.cniType;
   }
 
+  const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en');
+
   // Düğüm Tablosunu Doldur
   if (tbody) {
     tbody.innerHTML = '';
@@ -383,13 +385,13 @@ function renderClusterLiveStatus(data) {
           <td style="font-size:0.78rem; color:var(--text-muted);">${n.osImage || 'Ubuntu'}</td>
           <td>
             <div style="display:flex; gap:6px;">
-              <button class="btn btn-secondary btn-sm" onclick="executeNodeAction('${n.name}', 'cordon')" title="Yeni pod girişini engeller" style="padding:2px 8px; font-size:0.72rem;">
+              <button class="btn btn-secondary btn-sm" onclick="executeNodeAction('${n.name}', 'cordon')" title="${isEn ? 'Prevents scheduling new pods' : 'Yeni pod girişini engeller'}" style="padding:2px 8px; font-size:0.72rem;">
                 Cordon
               </button>
-              <button class="btn btn-secondary btn-sm" onclick="executeNodeAction('${n.name}', 'uncordon')" title="Düğümü tekrar aktif eder" style="padding:2px 8px; font-size:0.72rem;">
+              <button class="btn btn-secondary btn-sm" onclick="executeNodeAction('${n.name}', 'uncordon')" title="${isEn ? 'Re-enables scheduling on node' : 'Düğümü tekrar aktif eder'}" style="padding:2px 8px; font-size:0.72rem;">
                 Uncordon
               </button>
-              <button class="btn btn-secondary btn-sm" onclick="executeNodeAction('${n.name}', 'drain')" title="Podları diğer düğümlere tahliye eder" style="padding:2px 8px; font-size:0.72rem; color:var(--warning-text);">
+              <button class="btn btn-secondary btn-sm" onclick="executeNodeAction('${n.name}', 'drain')" title="${isEn ? 'Safely evicts pods to other nodes' : 'Podları diğer düğümlere tahliye eder'}" style="padding:2px 8px; font-size:0.72rem; color:var(--warning-text);">
                 Drain
               </button>
             </div>
@@ -399,19 +401,19 @@ function renderClusterLiveStatus(data) {
       });
     } else {
       // Düğümler boş veya henüz başlamakta ise açıklayıcı durum göster
-      let errorMsg = data.rawError || 'Kümede listelenebilir aktif düğüm tespit edilemedi.';
-      let tipText = 'RKE2 servisinin master düğümde çalıştığından emin olun.';
+      let errorMsg = data.rawError || (isEn ? 'No active nodes detected in the cluster yet.' : 'Kümede listelenebilir aktif düğüm tespit edilemedi.');
+      let tipText = isEn ? 'Ensure the rke2-server service is running on the master node.' : 'RKE2 servisinin master düğümde çalıştığından emin olun.';
       if (data.serviceStatus && data.serviceStatus !== 'active') {
-        tipText = `rke2-server servisi şu anda '${data.serviceStatus}' durumunda. Başlaması birkaç dakika sürebilir.`;
+        tipText = isEn ? `rke2-server is currently in '${data.serviceStatus}' state. Initialization may take a few minutes.` : `rke2-server servisi şu anda '${data.serviceStatus}' durumunda. Başlaması birkaç dakika sürebilir.`;
       } else if (data.rawError && data.rawError.includes('connection refused')) {
-        tipText = 'API Server (6443) henüz başlamakta veya hazır değil. Lütfen biraz bekleyip yenileyin.';
+        tipText = isEn ? 'API Server (6443) is initializing or not ready yet. Please wait a moment and refresh.' : 'API Server (6443) henüz başlamakta veya hazır değil. Lütfen biraz bekleyip yenileyin.';
       }
 
       tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:32px 16px; background:rgba(245,158,11,0.04); border-radius:var(--radius-sm);">
-        <div style="font-size:1.1rem; font-weight:700; color:#F59E0B; margin-bottom:6px;">⚠️ Düğüm Bilgisi Alınamadı</div>
+        <div style="font-size:1.1rem; font-weight:700; color:#F59E0B; margin-bottom:6px;">${isEn ? '⚠️ Node Telemetry Unavailable' : '⚠️ Düğüm Bilgisi Alınamadı'}</div>
         <div style="font-size:0.84rem; color:#E2E8F0; margin-bottom:4px; font-family:'JetBrains Mono';">${errorMsg}</div>
         <div style="font-size:0.78rem; color:var(--text-muted); max-width:600px; margin:0 auto 14px;">${tipText}</div>
-        <button class="btn btn-primary btn-sm" onclick="fetchClusterLiveStatus()" style="padding:6px 14px;">🔄 Canlı Durumu Yeniden Tara</button>
+        <button class="btn btn-primary btn-sm" onclick="fetchClusterLiveStatus()" style="padding:6px 14px;">${isEn ? '🔄 Rescan Cluster Live Status' : '🔄 Canlı Durumu Yeniden Tara'}</button>
       </td></tr>`;
     }
   }
@@ -433,7 +435,7 @@ function renderClusterLiveStatus(data) {
         podsContainer.appendChild(chip);
       });
     } else {
-      podsContainer.innerHTML = '<div style="font-size:0.78rem; color:var(--text-dim); padding:8px;">Pod bilgisi henüz alınamadı veya liste boş.</div>';
+      podsContainer.innerHTML = `<div style="font-size:0.78rem; color:var(--text-dim); padding:8px;">${isEn ? 'Pod telemetry not received yet or cluster list is empty.' : 'Pod bilgisi henüz alınamadı veya liste boş.'}</div>`;
     }
   }
 }
