@@ -30,6 +30,12 @@ const COMMAND_PALETTE_ACTIONS = [
   { id: 'nav-doctor', title: 'AI Doctor Akıllı Teşhis & Onarım', icon: '🤖', category: 'Yapay Zeka', action: () => switchOpsView('doctor') },
   { id: 'nav-trivy', title: 'Trivy Konteyner CVE Zafiyet Taraması', icon: '🛡️', category: 'Güvenlik', action: () => switchOpsView('trivy') },
   { id: 'nav-cronjobs', title: 'CronJob & Zamanlanmış Görevler', icon: '⚡', category: 'İş Yükleri', action: () => switchOpsView('cronjobs') },
+  { id: 'nav-topology', title: 'Görsel Ağ Topolojisi & Canlı Akış Haritası', icon: '🕸️', category: 'Ağ & eBPF', action: () => switchOpsView('topology') },
+  { id: 'nav-helm', title: 'Özel Helm Kataloğu & Chart Yöneticisi', icon: '📦', category: 'Operasyon', action: () => switchOpsView('helm') },
+  { id: 'nav-chaos', title: 'Kaos Mühendisliği & HA Dayanıklılık Testi', icon: '🧪', category: 'Dayanıklılık', action: () => switchOpsView('chaos') },
+  { id: 'nav-audit', title: 'Kurumsal Denetim Defteri (Audit Trail)', icon: '📜', category: 'Güvenlik', action: () => switchOpsView('audit') },
+  { id: 'nav-webhooks', title: 'Akıllı Alarm Kanalları (Slack / Teams / Telegram)', icon: '📢', category: 'İzleme', action: () => switchOpsView('webhooks') },
+  { id: 'nav-registry', title: 'Harbor & Özel Docker Registry (imagePullSecrets)', icon: '🐳', category: 'Güvenlik', action: () => switchOpsView('registry') },
 
   // Direct Actions
   { id: 'act-copilot', title: 'Shams AI K8s Copilot Asistanını Aç', icon: '🤖', category: 'Yapay Zeka', action: () => toggleAiCopilot() },

@@ -3642,5 +3642,118 @@ table.dist-table tr:hover td {
   color: #fff;
 }
 
+/* ==============================================================================
+   6 ADVANCED ENTERPRISE SUITE MODULES STYLING
+   ============================================================================== */
+.topology-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.topology-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.topology-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.topology-node-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.topology-node-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-glow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.node-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.node-icon {
+  font-size: 1.3rem;
+}
+
+.node-type-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.node-card-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.node-card-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.node-card-traffic {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  color: var(--primary-glow);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.traffic-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  animation: pulseTraffic 1.5s infinite;
+}
+
+@keyframes pulseTraffic {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+.topology-links-table-wrap {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.chaos-report-box {
+  border-left: 4px solid #10B981;
+  padding-left: 14px;
+}
+
+
 
 

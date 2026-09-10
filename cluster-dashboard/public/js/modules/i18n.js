@@ -63,6 +63,12 @@ const translations = {
     "ops_nav_doctor": "Akıllı Teşhis & Onarım",
     "ops_nav_trivy": "İmaj Güvenliği (CVE)",
     "ops_nav_cronjobs": "CronJob & Zamanlanmış",
+    "ops_nav_topology": "Canlı Ağ Topolojisi",
+    "ops_nav_helm": "Özel Helm Kataloğu",
+    "ops_nav_chaos": "Kaos & HA Simülatörü",
+    "ops_nav_audit": "Denetim Defteri (Audit)",
+    "ops_nav_webhooks": "Slack / Teams Alarmları",
+    "ops_nav_registry": "Özel Registry (Harbor)",
 
     // Sidebar: Footer
     "footer_copy": "© 2026 Shamssoftware<br>Tüm hakları saklıdır.",
@@ -198,6 +204,12 @@ const translations = {
     "ops_nav_doctor": "AI Diagnostics & Fix",
     "ops_nav_trivy": "Image Security (CVE)",
     "ops_nav_cronjobs": "CronJobs & Schedules",
+    "ops_nav_topology": "Live Topology Map",
+    "ops_nav_helm": "Custom Helm Catalog",
+    "ops_nav_chaos": "Chaos & HA Simulator",
+    "ops_nav_audit": "Audit Trail & Logs",
+    "ops_nav_webhooks": "Slack / Teams Alerts",
+    "ops_nav_registry": "Private Registry (Harbor)",
 
     // Sidebar: Footer
     "footer_copy": "© 2026 Shamssoftware<br>All rights reserved.",

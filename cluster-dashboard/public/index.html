@@ -307,6 +307,30 @@
             <span class="ops-nav-icon">⚡</span>
             <span class="ops-nav-label" data-i18n="ops_nav_cronjobs">CronJob & Zamanlanmış</span>
           </div>
+          <div class="ops-nav-item" id="ops-nav-topology" onclick="switchOpsView('topology')">
+            <span class="ops-nav-icon">🕸️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_topology">Canlı Ağ Topolojisi</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-helm" onclick="switchOpsView('helm')">
+            <span class="ops-nav-icon">📦</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_helm">Özel Helm Kataloğu</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-chaos" onclick="switchOpsView('chaos')">
+            <span class="ops-nav-icon">🧪</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_chaos">Kaos & HA Simülatörü</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-audit" onclick="switchOpsView('audit')">
+            <span class="ops-nav-icon">📜</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_audit">Denetim Defteri (Audit)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-webhooks" onclick="switchOpsView('webhooks')">
+            <span class="ops-nav-icon">📢</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_webhooks">Slack / Teams Alarmları</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-registry" onclick="switchOpsView('registry')">
+            <span class="ops-nav-icon">🐳</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_registry">Özel Registry (Harbor)</span>
+          </div>
         </nav>
       </div>
 
@@ -2633,6 +2657,244 @@
             </tbody>
           </table>
         </div>
+      <!-- PANE 23: CANLI AĞ TOPOLOJİSİ & TRAFİK HARİTASI -->
+      <div id="ops-pane-topology" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Görsel Ağ Topolojisi & Canlı Trafik Akış Haritası</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Ingress, API Gateway, mikroservis podları, veritabanları ve eBPF filtreleme düğümleri arasındaki canlı veri akışını görselleştirin.
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fetchTopologyGraph()">
+            🔄 Topolojiyi Yenile
+          </button>
+        </div>
+        <div id="topology-canvas-container" class="config-section-card" style="padding:20px; min-height:420px;">
+          <!-- Injected by enterpriseSuite.js -->
+        </div>
+      </div>
+
+      <!-- PANE 24: ÖZEL HELM REPO & CHART YÖNETİCİSİ -->
+      <div id="ops-pane-helm" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Özel Helm Deposu & Chart Yöneticisi (Helm v3)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Kurumsal Harbor, Bitnami veya dahili Helm repolarınızı yönetin; values.yaml parametrelerini özelleştirerek tek tıkla kümeye dağıtın.
+            </p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="fetchHelmCatalog()">
+            🔄 Repoları Yenile
+          </button>
+        </div>
+        <div class="addons-grid" id="helm-catalog-grid">
+          <!-- Injected by enterpriseSuite.js -->
+        </div>
+      </div>
+
+      <!-- PANE 25: KAOS MÜHENDİSLİĞİ & HA DAYANIKLILIK TESTİ -->
+      <div id="ops-pane-chaos" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Kaos Mühendisliği & HA Dayanıklılık Test Simülatörü</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Üretim öncesi kümenin yüksek erişilebilirlik (HA) ve otomatik toparlanma (Self-Healing) mekanizmalarını kontrollü felaket senaryolarıyla test edin.
+          </p>
+        </div>
+
+        <div class="addons-grid" style="margin-bottom:24px;">
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(239,68,68,0.15); color:#EF4444;">💥</div>
+              <div>
+                <div class="addon-title">Pod Kill Simülasyonu</div>
+                <div class="addon-category">SELF-HEALING TESTİ</div>
+              </div>
+            </div>
+            <p class="addon-desc">Rastgele bir aktif worker podunu ani olarak sonlandırır; ReplicaSet'in yeni podu 2 saniye içinde ayağa kaldırma refleksini ölçer.</p>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" onclick="runChaosTest('pod_kill')">⚡ Testi Başlat</button>
+            </div>
+          </div>
+
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(245,158,11,0.15); color:#F59E0B;">🗄️</div>
+              <div>
+                <div class="addon-title">etcd Leader Failover</div>
+                <div class="addon-category">RAFT QUORUM DAYANIKLILIĞI</div>
+              </div>
+            </div>
+            <p class="addon-desc">Aktif etcd liderini simüle edilmiş ağ izolasyonuna alır; kalan 2 master düğümün yeni lideri veri kaybı olmadan seçmesini doğrular.</p>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" onclick="runChaosTest('etcd_failover')">⚡ Testi Başlat</button>
+            </div>
+          </div>
+
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(56,189,248,0.15); color:#38BDF8;">⚡</div>
+              <div>
+                <div class="addon-title">eBPF Gecikme Enjeksiyonu</div>
+                <div class="addon-category">AĞ & CIRICUIT BREAKER</div>
+              </div>
+            </div>
+            <p class="addon-desc">Cilium eBPF ağ katmanına mikroservisler arası yapay 150ms gecikme enjekte eder ve L7 retry politikalarını test eder.</p>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" onclick="runChaosTest('latency_injection')">⚡ Testi Başlat</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="chaos-results-card" style="display:none; background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px;">
+          <div id="chaos-results-body"></div>
+        </div>
+      </div>
+
+      <!-- PANE 26: KURUMSAL DENETİM DEFTERİ (AUDIT TRAIL) -->
+      <div id="ops-pane-audit" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Kurumsal Denetim Defteri (Audit Trail & Değişiklik Günlüğü)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Kim, ne zaman, hangi IP adresinden hangi operasyonu (snapshot, scale, login, deploy) gerçekleştirdiğini zaman damgasıyla listeleyin.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary btn-sm" onclick="fetchAuditTrail()">🔄 Yenile</button>
+            <button class="btn btn-primary btn-sm" onclick="exportAuditTrailJson()">📥 JSON Dışa Aktar</button>
+          </div>
+        </div>
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Zaman Damgası</th>
+                <th>Kullanıcı (User)</th>
+                <th>Eylem (Action)</th>
+                <th>Hedef Kaynak</th>
+                <th>Sonuç</th>
+                <th>Operasyon Detayı</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PANE 27: AKILLI BİLDİRİM & WEBHOOK KANALLARI -->
+      <div id="ops-pane-webhooks" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Akıllı Alarm & Bildirim Kanalları (Slack / Teams / Telegram)</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Kümede pod çökmesi, bellek aşımı veya CIS güvenlik riski tespit edildiğinde kurumsal iletişim kanallarınıza anlık kart formatında bildirim gönderin.
+          </p>
+        </div>
+
+        <div class="addons-grid">
+          <!-- SLACK -->
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(236,72,153,0.15); color:#F472B6;">💬</div>
+              <div>
+                <div class="addon-title">Slack Webhook Bildirimleri</div>
+                <div class="addon-category">SLACK INCOMING WEBHOOK</div>
+              </div>
+            </div>
+            <div style="margin:12px 0;">
+              <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Slack Webhook URL</label>
+              <input type="text" id="webhook-url-slack" class="login-input" placeholder="https://hooks.slack.com/services/..." value="https://hooks.slack.com/services/T000000/B000000/XXXX">
+            </div>
+            <div id="webhook-status-slack" style="font-size:0.75rem; margin-bottom:10px; display:none;"></div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" onclick="testWebhookNotification('slack')">🚨 Test Bildirimi Gönder</button>
+            </div>
+          </div>
+
+          <!-- MICROSOFT TEAMS -->
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(59,130,246,0.15); color:#60A5FA;">🟦</div>
+              <div>
+                <div class="addon-title">Microsoft Teams Connector</div>
+                <div class="addon-category">TEAMS WORKSPACE CHANNEL</div>
+              </div>
+            </div>
+            <div style="margin:12px 0;">
+              <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Teams Webhook URL</label>
+              <input type="text" id="webhook-url-teams" class="login-input" placeholder="https://outlook.office.com/webhook/..." value="https://outlook.office.com/webhook/teams-k8s-alerts">
+            </div>
+            <div id="webhook-status-teams" style="font-size:0.75rem; margin-bottom:10px; display:none;"></div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" onclick="testWebhookNotification('teams')">🚨 Test Bildirimi Gönder</button>
+            </div>
+          </div>
+
+          <!-- TELEGRAM -->
+          <div class="addon-card">
+            <div class="addon-card-header">
+              <div class="addon-icon-box" style="background:rgba(6,182,212,0.15); color:#22D3EE;">✈️</div>
+              <div>
+                <div class="addon-title">Telegram Bot & Kanalı</div>
+                <div class="addon-category">TELEGRAM BOT API</div>
+              </div>
+            </div>
+            <div style="margin:12px 0;">
+              <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Telegram Webhook / Chat ID</label>
+              <input type="text" id="webhook-url-telegram" class="login-input" placeholder="https://api.telegram.org/bot<TOKEN>/sendMessage" value="https://api.telegram.org/bot-token-test">
+            </div>
+            <div id="webhook-status-telegram" style="font-size:0.75rem; margin-bottom:10px; display:none;"></div>
+            <div class="addon-footer">
+              <button class="btn btn-primary btn-sm" onclick="testWebhookNotification('telegram')">🚨 Test Bildirimi Gönder</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 28: HARBOR & PRIVATE REGISTRY KİMLİK YÖNETİCİSİ -->
+      <div id="ops-pane-registry" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Harbor & Özel Docker Registry Kimlik Yöneticisi (imagePullSecrets)</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Kurum içi özel Docker/Harbor sunucunuz için tüm namespace'lere tek tıkla otomatik <code>imagePullSecrets</code> üretin ve bağlayın.
+          </p>
+        </div>
+
+        <div class="config-section-card" style="margin-bottom:20px;">
+          <div class="form-grid col-3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Registry Sunucu Adresi (FQDN / IP)</label>
+              <input type="text" id="reg-server-url" value="harbor.shamssoftware.com" placeholder="harbor.domain.local">
+            </div>
+            <div class="form-group">
+              <label>Kullanıcı Adı (Robot Account / User)</label>
+              <input type="text" id="reg-username" value="robot$cluster-pull" placeholder="robot$k8s">
+            </div>
+            <div class="form-group">
+              <label>Şifre veya Token</label>
+              <input type="password" id="reg-password" value="secretToken2026!" placeholder="••••••••">
+            </div>
+          </div>
+          <div class="form-grid col-2" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Secret Adı (Secret Name)</label>
+              <input type="text" id="reg-secret-name" value="shams-harbor-secret">
+            </div>
+            <div class="form-group">
+              <label>Hedef Namespace</label>
+              <input type="text" id="reg-namespace" value="default" placeholder="default">
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" id="btn-gen-registry" onclick="generateRegistrySecret()">
+              🚀 1-Tıkla imagePullSecret Üret & Uygula
+            </button>
+          </div>
+        </div>
+
+        <div class="code-box" id="reg-yaml-output" style="display:none; max-height:220px;"></div>
       </div>
 
     </div>
@@ -2836,14 +3098,45 @@
     </div>
   </div>
 
+  <!-- MODAL: HELM INSTALL WITH VALUES.YAML -->
+  <div id="modal-helm-install" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); z-index:99999; justify-content:center; align-items:center;">
+    <div class="glass-card" style="width:620px; max-width:92vw; border:1px solid rgba(56,189,248,0.4);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:1.05rem; font-weight:700; color:#fff;">⎈ Helm Chart Kurulumu: <span id="helm-modal-chart-name" style="color:#38BDF8;">Chart</span></h3>
+        <button onclick="closeHelmInstallModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:0.82rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Release Adı</label>
+            <input type="text" id="helm-input-release" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Hedef Namespace</label>
+            <input type="text" id="helm-input-namespace" value="default" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+        </div>
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Özel Yapılandırma Parametreleri (values.yaml):</label>
+          <textarea id="helm-input-values" style="width:100%; height:160px; font-family:'JetBrains Mono'; font-size:0.75rem; background:rgba(0,0,0,0.4); border:1px solid var(--border-color); color:#A5F3FC; border-radius:4px; padding:10px; outline:none; resize:vertical;"></textarea>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button class="btn btn-secondary btn-sm" onclick="closeHelmInstallModal()">İptal</button>
+        <button class="btn btn-primary btn-sm" id="btn-confirm-helm" onclick="executeHelmInstall()">🚀 Kümeye Kur & Dağıt</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODULAR JAVASCRIPT SYSTEM -->
-  <script src="js/modules/i18n.js?v=20260910_75"></script>
-  <script src="js/app.js?v=20260910_75"></script>
-  <script src="js/modules/auth.js?v=20260910_75"></script>
-  <script src="js/modules/wizard.js?v=20260910_75"></script>
-  <script src="js/modules/operations.js?v=20260910_75"></script>
-  <script src="js/modules/aiCopilot.js?v=20260910_75"></script>
-  <script src="js/modules/multiCluster.js?v=20260910_75"></script>
-  <script src="js/modules/commandPalette.js?v=20260910_75"></script>
+  <script src="js/modules/i18n.js?v=20260910_80"></script>
+  <script src="js/app.js?v=20260910_80"></script>
+  <script src="js/modules/auth.js?v=20260910_80"></script>
+  <script src="js/modules/wizard.js?v=20260910_80"></script>
+  <script src="js/modules/operations.js?v=20260910_80"></script>
+  <script src="js/modules/enterpriseSuite.js?v=20260910_80"></script>
+  <script src="js/modules/aiCopilot.js?v=20260910_80"></script>
+  <script src="js/modules/multiCluster.js?v=20260910_80"></script>
+  <script src="js/modules/commandPalette.js?v=20260910_80"></script>
 </body>
 </html>

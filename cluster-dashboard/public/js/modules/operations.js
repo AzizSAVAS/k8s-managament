@@ -955,6 +955,12 @@ function switchOpsView(viewName) {
     fetchTrivyScan();
   } else if (viewName === 'cronjobs') {
     fetchCronJobs();
+  } else if (viewName === 'topology') {
+    if (typeof fetchTopologyGraph === 'function') fetchTopologyGraph();
+  } else if (viewName === 'helm') {
+    if (typeof fetchHelmCatalog === 'function') fetchHelmCatalog();
+  } else if (viewName === 'audit') {
+    if (typeof fetchAuditTrail === 'function') fetchAuditTrail();
   }
 }
 
