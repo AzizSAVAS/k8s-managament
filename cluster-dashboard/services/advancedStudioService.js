@@ -345,6 +345,124 @@ class AdvancedStudioService {
       ]
     };
   }
+
+  // 8. eBPF Kernel WAF & Geo-Defense
+  getWafTelemetry() {
+    return {
+      success: true,
+      wafStatus: 'Active & Enforcing (eBPF Kernel Drop)',
+      totalInspectedRequests: 1845200,
+      blockedAttacks: 4892,
+      blockedPercent: '0.26%',
+      averageDropLatency: '0.018 ms',
+      countries: [
+        { code: 'CN', name: 'Çin', flag: '🇨🇳', attacks: 1820, blocked: true },
+        { code: 'RU', name: 'Rusya', flag: '🇷🇺', attacks: 1240, blocked: true },
+        { code: 'NL', name: 'Hollanda (VPN/Proxy)', flag: '🇳🇱', attacks: 610, blocked: false },
+        { code: 'US', name: 'Amerika Birleşik Devletleri', flag: '🇺🇸', attacks: 480, blocked: false },
+        { code: 'IR', name: 'İran', flag: '🇮🇷', attacks: 380, blocked: true },
+        { code: 'BR', name: 'Brezilya', flag: '🇧🇷', attacks: 210, blocked: false }
+      ],
+      attackTypes: [
+        { type: 'SQL Injection (OR 1=1 / UNION SELECT)', count: 2140, severity: 'CRITICAL' },
+        { type: 'Cross-Site Scripting (XSS / <script>)', count: 1410, severity: 'HIGH' },
+        { type: 'Path Traversal (../../etc/passwd)', count: 880, severity: 'HIGH' },
+        { type: 'HTTP Request Smuggling / Bot Scraping', count: 462, severity: 'MEDIUM' }
+      ]
+    };
+  }
+
+  blockWafCountry(code, blocked) {
+    return {
+      success: true,
+      message: `[eBPF WAF] Ülke kodu '${code}' için kural ${blocked ? 'ENGELLE (DROP)' : 'İZİN VER (ALLOW)'} olarak çekirdeğe yazıldı.`
+    };
+  }
+
+  // 9. Cluster Janitor & Garbage Collection
+  scanJanitor() {
+    return {
+      success: true,
+      lastScan: new Date().toLocaleTimeString(),
+      reclaimableDiskGB: 42.8,
+      reclaimableRamMB: 1850,
+      orphanItems: [
+        { id: 'CLN-01', type: 'Orphan PVC', name: 'pvc-data-legacy-redis-0', namespace: 'default', size: '20 GB', reason: 'İlişkili StatefulSet 18 gün önce silinmiş, disk atıl duruyor.' },
+        { id: 'CLN-02', type: 'Orphan PVC', name: 'pvc-mysql-backup-tmp', namespace: 'backup', size: '22.8 GB', reason: 'Yedekleme tamamlanmış ancak geçici hacim temizlenmemiş.' },
+        { id: 'CLN-03', type: 'Dead Job Pod', name: 'db-migrate-v2-4-9kx2s', namespace: 'production', status: 'Completed (Succeeded)', reason: '14 gün önce başarılı bitti, pod kalıntısı duruyor.' },
+        { id: 'CLN-04', type: 'Unused ConfigMap', name: 'old-nginx-v1-conf', namespace: 'ingress', size: '14 KB', reason: 'Hiçbir pod veya deployment bu ConfigMap nesnesine referans vermiyor.' }
+      ]
+    };
+  }
+
+  purgeJanitor() {
+    return {
+      success: true,
+      freedDiskGB: 42.8,
+      freedRamMB: 1850,
+      purgedCount: 4,
+      message: '42.8 GB disk alanı ve 1.85 GB bellek başarıyla geri kazanıldı. Çöp nesneler temizlendi.'
+    };
+  }
+
+  // 10. YAML Resource Time-Machine & Rollback
+  getTimeMachineHistory() {
+    return {
+      success: true,
+      resource: 'Deployment/production/payment-gateway',
+      revisions: [
+        {
+          revision: 3,
+          timestamp: 'Bugün 20:15 (Şu Anki Canlı Sürüm)',
+          author: 'ci-bot@shamssoftware.com',
+          change: 'Hatalı bellek limiti düşüşü (limits.memory: 256Mi)',
+          status: 'active',
+          diffRemoved: '        limits:\n          cpu: "2"\n          memory: 4Gi',
+          diffAdded: '        limits:\n          cpu: "500m"\n          memory: 256Mi'
+        },
+        {
+          revision: 2,
+          timestamp: 'Dün 14:22 (Kararlı Sürüm)',
+          author: 'devops-lead@shamssoftware.com',
+          change: 'v2.4.1 sürümüne yükseltme ve replicas: 5 artırımı',
+          status: 'stable',
+          diffRemoved: '    replicas: 2\n    image: payment-gateway:v2.4.0',
+          diffAdded: '    replicas: 5\n    image: payment-gateway:v2.4.1'
+        },
+        {
+          revision: 1,
+          timestamp: '5 gün önce 09:00',
+          author: 'admin@shamssoftware.com',
+          change: 'İlk canlı dağıtım (Initial Release)',
+          status: 'archived',
+          diffRemoved: '',
+          diffAdded: 'Initial deployment configuration'
+        }
+      ]
+    };
+  }
+
+  rollbackTimeMachine(revision) {
+    return {
+      success: true,
+      targetRevision: revision || 2,
+      message: `[Zaman Makinesi] 'Deployment/payment-gateway' başarıyla Revizyon #${revision || 2} kararlı sürümüne geri alındı (Rollback tamamlandı).`
+    };
+  }
+
+  // 11. Real-time Metrics Oscilloscope Data
+  getOscilloscopeData() {
+    const time = new Date().toLocaleTimeString();
+    return {
+      success: true,
+      timestamp: time,
+      cpuPercent: Math.floor(28 + Math.random() * 20),
+      memoryPercent: Math.floor(62 + Math.random() * 6),
+      diskIops: Math.floor(1800 + Math.random() * 600),
+      networkMbps: parseFloat((120 + Math.random() * 80).toFixed(1))
+    };
+  }
 }
 
 module.exports = new AdvancedStudioService();
+

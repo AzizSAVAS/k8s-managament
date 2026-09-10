@@ -424,6 +424,22 @@
             <span class="ops-nav-icon">🎙️</span>
             <span class="ops-nav-label">NOC Sesli Anons Sistemi</span>
           </div>
+          <div class="ops-nav-item" id="ops-nav-ebpf-waf" onclick="switchOpsView('ebpf-waf')">
+            <span class="ops-nav-icon">🛡️</span>
+            <span class="ops-nav-label">eBPF Kernel WAF & Tehdit Haritası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cluster-janitor" onclick="switchOpsView('cluster-janitor')">
+            <span class="ops-nav-icon">🧹</span>
+            <span class="ops-nav-label">Küme Çöp & Zombi Temizleyici</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-time-machine" onclick="switchOpsView('time-machine')">
+            <span class="ops-nav-icon">⏳</span>
+            <span class="ops-nav-label">YAML Zaman Makinesi & Diff</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-metrics-oscilloscope" onclick="switchOpsView('metrics-oscilloscope')">
+            <span class="ops-nav-icon">📈</span>
+            <span class="ops-nav-label">Canlı Metrik Osiloskopu</span>
+          </div>
         </nav>
 
 
@@ -3901,6 +3917,79 @@
         </div>
       </div>
 
+      <!-- ============================================================= -->
+      <!-- 49. eBPF KERNEL WAF & GEO-DEFENSE SİBER SALDIRI HARİTASI      -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-ebpf-waf" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(239,68,68,0.15); border-color:#EF4444; color:#F87171;">KERNEL-LEVEL INLINE DEFENSE</span>
+              <h2 class="card-title">eBPF Kernel WAF & Canlı Siber Tehdit Haritası</h2>
+              <p class="card-desc">Çekirdek düzeyinde SQL Injection, XSS ve bot saldırılarını sıfır kullanıcı alanı gecikmesiyle filtreleyin ve coğrafi IP bloklama uygulayın.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="fetchEbpfWaf()">🔄 Tehditleri Tara</button>
+          </div>
+          <div id="ebpf-waf-content"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 50. KÜME ÇÖP & ZOMBİ KAYNAK TEMİZLEYİCİSİ (CLUSTER JANITOR)    -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-cluster-janitor" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(16,185,129,0.15); border-color:#10B981; color:#34D399;">CLUSTER RESOURCE DETOX</span>
+              <h2 class="card-title">Küme Çöp & Zombi Kaynak Temizleyicisi</h2>
+              <p class="card-desc">Sahipsiz PVC diskleri, tamamlanmış ölü Job podlarını ve atıl ConfigMap nesnelerini temizleyerek disk ve RAM alanını geri kazanın.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="fetchClusterJanitor()">🔍 Çöp Taraması Yap</button>
+          </div>
+          <div id="cluster-janitor-content"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 51. KUBERNETES YAML ZAMAN MAKİNESİ & DIFF (TIME-MACHINE)       -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-time-machine" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(59,130,246,0.15); border-color:#3B82F6; color:#60A5FA;">CONFIG VERSION CONTROL & ROLLBACK</span>
+              <h2 class="card-title">Kubernetes YAML Zaman Makinesi & Görsel Diff</h2>
+              <p class="card-desc">Kümeye uygulanmış geçmiş Deployment ve Ingress revizyonlarını yan yana kırmızı/yeşil diff ile karşılaştırın ve tek tıkla eski sürüme dönün.</p>
+            </div>
+          </div>
+          <div id="time-machine-content"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 52. CANLI KAYAN METRİK OSİLOSKOPU (METRICS OSCILLOSCOPE)      -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-metrics-oscilloscope" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(56,189,248,0.15); border-color:#38BDF8; color:#38BDF8;">60-FPS REAL-TIME TELEMETRY</span>
+              <h2 class="card-title">Canlı Kayan Metrik Osiloskopu</h2>
+              <p class="card-desc">Düğümlerin ve podların son 60 saniyelik CPU, RAM, Disk IOPS ve Ağ bant genişliği performansını akıcı neon Canvas eğrileriyle izleyin.</p>
+            </div>
+            <div id="oscilloscope-stats-live" style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:700;"></div>
+          </div>
+
+          <div style="position:relative; width:100%; height:360px; background:#060911; border:1px solid rgba(56,189,248,0.25); border-radius:10px; overflow:hidden; padding:10px;">
+            <canvas id="metrics-oscilloscope-canvas" style="width:100%; height:100%; display:block;"></canvas>
+            <div style="position:absolute; bottom:14px; right:18px; font-size:0.75rem; color:#94A3B8; background:rgba(0,0,0,0.6); padding:4px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">
+              🔵 CPU Yükü • 🟣 RAM Kullanımı • 🟡 Disk IOPS • 🟢 Ağ Throughput
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div> <!-- /workspace-operations -->
 
         </div> <!-- /workspace-content -->
@@ -4185,5 +4274,11 @@
   <script src="js/modules/ops/opsClusterMigrate.js?v=20260910_86"></script>
   <script src="js/modules/ops/opsSecretRadar.js?v=20260910_86"></script>
   <script src="js/modules/voiceAlerts.js?v=20260910_86"></script>
+
+  <!-- 4 New Next-Gen Studios (52 modules total) -->
+  <script src="js/modules/ops/opsEbpfWaf.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsClusterJanitor.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsTimeMachine.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsMetricsOscilloscope.js?v=20260910_86"></script>
 </body>
 </html>

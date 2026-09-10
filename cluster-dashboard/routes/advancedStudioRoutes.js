@@ -92,4 +92,38 @@ router.get('/api/studios/scan-secret-leaks', (req, res) => {
   res.json(studioService.scanSecretLeaks());
 });
 
+// 8. eBPF Kernel WAF & Geo-Defense
+router.get('/api/studios/waf-telemetry', (req, res) => {
+  res.json(studioService.getWafTelemetry());
+});
+
+router.post('/api/studios/waf-block-country', (req, res) => {
+  const { code, blocked } = req.body;
+  res.json(studioService.blockWafCountry(code, blocked));
+});
+
+// 9. Cluster Janitor & Garbage Collection
+router.get('/api/studios/janitor-scan', (req, res) => {
+  res.json(studioService.scanJanitor());
+});
+
+router.post('/api/studios/janitor-purge', (req, res) => {
+  res.json(studioService.purgeJanitor());
+});
+
+// 10. YAML Resource Time-Machine & Rollback
+router.get('/api/studios/time-machine-history', (req, res) => {
+  res.json(studioService.getTimeMachineHistory());
+});
+
+router.post('/api/studios/time-machine-rollback', (req, res) => {
+  const { revision } = req.body;
+  res.json(studioService.rollbackTimeMachine(revision));
+});
+
+// 11. Real-time Metrics Oscilloscope Data
+router.get('/api/studios/oscilloscope-data', (req, res) => {
+  res.json(studioService.getOscilloscopeData());
+});
+
 module.exports = router;

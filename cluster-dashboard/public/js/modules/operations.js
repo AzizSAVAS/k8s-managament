@@ -149,6 +149,14 @@ function switchOpsView(viewName) {
     if (typeof fetchMigrationPlan === 'function') fetchMigrationPlan();
   } else if (viewName === 'secret-radar') {
     if (typeof fetchSecretLeakRadar === 'function') fetchSecretLeakRadar();
+  } else if (viewName === 'ebpf-waf') {
+    if (typeof fetchEbpfWaf === 'function') fetchEbpfWaf();
+  } else if (viewName === 'cluster-janitor') {
+    if (typeof fetchClusterJanitor === 'function') fetchClusterJanitor();
+  } else if (viewName === 'time-machine') {
+    if (typeof fetchTimeMachineHistory === 'function') fetchTimeMachineHistory();
+  } else if (viewName === 'metrics-oscilloscope') {
+    if (typeof initMetricsOscilloscope === 'function') initMetricsOscilloscope();
   }
 }
 
