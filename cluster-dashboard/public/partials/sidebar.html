@@ -1,0 +1,300 @@
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+          <div class="brand-row">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <div>
+              <div class="brand-title">Shamssoftware</div>
+              <div class="brand-badge">Enterprise v2.4</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 0. GİRİŞ & KARŞILAMA PORTALİ MENÜSÜ -->
+        <nav class="sidebar-pipeline" id="sidebar-portal-nav" style="display:flex;">
+          <div class="pipeline-title" data-i18n="sidebar_launchpad_title">BAŞLANGIÇ MERKEZİ</div>
+
+          <div class="ops-nav-item active" id="portal-nav-home" onclick="switchGlobalView('portal')">
+            <span class="ops-nav-icon">🏛️</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_home">Giriş Portalı</span>
+          </div>
+          <div class="ops-nav-item" id="portal-nav-wizard" onclick="enterAppMode('wizard', 'new')">
+            <span class="ops-nav-icon">🚀</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_wizard">Yeni Küme Kurulumu</span>
+          </div>
+          <div class="ops-nav-item" id="portal-nav-scale" onclick="enterAppMode('wizard', 'scale')">
+            <span class="ops-nav-icon">📈</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_scale">Küme Genişletme (Scale)</span>
+          </div>
+          <div class="ops-nav-item" id="portal-nav-ops" onclick="enterAppMode('operations')">
+            <span class="ops-nav-icon">🎛️</span>
+            <span class="ops-nav-label" data-i18n="portal_nav_ops">Küme Yönetim & Bakım</span>
+          </div>
+
+          <div style="margin-top:20px; padding:14px 12px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:var(--radius-sm);">
+            <div style="font-size:0.72rem; font-weight:700; color:var(--primary-glow); margin-bottom:4px;" data-i18n="portal_info_card_title">⚡ SHAMSSOFTWARE HUB</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;" data-i18n="portal_info_card_desc">
+              Sıfırdan tam yedekli küme kurabilir veya çalışan kümenizi Day-2 masasıyla yönetebilirsiniz.
+            </div>
+          </div>
+        </nav>
+
+        <!-- 1. KURULUM SİHİRBAZI MENÜSÜ (YALNIZCA KURULUM EKRANINDA) -->
+        <nav class="sidebar-pipeline" id="sidebar-wizard-nav" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div class="pipeline-title" style="padding-bottom:0;" data-i18n="sidebar_wizard_title">Kurulum Aşamaları</div>
+            <button onclick="switchGlobalView('portal')" data-i18n-title="sidebar_exit_btn" style="background:rgba(255,255,255,0.06); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; font-size:0.72rem; padding:3px 8px; border-radius:4px;"><span data-i18n="sidebar_exit_btn">🏠 Çıkış</span></button>
+          </div>
+
+          <div class="step-item active" id="step-nav-1" onclick="goToStep(1)">
+            <div class="step-node">
+              <span class="step-num">1</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step1_nav_sub">01 / MOD</span>
+              <span class="step-label" data-i18n="step1_nav_title">Altyapı & Mod</span>
+            </div>
+            <span class="step-status-pill" id="step-status-1" data-i18n="status_active">Aktif</span>
+          </div>
+
+          <div class="step-item" id="step-nav-2" onclick="goToStep(2)">
+            <div class="step-node">
+              <span class="step-num">2</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step2_nav_sub">02 / BAĞLANTI</span>
+              <span class="step-label" data-i18n="step2_nav_title">Sunucu Keşfi</span>
+            </div>
+            <span class="step-status-pill" id="step-status-2" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+
+          <div class="step-item" id="step-nav-3" onclick="goToStep(3)">
+            <div class="step-node">
+              <span class="step-num">3</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step3_nav_sub">03 / BOYUT</span>
+              <span class="step-label" data-i18n="step3_nav_title">Küme Ayarları</span>
+            </div>
+            <span class="step-status-pill" id="step-status-3" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+
+          <div class="step-item" id="step-nav-4" onclick="goToStep(4)">
+            <div class="step-node">
+              <span class="step-num">4</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step4_nav_sub">04 / TOPOLOJİ</span>
+              <span class="step-label" data-i18n="step4_nav_title">Dağıtım Planı</span>
+            </div>
+            <span class="step-status-pill" id="step-status-4" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+
+          <div class="step-item" id="step-nav-5" onclick="goToStep(5)">
+            <div class="step-node">
+              <span class="step-num">5</span>
+              <span class="step-check">✔</span>
+            </div>
+            <div class="step-text-wrap">
+              <span class="step-sub" data-i18n="step5_nav_sub">05 / KURULUM</span>
+              <span class="step-label" data-i18n="step5_nav_title">Canlı Dağıtım</span>
+            </div>
+            <span class="step-status-pill" id="step-status-5" data-i18n="status_waiting">Bekliyor</span>
+          </div>
+        </nav>
+
+        <!-- 2. KÜME YÖNETİM & OPERASYON MENÜSÜ (YALNIZCA YÖNETİM EKRANINDA) -->
+        <nav class="sidebar-pipeline ops-pipeline" id="sidebar-ops-nav" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div class="pipeline-title" style="padding-bottom:0;" data-i18n="sidebar_ops_title">Day-2 Yönetim Masası</div>
+            <button onclick="switchGlobalView('portal')" data-i18n-title="sidebar_exit_btn" style="background:rgba(255,255,255,0.06); border:1px solid var(--border-color); color:var(--text-muted); cursor:pointer; font-size:0.72rem; padding:3px 8px; border-radius:4px;"><span data-i18n="sidebar_exit_btn">🏠 Çıkış</span></button>
+          </div>
+
+          <!-- 40 MODÜL HIZLI ARAMA / FİLTRELEME -->
+          <div style="margin-bottom:10px;">
+            <input type="text" id="sidebar-ops-filter" placeholder="🔍 40 Modülde Hızlı Ara..." oninput="filterSidebarOpsModules(this.value)" style="width:100%; padding:6px 10px; font-size:0.75rem; background:rgba(15,23,42,0.6); border:1px solid var(--border-color); color:#fff; border-radius:var(--radius-sm); outline:none; transition:border-color 0.2s ease;">
+          </div>
+
+          <div class="ops-nav-item active" id="ops-nav-nodes" onclick="switchOpsView('nodes')">
+            <span class="ops-nav-icon">📊</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_nodes">Düğümler & Podlar</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-addons" onclick="switchOpsView('addons')">
+            <span class="ops-nav-icon">📦</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_addons">Eklenti Kataloğu</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-nfs" onclick="switchOpsView('nfs')">
+            <span class="ops-nav-icon">📂</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_nfs">Harici Depolama (NFS)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-apps" onclick="switchOpsView('apps')">
+            <span class="ops-nav-icon">🚀</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_apps">Uygulama Mağazası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-smoke" onclick="switchOpsView('smoke')">
+            <span class="ops-nav-icon">🧪</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_smoke">Smoke Test & Doğrulama</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-fortigate" onclick="switchOpsView('fortigate')">
+            <span class="ops-nav-icon">🛡️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_fortigate">FortiGate SLB & VIP</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cis" onclick="switchOpsView('cis')">
+            <span class="ops-nav-icon">🔍</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_cis">CIS Güvenlik Denetimi</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-rbac" onclick="switchOpsView('rbac')">
+            <span class="ops-nav-icon">🔒</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_rbac">RBAC & Kubeconfig</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-console" onclick="switchOpsView('console')">
+            <span class="ops-nav-icon">💻</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_console">Web kubectl / Shell</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-netpol" onclick="switchOpsView('netpol')">
+            <span class="ops-nav-icon">🌐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_netpol">Cilium Ağ Güvenliği</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-upgrade" onclick="switchOpsView('upgrade')">
+            <span class="ops-nav-icon">🔄</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_upgrade">Sıfır Kesintili Yükseltme</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-events" onclick="switchOpsView('events')">
+            <span class="ops-nav-icon">📜</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_events">Olay Akışı & Zaman Çizelgesi</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-alerts" onclick="switchOpsView('alerts')">
+            <span class="ops-nav-icon">🚨</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_alerts">Akıllı Alarm & Bildirimler</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-rightsizing" onclick="switchOpsView('rightsizing')">
+            <span class="ops-nav-icon">📊</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_rightsizing">Kaynak & FinOps Tasarruf</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-certs" onclick="switchOpsView('certs')">
+            <span class="ops-nav-icon">🔐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_certs">TLS / SSL Sertifikaları</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-logs" onclick="switchOpsView('logs')">
+            <span class="ops-nav-icon">📜</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_logs">Canlı Pod Log Akışı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-velero" onclick="switchOpsView('velero')">
+            <span class="ops-nav-icon">💾</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_velero">Velero & S3 Yedekleme</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-etcd" onclick="switchOpsView('etcd')">
+            <span class="ops-nav-icon">🗄️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_etcd">etcd & Küme Bakımı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-hubble" onclick="switchOpsView('hubble')">
+            <span class="ops-nav-icon">🐝</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_hubble">Hubble Servis Haritası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-doctor" onclick="switchOpsView('doctor')">
+            <span class="ops-nav-icon">🤖</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_doctor">Akıllı Teşhis & Onarım</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-trivy" onclick="switchOpsView('trivy')">
+            <span class="ops-nav-icon">🛡️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_trivy">İmaj Güvenliği (CVE)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cronjobs" onclick="switchOpsView('cronjobs')">
+            <span class="ops-nav-icon">⚡</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_cronjobs">CronJob & Zamanlanmış</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-topology" onclick="switchOpsView('topology')">
+            <span class="ops-nav-icon">🕸️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_topology">Canlı Ağ Topolojisi</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-helm" onclick="switchOpsView('helm')">
+            <span class="ops-nav-icon">📦</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_helm">Özel Helm Kataloğu</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-chaos" onclick="switchOpsView('chaos')">
+            <span class="ops-nav-icon">🧪</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_chaos">Kaos & HA Simülatörü</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-audit" onclick="switchOpsView('audit')">
+            <span class="ops-nav-icon">📜</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_audit">Denetim Defteri (Audit)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-webhooks" onclick="switchOpsView('webhooks')">
+            <span class="ops-nav-icon">📢</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_webhooks">Slack / Teams Alarmları</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-registry" onclick="switchOpsView('registry')">
+            <span class="ops-nav-icon">🐳</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_registry">Özel Registry (Harbor)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-yaml-ide" onclick="switchOpsView('yaml-ide')">
+            <span class="ops-nav-icon">📝</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_yaml_ide">Canlı YAML IDE & Diff</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-pod-files" onclick="switchOpsView('pod-files')">
+            <span class="ops-nav-icon">📁</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_pod_files">Pod Dosya Gezgini</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-hpa-studio" onclick="switchOpsView('hpa-studio')">
+            <span class="ops-nav-icon">⚖️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_hpa_studio">HPA & Ölçekleme Stüdyosu</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-secrets-vault" onclick="switchOpsView('secrets-vault')">
+            <span class="ops-nav-icon">🔐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_secrets_vault">Secret & Config Kasası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-finops-calculator" onclick="switchOpsView('finops-calculator')">
+            <span class="ops-nav-icon">💰</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_finops_calculator">Bulut Maliyet & ROI</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cluster-failover" onclick="switchOpsView('cluster-failover')">
+            <span class="ops-nav-icon">🌐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_cluster_failover">Multi-Cluster DR / GSLB</span>
+          </div>
+
+          <div class="pipeline-title" style="margin-top:14px; font-size:0.65rem; color:var(--text-muted); letter-spacing:0.06em;">GİTOPS & YAPAY ZEKA KONSOLU</div>
+          <div class="ops-nav-item" id="ops-nav-gitops" onclick="switchOpsView('gitops')">
+            <span class="ops-nav-icon">🔄</span>
+            <span class="ops-nav-label">GitOps & Dağıtım (Argo)</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-canary-traffic" onclick="switchOpsView('canary-traffic')">
+            <span class="ops-nav-icon">🚦</span>
+            <span class="ops-nav-label">Canary Trafik Bölme</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-policy-engine" onclick="switchOpsView('policy-engine')">
+            <span class="ops-nav-icon">🛡️</span>
+            <span class="ops-nav-label">OPA & Kyverno Kalkanı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-pod-terminal" onclick="switchOpsView('pod-terminal')">
+            <span class="ops-nav-icon">💻</span>
+            <span class="ops-nav-label">Pod Canlı Web Terminali</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-log-anomaly-ai" onclick="switchOpsView('log-anomaly-ai')">
+            <span class="ops-nav-icon">🤖</span>
+            <span class="ops-nav-label">AI Log Anomali Tespiti</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-executive-report" onclick="switchOpsView('executive-report')">
+            <span class="ops-nav-icon">📑</span>
+            <span class="ops-nav-label">C-Level SLA Raporu</span>
+          </div>
+        </nav>
+
+
+      <!-- SIDEBAR FOOTER: COPYRIGHT & APP VERSION -->
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-brand">
+          <span class="sidebar-footer-title">Shamssoftware</span>
+          <span class="sidebar-footer-ver">v2.4.0-EE</span>
+        </div>
+        <div class="sidebar-footer-copy" data-i18n="footer_copy">
+          &copy; 2026 Shamssoftware<br>Tüm hakları saklıdır.
+        </div>
+      </div>
+    </aside>

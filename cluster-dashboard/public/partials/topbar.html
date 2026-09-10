@@ -1,0 +1,57 @@
+      <header class="topbar">
+        <div class="breadcrumb-trail">
+          <span class="breadcrumb-current" id="breadcrumb-step-title">01 • Altyapı & Kurulum Modu</span>
+        </div>
+
+        <!-- GLOBAL WORKSPACE MODE SWITCHER -->
+        <div class="global-mode-switcher">
+          <button class="mode-pill-btn active" id="btn-mode-portal" onclick="switchGlobalView('portal')">
+            <span>🏠</span> <span data-i18n="mode_portal">Giriş Portalı</span>
+          </button>
+          <button class="mode-pill-btn" id="btn-mode-wizard" onclick="switchGlobalView('wizard')">
+            <span>🚀</span> <span data-i18n="mode_wizard">Kurulum Sihirbazı</span>
+          </button>
+          <button class="mode-pill-btn" id="btn-mode-operations" onclick="switchGlobalView('operations')">
+            <span>🎛️</span> <span data-i18n="mode_operations">Yönetim Masası</span>
+          </button>
+        </div>
+
+        <div class="topbar-actions">
+          <!-- DEMO / SIMULATION MODE TOGGLE -->
+          <button class="topbar-demo-btn" id="btn-toggle-demo-mode" onclick="toggleDemoMode()" title="Canlı Küme / Demo Simülasyonu Modu">
+            🟢 <span class="demo-btn-label">Canlı Küme</span>
+          </button>
+
+          <!-- QUICK SEARCH / COMMAND PALETTE TRIGGER -->
+          <button class="topbar-cmd-palette-btn" onclick="openCommandPalette()" title="Komut Paleti (Ctrl + K)">
+            <span>🔍</span>
+            <span class="cmd-shortcut-badge">Ctrl K</span>
+          </button>
+
+          <!-- COMPACT MULTI-CLUSTER SELECTOR -->
+          <div class="topbar-cluster-select-wrap">
+            <select id="topbar-cluster-select" onchange="handleClusterSelectChange(this.value)" class="topbar-cluster-dropdown" title="Aktif Küme">
+              <option value="active">☸️ Birincil Küme (Aktif)</option>
+              <option value="__add_new__">➕ Yeni Küme...</option>
+            </select>
+          </div>
+
+          <!-- COMPACT LANGUAGE SWITCHER (TR / EN) -->
+          <div class="lang-switch-group">
+            <button class="lang-pill-btn active" id="btn-lang-tr" onclick="setLanguage('tr')" title="Türkçe">TR</button>
+            <button class="lang-pill-btn" id="btn-lang-en" onclick="setLanguage('en')" title="English">EN</button>
+          </div>
+
+          <!-- LOGGED-IN USER PROFILE & LOGOUT -->
+          <div class="topbar-user-profile" id="topbar-user-profile">
+            <div class="user-avatar-badge" id="topbar-user-avatar">AS</div>
+            <div class="user-info-text">
+              <span class="user-name" id="topbar-username">admin</span>
+              <span class="user-role-badge" id="topbar-user-role">cluster-admin</span>
+            </div>
+            <button class="topbar-logout-btn" onclick="handleLogout()" title="Oturumu Kapat">
+              🚪 <span class="logout-label">Çıkış</span>
+            </button>
+          </div>
+        </div>
+      </header>

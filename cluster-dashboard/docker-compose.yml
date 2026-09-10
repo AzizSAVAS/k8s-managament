@@ -1,0 +1,29 @@
+# ==============================================================================
+# Shamssoftware RKE2 & Cilium Enterprise Hub - Docker Compose Orchestration
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  cluster-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shamssoftware-rke2-hub
+    restart: unless-stopped
+    ports:
+      - "5050:5050"
+    environment:
+      - PORT=5050
+      - NODE_ENV=production
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5050/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"

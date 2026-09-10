@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shamssoftware - RKE2 & Cilium Cluster Hub</title>
+  <link rel="stylesheet" href="css/style.css?v=20260910_86">
+</head>
+<body>
+
+  <!-- ============================================================= -->
+  <!-- ENTERPRISE AUTHENTICATION & LOGIN SCREEN                      -->
+  <!-- ============================================================= -->
+  <!-- @@LOGIN@@ -->
+
+  <!-- ============================================================= -->
+  <!-- MAIN APP CONTAINER                                            -->
+  <!-- ============================================================= -->
+  <div class="app-layout" id="app-main-layout" style="display:none;">
+
+    <!-- 1. LEFT NAVIGATION SIDEBAR -->
+    <!-- @@SIDEBAR@@ -->
+
+    <!-- 2. RIGHT WORKSPACE AREA -->
+    <main class="app-main">
+      <!-- TOPBAR -->
+      <!-- @@TOPBAR@@ -->
+
+      <!-- SCROLLABLE WORKSPACE CONTENT -->
+      <div class="workspace-scroll">
+        <div class="workspace-content">
+
+          <!-- 0. GİRİŞ & KARŞILAMA PORTALİ -->
+          <!-- @@PORTAL@@ -->
+
+          <!-- 1-5. KURULUM SİHİRBAZI -->
+          <!-- @@WIZARD@@ -->
+
+          <!-- DAY-2 OPERASYONEL ÇALIŞMA ALANI -->
+          <!-- @@OPERATIONS@@ -->
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL DIALOGS & OVERLAYS                                      -->
+  <!-- ============================================================= -->
+  <!-- @@MODALS@@ -->
+
+  <!-- ============================================================= -->
+  <!-- TOAST NOTIFICATION CONTAINER                                  -->
+  <!-- ============================================================= -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MODULAR JAVASCRIPT SYSTEM -->
+  <script src="js/modules/i18n.js?v=20260910_86"></script>
+  <script src="js/app.js?v=20260910_86"></script>
+  <script src="js/modules/auth.js?v=20260910_86"></script>
+  
+  <!-- Wizard Submodules -->
+  <script src="js/modules/wizard/wizardSteps.js?v=20260910_86"></script>
+  <script src="js/modules/wizard/wizardDeploy.js?v=20260910_86"></script>
+  <script src="js/modules/wizard/wizardTemplates.js?v=20260910_86"></script>
+  <script src="js/modules/wizard.js?v=20260910_86"></script>
+  
+  <!-- Day-2 Operations Submodules -->
+  <script src="js/modules/ops/opsMonitoring.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsStorageBackup.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsSecurityCompliance.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsAutomationApps.js?v=20260910_86"></script>
+  <script src="js/modules/operations.js?v=20260910_86"></script>
+  
+  <!-- Enterprise & Cloud Studios -->
+  <script src="js/modules/enterpriseSuite.js?v=20260910_86"></script>
+  <script src="js/modules/cloudStudio.js?v=20260910_86"></script>
+  <script src="js/modules/hyperCloudSuite.js?v=20260910_86"></script>
+  <script src="js/modules/aiCopilot.js?v=20260910_86"></script>
+  <script src="js/modules/multiCluster.js?v=20260910_86"></script>
+  <script src="js/modules/commandPalette.js?v=20260910_86"></script>
+
+  <!-- Realtime Push Alerts & Demo Simulator & RBAC Guard -->
+  <script src="js/modules/toastAlerts.js?v=20260910_86"></script>
+  <script src="js/modules/demoMode.js?v=20260910_86"></script>
+  <script src="js/modules/rbacGuard.js?v=20260910_86"></script>
+</body>
+</html>

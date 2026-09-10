@@ -1,0 +1,117 @@
+# ==============================================================================
+# Shamssoftware RKE2 & Cilium Enterprise Hub - In-Cluster Deployment Manifest
+# Production HA Deployment with Cilium Ingress & Security Contexts
+# ==============================================================================
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shamssoftware-system
+  labels:
+    app.kubernetes.io/part-of: rke2-cluster-hub
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rke2-cluster-dashboard
+  namespace: shamssoftware-system
+  labels:
+    app: rke2-cluster-dashboard
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rke2-cluster-dashboard
+  template:
+    metadata:
+      labels:
+        app: rke2-cluster-dashboard
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: dashboard
+          image: registry.shamssoftware.com/rke2-cluster-dashboard:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5050
+          env:
+            - name: PORT
+              value: "5050"
+            - name: NODE_ENV
+              value: "production"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rke2-cluster-dashboard-svc
+  namespace: shamssoftware-system
+  labels:
+    app: rke2-cluster-dashboard
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5050
+  selector:
+    app: rke2-cluster-dashboard
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rke2-cluster-dashboard-ingress
+  namespace: shamssoftware-system
+  annotations:
+    kubernetes.io/ingress.class: "cilium"
+    cert-manager.io/cluster-issuer: "letsencrypt-cluster-issuer"
+    cilium.io/websocket: "true"
+spec:
+  tls:
+    - hosts:
+        - hub.cluster.local
+        - dashboard.shamssoftware.com
+      secretName: rke2-dashboard-tls
+  rules:
+    - host: hub.cluster.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rke2-cluster-dashboard-svc
+                port:
+                  number: 80
+    - host: dashboard.shamssoftware.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rke2-cluster-dashboard-svc
+                port:
+                  number: 80

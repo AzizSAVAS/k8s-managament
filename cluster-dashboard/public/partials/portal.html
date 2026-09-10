@@ -1,0 +1,344 @@
+          <div id="workspace-portal" class="workspace-view" style="display:block;">
+            <div class="portal-container">
+              <div class="portal-hero">
+                <div class="portal-badge-pill" data-i18n="portal_badge">🏛️ SHAMSSOFTWARE RKE2 & CILIUM HUB</div>
+                <h1 class="portal-title" data-i18n="portal_title">Shamssoftware Kubernetes Küme Portalı</h1>
+                <p class="portal-subtitle" data-i18n="portal_subtitle">
+                  Yüksek erişilebilir (HA) RKE2 & Cilium eBPF küme dağıtımı, canlı telemetri izleme, felaket kurtarma ve kurumsal Day-2 yaşam döngüsü yönetim masası.
+                </p>
+                <div class="portal-prompt-text" data-i18n="portal_prompt">Bugün hangi operasyonu gerçekleştirmek istiyorsunuz?</div>
+              </div>
+
+
+              <div class="portal-grid">
+                <!-- KART 1: YENİ KURULUM -->
+                <div class="portal-action-card primary" onclick="enterAppMode('wizard', 'new')">
+                  <div class="portal-card-glow"></div>
+                  <div class="portal-card-header">
+                    <div class="portal-icon-box blue">🚀</div>
+                    <span class="portal-chip" data-i18n="card1_chip">SIFIRDAN KURULUM</span>
+                  </div>
+                  <h2 class="portal-card-title" data-i18n="card1_title">Yeni Küme Kurulumu</h2>
+                  <p class="portal-card-desc" data-i18n="card1_desc">
+                    Proxmox VE, VMware vCenter veya Bare-Metal üzerinde 5 aşamalı akıllı sihirbaz ile sıfırdan tam yedekli RKE2 & Cilium eBPF kümesi kurun.
+                  </p>
+                  <ul class="portal-features-list">
+                    <li data-i18n="card1_f1">✔ Otomatik Proxmox & vCenter VM Sizing</li>
+                    <li data-i18n="card1_f2">✔ Anti-Affinity Çoklu Host Dağıtım Matrisi</li>
+                    <li data-i18n="card1_f3">✔ Cloud-Init Ubuntu 22.04 Altın Şablonları</li>
+                    <li data-i18n="card1_f4">✔ Canlı WebSocket Dağıtım Günlüğü</li>
+                  </ul>
+                  <div class="portal-card-footer">
+                    <button class="btn btn-primary portal-btn" onclick="enterAppMode('wizard', 'new'); event.stopPropagation();" data-i18n="card1_btn">
+                      Kurulum Sihirbazını Başlat ➔
+                    </button>
+                  </div>
+                </div>
+
+                <!-- KART 2: BAKIM & OPERASYON -->
+                <div class="portal-action-card emerald" onclick="enterAppMode('operations')">
+                  <div class="portal-card-glow"></div>
+                  <div class="portal-card-header">
+                    <div class="portal-icon-box green">🎛️</div>
+                    <span class="portal-chip green" data-i18n="card2_chip">DAY-2 OPERASYON</span>
+                  </div>
+                  <h2 class="portal-card-title" data-i18n="card2_title">Küme Yönetim & Bakım Merkezi</h2>
+                  <p class="portal-card-desc" data-i18n="card2_desc">
+                    Canlı üretim kümenizin telemetrisine, eBPF ağ güvenliğine, FinOps kaynak optimizasyonuna ve otomatik onarım araçlarına erişin.
+                  </p>
+                  <ul class="portal-features-list">
+                    <li data-i18n="card2_f1">✔ 22 Kurumsal Day-2 Operasyon Modülü</li>
+                    <li data-i18n="card2_f2">✔ Hubble eBPF Servis Haritası & Akış Analizi</li>
+                    <li data-i18n="card2_f3">✔ Velero S3 Tam Küme & PVC Yedekleme</li>
+                    <li data-i18n="card2_f4">✔ AI Doctor Kendi Kendini İyileştirme & FinOps</li>
+                  </ul>
+                  <div class="portal-card-footer">
+                    <button class="btn btn-success portal-btn" onclick="enterAppMode('operations'); event.stopPropagation();" data-i18n="card2_btn">
+                      Operasyon Merkezine Gir ➔
+                    </button>
+                  </div>
+                </div>
+
+                <!-- KART 3: ÖLÇEKLEME -->
+                <div class="portal-action-card purple" onclick="enterAppMode('wizard', 'scale')">
+                  <div class="portal-card-glow"></div>
+                  <div class="portal-card-header">
+                    <div class="portal-icon-box purple">📈</div>
+                    <span class="portal-chip purple" data-i18n="card3_chip">KAPASİTE GENİŞLETME</span>
+                  </div>
+                  <h2 class="portal-card-title" data-i18n="card3_title">Küme Genişletme & Düğüm Ekleme</h2>
+                  <p class="portal-card-desc" data-i18n="card3_desc">
+                    Çalışmakta olan mevcut RKE2 kümenize iş yükü talebine göre kesintisiz yeni Worker veya Master düğümleri dahil edin.
+                  </p>
+                  <ul class="portal-features-list">
+                    <li data-i18n="card3_f1">✔ Canlı Kümeye Sıfır Kesintili Scale-Out</li>
+                    <li data-i18n="card3_f2">✔ Otomatik Token & Join Script Üretimi</li>
+                    <li data-i18n="card3_f3">✔ Otomatik Yük Dengeleme Entegrasyonu</li>
+                    <li data-i18n="card3_f4">✔ Worker Kaynak Havuzunu Genişletme</li>
+                  </ul>
+                  <div class="portal-card-footer">
+                    <button class="btn btn-secondary portal-btn" style="background:rgba(168,85,247,0.2); border-color:rgba(168,85,247,0.4); color:#E9D5FF;" onclick="enterAppMode('wizard', 'scale'); event.stopPropagation();" data-i18n="card3_btn">
+                      Ölçekleme Modunu Aç ➔
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 🌟 YENİ NESİL CLOUD STUDIO & ENTERPRISE SUITE VITRINI (1-CLICK DIRECT JUMP) -->
+              <div class="portal-feature-showcase">
+                <div class="portal-showcase-header">
+                  <div>
+                    <div class="portal-showcase-badge">⚡ SÜRÜM 2.4.0 YENİ ÖZELLİKLERİ</div>
+                    <h3 class="portal-showcase-title">Gelişmiş Cloud Studio & Kurumsal Operasyon Vitrini</h3>
+                    <p class="portal-showcase-desc">Yeni eklenen canlı yönetim, dosya transferi, maliyet ve eBPF otomasyon stüdyolarına tek tıkla doğrudan erişin:</p>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" onclick="switchGlobalView('operations')" style="align-self:center; white-space:nowrap; background:rgba(56,189,248,0.1); border-color:rgba(56,189,248,0.3); color:#38BDF8;">
+                    🎛️ Tüm 34 Modülü Yönetim Masasında Aç ➔
+                  </button>
+                </div>
+
+                <div class="portal-showcase-grid">
+                  <!-- Studio 1: Live YAML IDE -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('yaml-ide')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📝</span>
+                      <span class="showcase-tag blue">CLOUD STUDIO</span>
+                    </div>
+                    <div class="showcase-card-title">Canlı YAML IDE & Diff</div>
+                    <div class="showcase-card-desc">Tarayıcı içi syntax doğrulamalı k8s editörü, hazır deployment şablonları ve dry-run desteği.</div>
+                    <div class="showcase-card-link">Stüdyoyu Aç ➔</div>
+                  </div>
+
+                  <!-- Studio 2: Pod File Explorer -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('pod-files')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📁</span>
+                      <span class="showcase-tag cyan">KUBECTL CP</span>
+                    </div>
+                    <div class="showcase-card-title">Pod Dosya Gezgini</div>
+                    <div class="showcase-card-desc">Konteyner içi dosya ağacını canlı okuma, log indirme ve kubectl cp dosya transferi.</div>
+                    <div class="showcase-card-link">Dosyaları Gör ➔</div>
+                  </div>
+
+                  <!-- Studio 3: HPA Studio -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('hpa-studio')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">⚖️</span>
+                      <span class="showcase-tag purple">AUTOSCALE</span>
+                    </div>
+                    <div class="showcase-card-title">HPA Ölçekleme Stüdyosu</div>
+                    <div class="showcase-card-desc">CPU/Bellek hedefleri belirleme, surge simülasyonu ve pod replika ölçekleme eğrileri.</div>
+                    <div class="showcase-card-link">Simülatörü Aç ➔</div>
+                  </div>
+
+                  <!-- Studio 4: Secrets Vault -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('secrets-vault')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🔐</span>
+                      <span class="showcase-tag emerald">VAULT</span>
+                    </div>
+                    <div class="showcase-card-title">Secret & Config Kasası</div>
+                    <div class="showcase-card-desc">Base64 maskeleme/çözme, güvenli TLS & API anahtarı depolama ve tek tıkla şifreleme.</div>
+                    <div class="showcase-card-link">Kasayı Yönet ➔</div>
+                  </div>
+
+                  <!-- Studio 5: FinOps Calculator -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('finops-calculator')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">💰</span>
+                      <span class="showcase-tag amber">FINOPS</span>
+                    </div>
+                    <div class="showcase-card-title">Bulut Maliyet & ROI</div>
+                    <div class="showcase-card-desc">AWS/Azure/GCP karşısında on-premise RKE2 maliyet tasarrufu ve 3 yıllık ROI analizörü.</div>
+                    <div class="showcase-card-link">Hesaplayıcıyı Aç ➔</div>
+                  </div>
+
+                  <!-- Studio 6: DR / GSLB Failover -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('cluster-failover')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🌐</span>
+                      <span class="showcase-tag rose">DR & GSLB</span>
+                    </div>
+                    <div class="showcase-card-title">Multi-Cluster DR Failover</div>
+                    <div class="showcase-card-desc">Primary ve Secondary kümeler arası küresel DNS (GSLB) ve anlık acil durum yük aktarımı.</div>
+                    <div class="showcase-card-link">DR Paneline Git ➔</div>
+                  </div>
+
+                  <!-- Enterprise 1: Topology Graph -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('topology')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🕸️</span>
+                      <span class="showcase-tag blue">eBPF HARİTASI</span>
+                    </div>
+                    <div class="showcase-card-title">Görsel Ağ Topolojisi</div>
+                    <div class="showcase-card-desc">Internet, Ingress, Podlar, DB ve Depolama katmanları arasındaki canlı eBPF trafik akışı.</div>
+                    <div class="showcase-card-link">Haritayı İncele ➔</div>
+                  </div>
+
+                  <!-- Enterprise 2: Helm Catalog -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('helm')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📦</span>
+                      <span class="showcase-tag purple">HELM 3</span>
+                    </div>
+                    <div class="showcase-card-title">Özel Helm Kataloğu</div>
+                    <div class="showcase-card-desc">Redis, PostgreSQL, GitLab, NGINX chart kütüphanesi ve tarayıcı içi values.yaml düzenleyici.</div>
+                    <div class="showcase-card-link">Kataloğu Aç ➔</div>
+                  </div>
+
+                  <!-- Enterprise 3: Chaos Simulator -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('chaos')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🧪</span>
+                      <span class="showcase-tag rose">CHAOS RESILIENCE</span>
+                    </div>
+                    <div class="showcase-card-title">Kaos Mühendisliği</div>
+                    <div class="showcase-card-desc">Pod Kill, Node Network Latency ve CPU Spike senaryoları ile HA dayanıklılık testi.</div>
+                    <div class="showcase-card-link">Senaryoları Test Et ➔</div>
+                  </div>
+
+                  <!-- Enterprise 4: Audit Trail -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('audit')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📜</span>
+                      <span class="showcase-tag emerald">AUDIT LOGS</span>
+                    </div>
+                    <div class="showcase-card-title">Kurumsal Denetim Defteri</div>
+                    <div class="showcase-card-desc">Kim, ne zaman, hangi IP'den hangi k8s kaynağını değiştirdi? Filtreleme ve JSON export.</div>
+                    <div class="showcase-card-link">Kayıtları Gör ➔</div>
+                  </div>
+
+                  <!-- Enterprise 5: Webhooks -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('webhooks')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📢</span>
+                      <span class="showcase-tag amber">BİLDİRİM</span>
+                    </div>
+                    <div class="showcase-card-title">Slack / Teams / Telegram</div>
+                    <div class="showcase-card-desc">Kritik küme alarmları ve olayları için webhook entegrasyonu ve anlık test bildirimi gönderimi.</div>
+                    <div class="showcase-card-link">Kanalları Ayarla ➔</div>
+                  </div>
+
+                  <!-- Enterprise 6: Private Registry -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('registry')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🐳</span>
+                      <span class="showcase-tag cyan">HARBOR</span>
+                    </div>
+                    <div class="showcase-card-title">Özel Registry (Harbor)</div>
+                    <div class="showcase-card-desc">Kurumsal Docker registry entegrasyonu ve otomatik imagePullSecrets üretici.</div>
+                    <div class="showcase-card-link">Registry'yi Aç ➔</div>
+                  </div>
+
+                  <!-- Hyper 1: GitOps Hub -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('gitops')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🔄</span>
+                      <span class="showcase-tag blue">GITOPS</span>
+                    </div>
+                    <div class="showcase-card-title">GitOps & Dağıtım (Argo)</div>
+                    <div class="showcase-card-desc">Git reposundaki YAML bildirimleri ile canlı k8s iş yükleri senkronizasyonu ve drift kontrolü.</div>
+                    <div class="showcase-card-link">GitOps Merkezini Aç ➔</div>
+                  </div>
+
+                  <!-- Hyper 2: Canary Traffic -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('canary-traffic')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🚦</span>
+                      <span class="showcase-tag purple">eBPF MESH</span>
+                    </div>
+                    <div class="showcase-card-title">Canary Trafik Bölme</div>
+                    <div class="showcase-card-desc">v1 ve v2 sürümleri arasında slider ile canlı trafik yönlendirme, P99 gecikme kıyaslaması.</div>
+                    <div class="showcase-card-link">Trafik Masasını Aç ➔</div>
+                  </div>
+
+                  <!-- Hyper 3: Policy Engine -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('policy-engine')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🛡️</span>
+                      <span class="showcase-tag emerald">OPA & KYVERNO</span>
+                    </div>
+                    <div class="showcase-card-title">OPA Politika Motoru</div>
+                    <div class="showcase-card-desc">Root çalıştırma engeli, kaynak limit zorunluluğu ve tek tıkla otomatik ihlal yamalama.</div>
+                    <div class="showcase-card-link">Politikaları Yönet ➔</div>
+                  </div>
+
+                  <!-- Hyper 4: Pod WebTTY -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('pod-terminal')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">💻</span>
+                      <span class="showcase-tag cyan">WEBTTY SHELL</span>
+                    </div>
+                    <div class="showcase-card-title">Pod Canlı Web Terminali</div>
+                    <div class="showcase-card-desc">Konteyner içine doğrudan tarayıcıdan /bin/sh shell açarak canlı komut çalıştırma ve debug.</div>
+                    <div class="showcase-card-link">Terminali Başlat ➔</div>
+                  </div>
+
+                  <!-- Hyper 5: Log Anomaly AI -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('log-anomaly-ai')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">🤖</span>
+                      <span class="showcase-tag rose">PREDICTIVE AI</span>
+                    </div>
+                    <div class="showcase-card-title">AI Log Anomali Tespiti</div>
+                    <div class="showcase-card-desc">OOMKilled, bellek sızıntısı ve DB bağlantı tükenmelerini önceden tahmin eden yapay zeka.</div>
+                    <div class="showcase-card-link">AI Radarını Aç ➔</div>
+                  </div>
+
+                  <!-- Hyper 6: Executive Report -->
+                  <div class="portal-showcase-card" onclick="switchOpsView('executive-report')">
+                    <div class="showcase-card-top">
+                      <span class="showcase-card-icon">📑</span>
+                      <span class="showcase-tag amber">EXECUTIVE SLA</span>
+                    </div>
+                    <div class="showcase-card-title">C-Level Yönetici Raporu</div>
+                    <div class="showcase-card-desc">Şirket yöneticileri ve denetçiler için resmi mühürlü SLA, maliyet tasarrufu ve sağlık raporu.</div>
+                    <div class="showcase-card-link">Raporu Oluştur ➔</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ALT HIZLI BAĞLANTI & KÜME SEÇİCİ KARTI -->
+              <div class="portal-quick-connect" style="flex-direction:column; align-items:stretch;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <span style="font-size:1.4rem;">🌐</span>
+                    <div>
+                      <div style="font-size:0.86rem; font-weight:700; color:#fff;" data-i18n="quick_connect_title">Mevcut Canlı Kümeye Hızlı Bağlan</div>
+                      <div style="font-size:0.75rem; color:var(--text-muted);" data-i18n="quick_connect_desc">Master IP ve SSH bilgilerini girerek doğrudan operasyon masasını canlı verilerle açabilirsiniz:</div>
+                    </div>
+                  </div>
+                  <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <input type="text" id="portal-quick-ip" placeholder="Master IP (Örn: 10.0.10.11)" data-i18n-placeholder="quick_connect_ip_ph" style="padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-input); color:#fff; font-size:0.78rem; width:150px; font-family:'JetBrains Mono';">
+                    <input type="text" id="portal-quick-user" placeholder="Kullanıcı (root)" value="root" data-i18n-placeholder="quick_connect_user_ph" style="padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-input); color:#fff; font-size:0.78rem; width:110px;">
+                    <input type="password" id="portal-quick-pass" placeholder="SSH Şifresi" data-i18n-placeholder="quick_connect_pass_ph" style="padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-input); color:#fff; font-size:0.78rem; width:120px;">
+                    <button class="btn btn-primary btn-sm" id="btn-portal-quick-connect" style="padding:6px 12px; font-size:0.78rem;" onclick="connectAndEnterOps()" data-i18n="quick_connect_btn">⚡ Doğrudan Bağlan & Aç</button>
+                  </div>
+                </div>
+
+                <!-- CANLI BAĞLANTI LOG TERMİNALİ -->
+                <div id="portal-quick-log-box" style="display:none; margin-top:14px; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+                  <div class="terminal-window" style="box-shadow:0 8px 24px rgba(0,0,0,0.5); border:1px solid rgba(56,189,248,0.3); border-radius:var(--radius-sm); overflow:hidden;">
+                    <div class="terminal-header" style="padding:6px 12px; background:rgba(15,23,42,0.95); display:flex; justify-content:space-between; align-items:center;">
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <div class="terminal-dots">
+                          <span class="terminal-dot red"></span>
+                          <span class="terminal-dot yellow"></span>
+                          <span class="terminal-dot green"></span>
+                        </div>
+                        <span class="terminal-title" style="font-size:0.75rem; font-family:'JetBrains Mono'; color:#38BDF8;" id="portal-quick-log-title">ssh: connecting...</span>
+                      </div>
+                      <div style="display:flex; gap:8px; align-items:center;">
+                        <span id="portal-quick-log-status" style="font-size:0.72rem; color:var(--text-dim);">Bekliyor</span>
+                        <button onclick="closeQuickLogBox()" title="Kapat" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; padding:0 4px;">✕</button>
+                      </div>
+                    </div>
+                    <div class="terminal-body" id="portal-quick-log-content" style="min-height:130px; max-height:220px; font-size:0.76rem; padding:10px 12px; font-family:'JetBrains Mono'; background:#0B0F19; overflow-y:auto; line-height:1.5;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1. KURULUM SİHİRBAZI ÇALIŞMA ALANI -->

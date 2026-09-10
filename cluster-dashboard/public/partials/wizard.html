@@ -1,0 +1,550 @@
+          <div id="workspace-wizard" style="display:none;">
+
+
+
+    <!-- ============================================================= -->
+    <!-- ADIM 1: SAĞLAYICI SEÇİMİ                                      -->
+    <!-- ============================================================= -->
+    <div class="wizard-step active" id="step-1">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill" data-i18n="step1_badge">ADIM 01 / 05 • PLATFORM & KURULUM MODU</span>
+          <h2 class="card-title" data-i18n="step1_card_title">Kubernetes Kurulum Modu & Altyapı Sağlayıcısı</h2>
+          <p class="card-desc" data-i18n="step1_card_desc">İşlem hedefinizi (Sıfırdan tam yedekli HA küme veya çalışan kümeye scale-out genişletme) ve hedef sanallaştırma ortamını belirleyin.</p>
+        </div>
+
+        <!-- İŞLEM TÜRÜ SEÇİMİ (YENİ KURULUM / DÜĞÜM EKLEME) -->
+        <div style="margin-bottom: 28px;">
+          <label style="font-size:0.8rem; font-weight:700; letter-spacing:0.05em; color:var(--primary-glow); text-transform:uppercase; margin-bottom:12px; display:block;" data-i18n="step1_mode_lbl">
+            🎯 Yapılacak İşlem Türünü Seçin
+          </label>
+          <div class="mode-grid">
+            <!-- Yeni Kurulum -->
+            <div class="mode-card selected" id="mode-new" onclick="selectOperationMode('new')">
+              <div style="display:flex; align-items:flex-start; gap:14px;">
+                <div style="font-size:2rem; line-height:1;">🚀</div>
+                <div>
+                  <div style="font-weight:700; font-size:1.05rem; color:#fff; margin-bottom:4px;" data-i18n="mode_new_title">Yeni Küme Kurulumu (İlk Kurulum)</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;" data-i18n="mode_new_desc">
+                    Sıfırdan tam yedekli High-Availability (HA) Master & Worker kümesi oluşturun ve Cilium eBPF CNI'yı kurun.
+                  </div>
+                </div>
+              </div>
+              <span class="mode-badge">İlk Kurulum</span>
+            </div>
+
+            <!-- Düğüm Ekleme (Scale-out) -->
+            <div class="mode-card" id="mode-scale" onclick="selectOperationMode('scale')">
+              <div style="display:flex; align-items:flex-start; gap:14px;">
+                <div style="font-size:2rem; line-height:1;">➕</div>
+                <div>
+                  <div style="font-weight:700; font-size:1.05rem; color:#fff; margin-bottom:4px;" data-i18n="mode_scale_title">Mevcut Kümeye Düğüm Ekle (Scale-Out)</div>
+                  <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;" data-i18n="mode_scale_desc">
+                    Çalışan bir RKE2 kümesine yeni Master (Control-Plane) veya Worker düğümleri dahil ederek kapasiteyi artırın.
+                  </div>
+                </div>
+              </div>
+              <span class="mode-badge">Düğüm Ekleme</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-header" style="margin-top: 10px; margin-bottom: 16px;">
+          <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;" data-i18n="step1_prov_title">Sanallaştırma / Altyapı Sağlayıcısı</h3>
+          <p class="card-desc" data-i18n="step1_prov_desc">Yeni VM'lerin açılacağı platformu veya mevcut fiziksel/sanal sunucuları seçin.</p>
+        </div>
+
+        <div class="provider-grid">
+          <!-- Proxmox VE -->
+          <div class="provider-card selected" id="prov-proxmox" onclick="selectProvider('proxmox')">
+            <div class="provider-icon">🦊</div>
+            <div class="provider-name">Proxmox VE</div>
+            <div class="provider-desc" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;" data-i18n="prov_proxmox_desc">Proxmox REST API ile otomatik VM klonlama ve Cloud-Init</div>
+            <span class="provider-badge">API v2 Entegrasyonu</span>
+          </div>
+
+          <!-- VMware vCenter -->
+          <div class="provider-card" id="prov-vcenter" onclick="selectProvider('vcenter')">
+            <div class="provider-icon">🔷</div>
+            <div class="provider-name">VMware vCenter</div>
+            <div class="provider-desc" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;" data-i18n="prov_vcenter_desc">vSphere / vCenter REST API ile ESXi hostlara otomatik dağıtım</div>
+            <span class="provider-badge">vSphere 7/8 API</span>
+          </div>
+
+          <!-- Microsoft Hyper-V -->
+          <div class="provider-card" id="prov-hyperv" onclick="selectProvider('hyperv')">
+            <div class="provider-icon">🪟</div>
+            <div class="provider-name">Microsoft Hyper-V</div>
+            <div class="provider-desc" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;" data-i18n="prov_hyperv_desc">Windows Server / Windows 10/11 Hyper-V ile otomatik VHDX klonlama</div>
+            <span class="provider-badge">PowerShell / WinRM</span>
+          </div>
+
+          <!-- Manuel Sunucular -->
+          <div class="provider-card" id="prov-manual" onclick="selectProvider('manual')">
+            <div class="provider-icon">💻</div>
+            <div class="provider-name">Mevcut Sunucular</div>
+            <div class="provider-desc" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;" data-i18n="prov_manual_desc">Halihazırda açık olan Linux sunucularınızın IP'lerini girerek kurun</div>
+            <span class="provider-badge">Doğrudan SSH</span>
+          </div>
+        </div>
+
+        <div class="btn-row" style="justify-content: flex-end;">
+          <button class="btn btn-primary" onclick="goToStep(2)" data-i18n="btn_next_step2">
+            Devam Et &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 2: BAĞLANTI & SUNUCU KEŞFİ                              -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-2">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 02 / 05 • BAĞLANTI & SUNUCU KEŞFİ</span>
+          <h2 class="card-title" id="step2-title">Proxmox VE Bağlantısı & Sunucu Keşfi</h2>
+          <p class="card-desc" id="step2-desc">API üzerinden bağlanarak ortamdaki aktif fiziksel sunucuları ve şablonları keşfedin.</p>
+        </div>
+
+        <!-- Dynamic Form (Proxmox vs vCenter vs Manual) -->
+        <div id="conn-form-container">
+          <div class="form-grid">
+            <div class="form-group" style="grid-column: span 2;">
+              <label id="lbl-host">Proxmox Sunucu IP / Hostname</label>
+              <input type="text" id="api-host" placeholder="10.0.20.1 veya 10.0.20.1, 10.0.20.2, 10.0.20.3, 10.0.20.4">
+              <span id="lbl-hint" style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+                💡 <strong>İpucu:</strong> Eğer 4 sunucunuz Proxmox Cluster (Datacenter) halindeyse <strong>sadece bir tanesinin IP'sini girmeniz yeterlidir</strong>; sistem arka plandaki diğer tüm fiziksel sunucuları otomatik keşfeder. Sunucularınız henüz cluster değilse IP'leri virgülle yazabilirsiniz.
+              </span>
+            </div>
+            <div class="form-group">
+              <label id="lbl-port">Port</label>
+              <input type="number" id="api-port" value="8006">
+            </div>
+            <div class="form-group">
+              <label id="lbl-user">Kullanıcı Adı</label>
+              <input type="text" id="api-user" placeholder="root veya root@pam">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label>Şifre</label>
+              <input type="password" id="api-pass" placeholder="••••••••">
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; display:flex; justify-content:flex-end;">
+            <button class="btn btn-secondary" id="btn-test-conn" onclick="connectProvider()">
+              <span id="conn-btn-text">⚡ Bağlan & Sunucuları Keşfet</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Keşfedilen Düğümler -->
+        <div id="discovered-nodes-area" style="display:none;">
+          <div class="nodes-discovery-header">
+            <h3 style="font-size:1.05rem; font-weight:700;" id="lbl-nodes-pool">Tespit Edilen Fiziksel Sunucular (Node Pool)</h3>
+            <span class="brand-badge" id="nodes-count-badge">0 Node Aktif</span>
+          </div>
+
+          <div class="nodes-grid" id="nodes-cards-container">
+            <!-- Node cards injected via JS -->
+          </div>
+
+          <!-- Template & Storage Seçimi -->
+          <div class="form-grid" style="margin-top: 20px;" id="template-selector-row">
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <label id="lbl-template" style="margin-bottom:0;">Klonlanacak Cloud-Init Şablonu (Template)</label>
+                <button type="button" onclick="openTemplateModal()" style="background:none; border:none; color:var(--primary-glow); font-size:0.75rem; cursor:pointer; text-decoration:underline;">
+                  🪄 Şablon Yok mu? Otomatik Oluştur
+                </button>
+              </div>
+              <select id="selected-template">
+                <option value="">Şablonlar taranıyor...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="lbl-storage">Hedef Disk / Depolama Havuzu (Storage)</label>
+              <select id="selected-storage">
+                <option value="">Depolama alanları taranıyor...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(1)">&larr; Geri</button>
+          <button class="btn btn-primary" id="btn-step2-next" onclick="goToStep(3)">Küme Ayarlarına Geç &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 3: KÜME MİMARİSİ VE BOYUTLANDIRMA                       -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-3">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 03 / 05 • KÜME MİMARİSİ & KAYNAKLAR</span>
+          <h2 class="card-title" id="step3-title">Kubernetes Mimarisi & Boyutlandırma</h2>
+          <p class="card-desc" id="step3-desc">Master ve Worker sayılarını, IP bloğunuzu ve yüksek erişilebilirlik ayarlarını belirleyin.</p>
+        </div>
+
+        <!-- Scale-out Bilgi Paneli (Yalnızca Düğüm Ekleme Modunda Görünür) -->
+        <div id="scale-info-banner" style="display:none; background:rgba(52, 211, 153, 0.08); border:1px solid rgba(52, 211, 153, 0.25); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:22px; font-size:0.86rem; line-height:1.5;">
+          <div style="font-weight:700; color:#34D399; margin-bottom:4px;">➕ Mevcut RKE2 Kümesine Düğüm Ekleme Modu Aktif</div>
+          <div style="color:var(--text-muted);">
+            Mevcut kümenizin API/Join adresini ve <code>/var/lib/rancher/rke2/server/node-token</code> dosyasındaki Join Token'ını girin. Yeni açılacak düğümler otomatik olarak mevcut kümeye dahil edilecektir.
+          </div>
+        </div>
+
+        <!-- Canlı Küme Kaynak Göstergesi (Özet Çubuğu) -->
+        <div class="cluster-summary-bar">
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">☸️</div>
+            <div>
+              <div class="summary-stat-label">Toplam Düğüm</div>
+              <div class="summary-stat-val" id="sum-total-nodes">8 Düğüm</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">⚡</div>
+            <div>
+              <div class="summary-stat-label">Toplam Kapasite</div>
+              <div class="summary-stat-val" id="sum-total-specs">64 Cores / 128 GB RAM</div>
+            </div>
+          </div>
+          <div class="summary-stat-item">
+            <div class="summary-stat-icon">🛡️</div>
+            <div>
+              <div class="summary-stat-label">Yüksek Erişilebilirlik</div>
+              <div class="summary-stat-val" id="sum-ha-status" style="color:var(--success); font-size:0.95rem;">✔ HA Quorum Aktif</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 1: DÜĞÜM KAPASİTESİ (İNTERAKTİF STEPPER KARTLARI) -->
+        <div class="config-section-card">
+          <div class="section-badge-title">
+            <span class="section-icon">👑</span>
+            <span>Düğüm Rolleri & Kapasite Boyutlandırma</span>
+          </div>
+
+          <div class="node-sizers-grid">
+            <!-- Master Card -->
+            <div class="node-sizer-box master-box">
+              <div class="node-sizer-header">
+                <div>
+                  <div class="node-sizer-title" id="lbl-master-count">Master (Control-Plane)</div>
+                  <div class="node-sizer-subtitle" id="hint-master-count">Kubernetes API, etcd ve Scheduler</div>
+                </div>
+                <span class="role-tag violet">ETCD HA</span>
+              </div>
+              <div class="stepper-row">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-master-count', -1)">−</button>
+                <div class="stepper-val-display" id="display-master-count">3</div>
+                <input type="number" id="cfg-master-count" value="3" min="0" max="7" class="stepper-number-input" onchange="syncStepDisplay('master')">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-master-count', 1)">+</button>
+              </div>
+              <div class="preset-pills-row" id="preset-row-master">
+                <button type="button" class="preset-pill" onclick="setCount('cfg-master-count', 1, this)">1 Single</button>
+                <button type="button" class="preset-pill active" onclick="setCount('cfg-master-count', 3, this)">3 HA (Önerilen)</button>
+                <button type="button" class="preset-pill" onclick="setCount('cfg-master-count', 5, this)">5 Enterprise</button>
+              </div>
+            </div>
+
+            <!-- Worker Card -->
+            <div class="node-sizer-box worker-box">
+              <div class="node-sizer-header">
+                <div>
+                  <div class="node-sizer-title" id="lbl-worker-count">Worker (Uygulama Düğümleri)</div>
+                  <div class="node-sizer-subtitle" id="hint-worker-count">Mikroservisler ve veritabanı yükleri</div>
+                </div>
+                <span class="role-tag cyan">WORKLOADS</span>
+              </div>
+              <div class="stepper-row">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-worker-count', -1)">−</button>
+                <div class="stepper-val-display" id="display-worker-count">5</div>
+                <input type="number" id="cfg-worker-count" value="5" min="0" max="50" class="stepper-number-input" onchange="syncStepDisplay('worker')">
+                <button type="button" class="stepper-btn" onclick="stepCount('cfg-worker-count', 1)">+</button>
+              </div>
+              <div class="preset-pills-row" id="preset-row-worker">
+                <button type="button" class="preset-pill" onclick="setCount('cfg-worker-count', 2, this)">2 Test</button>
+                <button type="button" class="preset-pill active" onclick="setCount('cfg-worker-count', 5, this)">5 Standart</button>
+                <button type="button" class="preset-pill" onclick="setCount('cfg-worker-count', 10, this)">10 Yoğun Yük</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- VM ID ve Numaralandırma -->
+          <div class="form-grid" style="margin-top: 14px;">
+            <div class="form-group">
+              <label>Sanal Makine Başlangıç ID (Proxmox/ESXi VMID)</label>
+              <input type="number" id="cfg-start-vmid" value="100">
+            </div>
+            <!-- Düğüm İsimlendirme / Başlangıç Sıra No (Yalnızca Düğüm Ekleme Modunda) -->
+            <div class="form-group" id="row-scale-indexing" style="display:none;">
+              <label>Yeni Düğümler Başlangıç Sıra No (Master / Worker)</label>
+              <div style="display:flex; gap:10px;">
+                <input type="number" id="cfg-start-master-num" value="4" min="1" placeholder="Master No (örn: 4)">
+                <input type="number" id="cfg-start-worker-num" value="6" min="1" placeholder="Worker No (örn: 6)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 2: AĞ & GİRİŞ KAPISI (VIP & TOKEN) -->
+        <div class="config-section-card">
+          <div class="section-badge-title">
+            <span class="section-icon">🌐</span>
+            <span>Ağ Yapılandırması & Giriş Kapısı (VIP / Token)</span>
+          </div>
+
+          <div class="form-grid col-3" style="margin-bottom: 20px;">
+            <div class="form-group">
+              <label>IP Subnet Ön Eki</label>
+              <input type="text" id="cfg-subnet-base" value="10.0.10" placeholder="10.0.10" oninput="updateLiveSummary()">
+            </div>
+            <div class="form-group">
+              <label id="lbl-start-host">Başlangıç Host IP No</label>
+              <input type="number" id="cfg-start-host" value="10" oninput="updateLiveSummary()">
+              <span id="hint-start-host" style="font-size:0.75rem; color:var(--text-dim);">İlk VM IP: <strong id="chip-first-ip" style="color:var(--primary-glow)">10.0.10.10</strong></span>
+            </div>
+            <div class="form-group">
+              <label>Ağ Ağ Geçidi (Gateway)</label>
+              <input type="text" id="cfg-gateway" value="10.0.10.1">
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom: 8px;">
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label id="lbl-vip" style="margin-bottom:0;">FortiGate VIP / Load Balancer IP</label>
+                <span style="font-size:0.7rem; color:var(--accent-glow); background:rgba(139, 92, 246, 0.15); padding:2px 8px; border-radius:4px;">HA ENTRYPOINT</span>
+              </div>
+              <input type="text" id="cfg-vip" value="10.0.10.100" placeholder="10.0.10.100">
+              <span id="hint-vip" style="font-size:0.75rem; color:var(--text-dim); display:none;">Mevcut kümenin API adresi (örn. İlk master IP'si veya VIP)</span>
+            </div>
+            <div class="form-group">
+              <label id="lbl-token">Cluster Secret Token</label>
+              <div class="input-with-action">
+                <input type="text" id="cfg-token" placeholder="Boş bırakılırsa otomatik üretilir">
+                <button type="button" class="input-action-btn" onclick="generateRandomToken()">
+                  🎲 Yeni Üret
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 3: CNI & PERFORMANS -->
+        <div class="config-section-card" id="row-cni-domain">
+          <div class="section-badge-title">
+            <span class="section-icon">⚡</span>
+            <span>CNI Ağ Modeli & Yüksek Performans</span>
+          </div>
+
+          <div class="form-grid col-3">
+            <div class="form-group">
+              <label>CNI Ağ Modeli</label>
+              <select id="cfg-cni">
+                <option value="cilium" selected>Cilium (eBPF - En Hızlı & Zero Latency)</option>
+                <option value="canal">Canal (Flannel / iptables)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Sunucu Başına Max Pod</label>
+              <input type="number" id="cfg-max-pods" value="500">
+            </div>
+            <div class="form-group">
+              <label>Cluster API Domain (SAN)</label>
+              <input type="text" id="cfg-domain" value="k8s.local">
+            </div>
+          </div>
+        </div>
+
+        <!-- BÖLÜM 4: VM DONANIMI & SSH -->
+        <div class="config-section-card">
+          <div class="section-badge-title">
+            <span class="section-icon">💻</span>
+            <span>Düğüm Donanım Kaynakları & SSH Kimlik Doğrulaması</span>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="margin-bottom:6px; display:block;">Hızlı Donanım Şablonları</label>
+            <div class="spec-preset-bar">
+              <button type="button" class="spec-chip" onclick="setNodeSpecs(4, 8192, 40, this)">4 CPU / 8 GB RAM / 40 GB</button>
+              <button type="button" class="spec-chip active" onclick="setNodeSpecs(8, 16384, 60, this)">8 CPU / 16 GB RAM / 60 GB (Önerilen)</button>
+              <button type="button" class="spec-chip" onclick="setNodeSpecs(16, 32768, 100, this)">16 CPU / 32 GB RAM / 100 GB</button>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-bottom: 8px;">
+            <div class="form-group">
+              <label>CPU Çekirdek / RAM (MB) / Disk Boyutu (GB)</label>
+              <div style="display:flex; gap:10px;">
+                <input type="number" id="cfg-cores" value="8" placeholder="CPU Core" title="CPU Core" oninput="updateLiveSummary()">
+                <input type="number" id="cfg-ram" value="16384" placeholder="RAM MB" title="RAM MB" oninput="updateLiveSummary()">
+                <input type="number" id="cfg-disk" value="60" placeholder="Disk GB" title="VM Disk Boyutu (GB)">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>VM SSH Kullanıcı Adı & Şifresi</label>
+              <div style="display:flex; gap:10px;">
+                <input type="text" id="cfg-ssh-user" value="root" placeholder="Kullanıcı">
+                <div class="input-with-action" style="flex:1;">
+                  <input type="password" id="cfg-ssh-pass" placeholder="Şifre" style="padding-right:45px;">
+                  <button type="button" onclick="togglePassVisibility('cfg-ssh-pass', this)" style="position:absolute; right:10px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;" title="Şifreyi Göster/Gizle">
+                    👁️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-secondary" onclick="goToStep(2)">&larr; Geri</button>
+          <button class="btn btn-primary" onclick="prepareDistributionPreview()">Dağıtım Planını Çıkar &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 4: DAĞITIM PLANI VE ÖNİZLEME (ANTI-AFFINITY)            -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-4">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 04 / 05 • TOPOLOJİ & DAĞITIM PLANI</span>
+          <h2 class="card-title">Akıllı Dağıtım Haritası (Anti-Affinity Matrisi)</h2>
+          <p class="card-desc">Master VM'lerin fiziksel sunucularda birbirini ezmemesi ve Worker'ların eşit yayılması için otomatik oluşturulan dağıtım planı.</p>
+        </div>
+
+        <!-- FİZİKSEL SUNUCU TOPOLOJİ KARTLARI (HANGİ VM HANGİ NODE'A GİDİYOR) -->
+        <div style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <label style="font-size:0.82rem; font-weight:700; letter-spacing:0.05em; color:var(--primary-glow); text-transform:uppercase; display:flex; align-items:center; gap:8px;">
+              <span>🖥️ Fiziksel Sunucu (Host) Dağıtım Haritası</span>
+            </label>
+            <span id="anti-affinity-badge" style="font-size:0.75rem; color:var(--success); background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.25); padding:3px 10px; border-radius:12px; font-weight:600;">
+              ✔ Anti-Affinity Kuralı: Aktif
+            </span>
+          </div>
+          <div id="host-topology-container" class="host-topology-grid">
+            <!-- Injected by renderDistributionTable -->
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <label style="font-size:0.82rem; font-weight:700; letter-spacing:0.05em; color:var(--text-muted); text-transform:uppercase;">
+            📋 Detaylı Sanal Makine Dağıtım Listesi
+          </label>
+          <span style="font-size:0.75rem; color:var(--text-dim);">
+            💡 Tablodaki seçim kutusundan bir VM'in gideceği fiziksel host'u dilediğiniz gibi değiştirebilirsiniz.
+          </span>
+        </div>
+
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Rol</th>
+                <th>VM Adı</th>
+                <th>VM ID</th>
+                <th>Atanan IP Adresi</th>
+                <th>Hedef Fiziksel Sunucu (Host)</th>
+                <th>Yedeklilik Durumu</th>
+              </tr>
+            </thead>
+            <tbody id="distribution-table-body">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PRE-FLIGHT KONTROL SONUÇ PANELİ -->
+        <div id="preflight-results-panel" class="preflight-panel" style="display: none; margin-bottom: 20px;">
+          <div class="preflight-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="preflight-status-icon" id="preflight-main-icon">⏳</span>
+              <div>
+                <div class="preflight-title" id="preflight-main-title">Ağ & Kaynak Doğrulaması Çalıştırılıyor...</div>
+                <div class="preflight-subtitle" id="preflight-main-desc">IP çakışmaları, Gateway erişimi ve Disk depolama kapasitesi taranıyor.</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="runPreflightCheck()">🔄 Yeniden Tara</button>
+          </div>
+          <div class="preflight-grid" id="preflight-grid-content">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <div class="btn-row" style="flex-wrap: wrap; gap: 10px;">
+          <button class="btn btn-secondary" onclick="goToStep(3)">&larr; Geri</button>
+          <div style="display:flex; gap:10px; margin-left:auto; flex-wrap:wrap;">
+            <button class="btn btn-secondary" id="btn-preflight" onclick="runPreflightCheck()">
+              🛡️ Pre-Flight Ağ & Kaynak Doğrula
+            </button>
+            <button class="btn btn-secondary" id="btn-export-yaml" onclick="downloadClusterSpecYaml()">
+              📄 IaC Spec İndir (.yaml)
+            </button>
+            <button class="btn btn-success" id="btn-start-deploy" onclick="startDeployment()">
+              🚀 Kurulumu Başlat (Deploy Cluster)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- ADIM 5: CANLI KURULUM TERMİNALİ (INSTALLATION LOGS)            -->
+    <!-- ============================================================= -->
+    <div class="wizard-step" id="step-5">
+      <div class="glass-card">
+        <div class="card-header">
+          <span class="step-badge-pill">ADIM 05 / 05 • CANLI DAĞITIM</span>
+          <h2 class="card-title">Canlı RKE2 & Cilium Kurulum Konsolu</h2>
+          <p class="card-desc">VM klonlama, Cloud-Init enjeksiyonu ve RKE2 + Cilium eBPF kurulum adımları saniye saniye canlı akmaktadır.</p>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-header">
+            <span id="progress-status-text">Kurulum hazırlanıyor...</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+            </div>
+            <span class="terminal-title">live-stream: rke2-deploy.log</span>
+            <span style="font-size:0.75rem; color:var(--text-dim);" id="term-status-badge">Bekliyor</span>
+          </div>
+          <div class="terminal-body" id="terminal-output">
+            <div class="log-line cyan">[SYSTEM] Kurulum başlatıldığında canlı akış burada görüntülenecektir.</div>
+          </div>
+        </div>
+
+        <div class="btn-row" id="final-btn-row" style="display:none; justify-content: space-between; align-items:center; margin-top:20px; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="color:var(--success-text); font-weight:700; font-size:0.95rem;">✔ RKE2 & Cilium Kurulumu Başarıyla Tamamlandı!</span>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary" onclick="downloadKubeconfig()">📥 Kubeconfig İndir (.yaml)</button>
+            <button class="btn btn-success" onclick="switchGlobalView('operations')">🎛️ Küme Yönetim Merkezine Geç &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- /workspace-wizard -->
+
+  <!-- ============================================================= -->
+  <!-- 2. KÜME YÖNETİM & DAY-2 OPERASYON MERKEZİ                     -->
+  <!-- ============================================================= -->

@@ -13,6 +13,11 @@ const hyperCloudRoutes = require('./routes/hyperCloudRoutes');
 const providerRoutes = require('./routes/providerRoutes');
 const deployRoutes = require('./routes/deployRoutes');
 const operationsRoutes = require('./routes/operationsRoutes');
+const demoRoutes = require('./routes/demoRoutes');
+const { buildHtml } = require('./services/htmlBuilder');
+
+// Compile modular HTML template & partials on boot
+buildHtml();
 
 const app = express();
 const server = http.createServer(app);
@@ -46,6 +51,7 @@ app.use(hyperCloudRoutes);
 app.use(providerRoutes(broadcast));
 app.use(deployRoutes(broadcast));
 app.use(operationsRoutes);
+app.use('/api/demo', demoRoutes);
 
 const PORT = process.env.PORT || 5050;
 server.listen(PORT, () => {

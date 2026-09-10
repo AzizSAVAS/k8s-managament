@@ -4,7 +4,8 @@
   "description": "Enterprise RKE2, Cilium, Proxmox & VMware vCenter Cluster Manager",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build:html": "node services/htmlBuilder.js"
   },
   "dependencies": {
     "express": "^4.19.2",

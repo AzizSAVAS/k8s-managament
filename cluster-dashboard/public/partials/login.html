@@ -1,0 +1,86 @@
+  <div id="app-login-screen" class="login-viewport" style="display: flex;">
+    <div class="login-bg-glow"></div>
+    <div class="login-container">
+      <div class="login-card glass-card">
+        <!-- BRAND & HEADER -->
+        <div class="login-header">
+          <div class="login-brand-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h2 class="login-title">Shamssoftware <span>Cluster Hub</span></h2>
+          <p class="login-subtitle">Kurumsal RKE2 & Kubernetes Yönetim Platformu</p>
+          <div class="login-badge-pill">🔒 Güvenli Yönetim Oturumu</div>
+        </div>
+
+        <!-- ERROR / NOTIFICATION BANNER -->
+        <div id="login-error-alert" class="login-alert" style="display: none;">
+          <span id="login-error-text">Kullanıcı adı veya şifre hatalı!</span>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" onsubmit="handleLoginSubmit(event)" class="login-form">
+          <div class="form-group">
+            <label for="login-username">Kullanıcı Adı</label>
+            <div class="login-input-wrap">
+              <span class="login-input-icon">👤</span>
+              <input type="text" id="login-username" class="login-input" placeholder="örn: admin" required autocomplete="username" value="admin">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Şifre</label>
+            <div class="login-input-wrap">
+              <span class="login-input-icon">🔑</span>
+              <input type="password" id="login-password" class="login-input" placeholder="••••••••" required autocomplete="current-password" value="admin">
+              <button type="button" class="login-pwd-toggle" onclick="togglePasswordVisibility()" title="Şifreyi Göster/Gizle">👁️</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="login-role">Erişim Rolü (RBAC)</label>
+            <div class="login-input-wrap">
+              <span class="login-input-icon">🛡️</span>
+              <select id="login-role" class="login-input login-select">
+                <option value="cluster-admin" selected>Cluster Administrator (Tam Yetkili Root)</option>
+                <option value="devops-engineer">DevOps Engineer (Dağıtım & Operasyon)</option>
+                <option value="security-auditor">Security Auditor (CIS / Salt Okunur Denetim)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="login-options-row">
+            <label class="login-remember-label">
+              <input type="checkbox" id="login-remember" checked>
+              <span>Oturumu Hatırla (30 Gün)</span>
+            </label>
+            <div class="login-lang-switch">
+              <button type="button" class="login-lang-btn active" id="login-lang-tr" onclick="setLanguage('tr')">TR</button>
+              <button type="button" class="login-lang-btn" id="login-lang-en" onclick="setLanguage('en')">EN</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary login-submit-btn" id="btn-login-submit">
+            <span id="btn-login-text">Platforma Giriş Yap ➔</span>
+            <span id="btn-login-spinner" style="display:none;" class="btn-spinner"></span>
+          </button>
+        </form>
+
+        <!-- DEMO / QUICK ACCESS FOOTER -->
+        <div class="login-footer">
+          <div class="login-demo-text">⚡ Hızlı Test Giriş Profilleri:</div>
+          <div class="login-demo-chips">
+            <button type="button" class="demo-chip" onclick="fillDemoCredentials('admin', 'admin', 'cluster-admin')">👑 Admin</button>
+            <button type="button" class="demo-chip" onclick="fillDemoCredentials('devops', 'devops', 'devops-engineer')">🚀 DevOps</button>
+            <button type="button" class="demo-chip" onclick="fillDemoCredentials('auditor', 'auditor', 'security-auditor')">🔍 Denetçi</button>
+          </div>
+          <div class="login-copyright">
+            © 2026 Shamssoftware • Aziz SAVAŞ • Tüm Hakları Saklıdır
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL-SCREEN CLOUD CONSOLE LAYOUT -->

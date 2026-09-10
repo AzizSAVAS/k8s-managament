@@ -1,0 +1,220 @@
+  <div class="modal-overlay" id="template-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">🪄 Otomatik Cloud-Init Şablonu Oluştur</div>
+        <button class="modal-close" onclick="closeTemplateModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-tabs" id="modal-tabs-bar">
+          <button class="modal-tab-btn active" id="tab-btn-auto" onclick="switchTemplateTab('auto')">⚡ 1-Tıkla Otomatik Kur</button>
+          <button class="modal-tab-btn" id="tab-btn-manual" onclick="switchTemplateTab('manual')">📋 Proxmox Shell Komutu</button>
+        </div>
+
+        <!-- PROXMOX TAB 1: OTOMATIK -->
+        <div id="tab-auto-content">
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 16px;">
+            Proxmox sunucunuza bağlanarak resmi Ubuntu Cloud Image'ı doğrudan indirir ve Cloud-Init şablonu (Golden Image) haline getirir.
+          </p>
+          <div class="form-grid" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label>İşletim Sistemi Sürümü</label>
+              <select id="tpl-os-version" onchange="updateSnippet()">
+                <option value="22.04" selected>Ubuntu 22.04 LTS (Jammy - Önerilen)</option>
+                <option value="24.04">Ubuntu 24.04 LTS (Noble)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Şablon VM ID</label>
+              <input type="number" id="tpl-vmid" value="9000" oninput="updateSnippet()">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label>Hedef Storage Havuzu</label>
+            <select id="tpl-storage" onchange="updateSnippet()">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+
+          <div id="tpl-log-box" style="display:none; margin-bottom: 16px;">
+            <div style="font-size:0.75rem; color:var(--text-dim); margin-bottom:4px;">İşlem Günlüğü:</div>
+            <div class="code-box" id="tpl-log-content">İşlem başlatılıyor...</div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn btn-secondary" onclick="closeTemplateModal()">İptal</button>
+            <button class="btn btn-primary" id="btn-create-tpl" onclick="executeCreateTemplate()">🚀 İndir & Şablonu Oluştur</button>
+          </div>
+        </div>
+
+        <!-- PROXMOX TAB 2: SHELL 1-LINER -->
+        <div id="tab-manual-content" style="display:none;">
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 12px;">
+            Proxmox Web GUI'de sunucunuza tıklayıp sağ üstteki <strong>>_ Shell</strong> butonuna basın ve aşağıdaki komut bloğunu yapıştırın:
+          </p>
+          <div class="code-box" id="code-snippet-proxmox"></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 14px;">
+            <span id="copy-status-text" style="font-size:0.8rem; color:var(--success);"></span>
+            <button class="btn btn-primary" onclick="copyTemplateSnippet()">📋 Komutu Kopyala</button>
+          </div>
+        </div>
+
+        <!-- VCENTER CONTENT -->
+        <div id="tab-vcenter-content" style="display:none;">
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 16px;">
+            VMware vCenter için Canonical tarafından resmi olarak optimize edilmiş ve <strong>open-vm-tools + Cloud-Init</strong> gömülü <strong>vSphere OVA</strong> şablonu kullanılır.
+          </p>
+          
+          <div style="margin-bottom: 16px;">
+            <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px;">Resmi Ubuntu 22.04 LTS vSphere OVA URL'si:</label>
+            <div class="code-box" id="vcenter-ova-url" style="padding:10px; font-size:0.8rem;">https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.ova</div>
+            <div style="display:flex; justify-content:flex-end; margin-top:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="copyVcenterOvaUrl()">📋 OVA URL'sini Kopyala</button>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:var(--radius-sm); padding:16px; margin-bottom:20px;">
+            <h4 style="font-size:0.9rem; margin-bottom:10px; color:var(--primary-glow);">vCenter'a 2 Dakikada Nasıl Eklenir?</h4>
+            <ol style="font-size:0.82rem; color:var(--text-muted); padding-left:18px; line-height:1.7;">
+              <li>vCenter Web Client'ta cluster veya ESXi host'unuza sağ tıklayın: <strong>"Deploy OVF Template..."</strong></li>
+              <li>Açılan pencerede <strong>URL</strong> kutucuğuna yukarıdaki linki yapıştırın (Bilgisayarınıza indirmenize gerek yoktur, vCenter doğrudan çeker).</li>
+              <li>Sanal makineye isim verin (Örn: <code style="color:#38BDF8;">ubuntu-2204-template</code>) ve hedef Datastore'u seçip tamamlayın.</li>
+              <li>Dağıtım bitince sanal makineye sağ tıklayın: <strong>Template &rarr; Convert to Template</strong> deyin.</li>
+            </ol>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" onclick="closeTemplateModal()">Anladım, Kapat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING SHAMS AI COPILOT LAUNCHER -->
+  <button class="ai-copilot-fab" onclick="toggleAiCopilot()" title="Shams AI K8s Copilot Asistanı">
+    <span class="ai-sparkle-dot"></span>
+    <span>🤖 AI Copilot</span>
+  </button>
+
+  <!-- SHAMS AI KUBERNETES COPILOT SLIDE DRAWER -->
+  <aside id="ai-copilot-drawer" class="ai-copilot-drawer">
+    <div class="ai-drawer-header">
+      <div class="ai-drawer-title">
+        <span style="font-size:1.2rem;">🤖</span>
+        <div>
+          <div>Shams AI K8s Copilot</div>
+          <div style="font-size:0.68rem; font-weight:400; color:var(--text-dim);">Akıllı Küme Teşhis & YAML Asistanı</div>
+        </div>
+      </div>
+      <button onclick="closeAiCopilot()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:4px;">✕</button>
+    </div>
+
+    <!-- QUICK ACTION BUTTONS -->
+    <div class="ai-drawer-actions-bar">
+      <button class="ai-action-chip" onclick="askAiCopilot('diagnose_crash')">🔍 Pod Crash Teşhisi</button>
+      <button class="ai-action-chip" onclick="askAiCopilot('generate_yaml', 'Nginx Deployment ve Service YAML üret')">📝 YAML Üretici</button>
+      <button class="ai-action-chip" onclick="askAiCopilot('cis_remediation')">🛡️ CIS Hardening</button>
+      <button class="ai-action-chip" onclick="askAiCopilot('finops_advice')">📊 FinOps Tasarruf</button>
+    </div>
+
+    <!-- CHAT MESSAGES BODY -->
+    <div class="ai-chat-body" id="ai-copilot-messages">
+      <div class="ai-chat-bubble assistant">
+        <div class="ai-bubble-sender">🤖 Shams AI Copilot:</div>
+        <div>Merhaba! Ben Shamssoftware Kubernetes AI Asistanınızım. Kümeyle ilgili hata analizi yapabilir, üretim standartlarında deployment/ingress YAML'ları üretebilir ve CIS güvenlik tavsiyeleri verebilirim. Yukarıdaki hızlı butonları kullanabilir veya sorunuzu aşağıya yazabilirsiniz.</div>
+      </div>
+    </div>
+
+    <!-- CHAT INPUT FOOTER -->
+    <div class="ai-drawer-footer">
+      <input type="text" id="ai-copilot-input" class="ai-drawer-input" placeholder="Bir soru sorun veya işlem belirtin..." onkeydown="if(event.key==='Enter') askAiCopilot()">
+      <button class="btn btn-primary btn-sm" id="btn-ai-send" onclick="askAiCopilot()" style="padding:8px 14px;">Gönder</button>
+    </div>
+  </aside>
+
+  <!-- MULTI-CLUSTER ADD MODAL -->
+  <div id="modal-add-cluster" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); z-index:99999; justify-content:center; align-items:center;">
+    <div class="glass-card" style="width:480px; max-width:92vw; border:1px solid rgba(56,189,248,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.8);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:1.05rem; font-weight:700; color:#fff;">☸️ Yeni Küme Profili Kaydet</h3>
+        <button onclick="closeAddClusterModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:0.82rem;">
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Küme Adı (Tanımlayıcı)</label>
+          <input type="text" id="mc-cluster-name" placeholder="Örn: Prod-Cluster-Proxmox" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+        </div>
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Master Node IP</label>
+          <input type="text" id="mc-cluster-ip" placeholder="Örn: 10.0.10.11" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px; font-family:'JetBrains Mono';">
+        </div>
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">VIP / LoadBalancer IP (Opsiyonel)</label>
+          <input type="text" id="mc-cluster-vip" placeholder="Örn: 10.0.10.100" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px; font-family:'JetBrains Mono';">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">SSH Kullanıcısı</label>
+            <input type="text" id="mc-cluster-user" value="root" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">SSH Şifresi</label>
+            <input type="password" id="mc-cluster-pass" placeholder="••••••••" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button class="btn btn-secondary btn-sm" onclick="closeAddClusterModal()">İptal</button>
+        <button class="btn btn-primary btn-sm" onclick="saveNewClusterProfile()">Kaydet & Aktif Et ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE MODAL (Ctrl + K) -->
+  <div id="command-palette-modal" class="command-palette-overlay" style="display:none;" onclick="if(event.target===this) closeCommandPalette()">
+    <div class="command-palette-box">
+      <div class="command-palette-input-wrap">
+        <span class="command-palette-search-icon">🔍</span>
+        <input type="text" id="command-palette-input" class="command-palette-input" placeholder="Bir komut, modül veya eylem arayın... (örn: nodes, cve, etcd, copilot, rapor)" oninput="handleCommandSearch(this.value)" onkeydown="handleCommandKeydown(event)" autocomplete="off">
+        <span class="command-palette-esc-badge" onclick="closeCommandPalette()">ESC</span>
+      </div>
+      <div class="command-palette-results" id="command-palette-results">
+        <!-- Injected by commandPalette.js -->
+      </div>
+      <div class="command-palette-footer">
+        <div class="cmd-shortcut-hint"><span>↑</span><span>↓</span> gezin</div>
+        <div class="cmd-shortcut-hint"><span>↵</span> çalıştır</div>
+        <div class="cmd-shortcut-hint"><span>ESC</span> kapat</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: HELM INSTALL WITH VALUES.YAML -->
+  <div id="modal-helm-install" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); z-index:99999; justify-content:center; align-items:center;">
+    <div class="glass-card" style="width:620px; max-width:92vw; border:1px solid rgba(56,189,248,0.4);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:1.05rem; font-weight:700; color:#fff;">⎈ Helm Chart Kurulumu: <span id="helm-modal-chart-name" style="color:#38BDF8;">Chart</span></h3>
+        <button onclick="closeHelmInstallModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:0.82rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Release Adı</label>
+            <input type="text" id="helm-input-release" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Hedef Namespace</label>
+            <input type="text" id="helm-input-namespace" value="default" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+        </div>
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Özel Yapılandırma Parametreleri (values.yaml):</label>
+          <textarea id="helm-input-values" style="width:100%; height:160px; font-family:'JetBrains Mono'; font-size:0.75rem; background:rgba(0,0,0,0.4); border:1px solid var(--border-color); color:#A5F3FC; border-radius:4px; padding:10px; outline:none; resize:vertical;"></textarea>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button class="btn btn-secondary btn-sm" onclick="closeHelmInstallModal()">İptal</button>
+        <button class="btn btn-primary btn-sm" id="btn-confirm-helm" onclick="executeHelmInstall()">🚀 Kümeye Kur & Dağıt</button>
+      </div>
+    </div>
+  </div>
