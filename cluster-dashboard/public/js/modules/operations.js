@@ -357,6 +357,24 @@ function renderClusterLiveStatus(data) {
     cniStatusEl.innerText = data.cniType;
   }
 
+  // Canli FinOps & Kaynak Gostergelerini Guncelle
+  const totalPods = (data.podCount !== undefined ? data.podCount : (data.pods ? data.pods.length : 0));
+  const podDensity = document.getElementById('gauge-pod-density');
+  const podBar = document.getElementById('gauge-pod-bar');
+  const podPercent = document.getElementById('gauge-pod-percent');
+  if (podDensity && podBar) {
+    const maxCapacity = Math.max((totalCount || 1) * 110, 110);
+    const pct = Math.min(Math.round((totalPods / maxCapacity) * 100), 100);
+    podDensity.innerText = `${totalPods} / ${maxCapacity} Pod`;
+    podBar.style.width = `${Math.max(pct, 5)}%`;
+    if (podPercent) podPercent.innerText = `${pct}%`;
+  }
+
+  const cpuCoresEl = document.getElementById('gauge-cpu-cores');
+  if (cpuCoresEl && totalCount > 0) {
+    cpuCoresEl.innerText = `${totalCount * 4} Cores (${readyCount} Node Ready)`;
+  }
+
   const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en');
 
   // Düğüm Tablosunu Doldur

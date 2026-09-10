@@ -44,6 +44,15 @@ Equipped with real-time WebSocket-based SSH streaming, automated RKE2 provisioni
 * **Compact Glassmorphism UI:** Ultra-modern dark-mode design optimized for high-density monitoring.
 * **Bilingual Support (🇹🇷 Türkçe / 🇬🇧 English):** Instant runtime translation across all navigation elements, modals, charts, and operational logs.
 
+### 🤖 6. Shams AI Kubernetes Copilot
+* **Interactive Diagnosis & Remediation:** Root-cause error analysis for `CrashLoopBackOff`, `OOMKilled`, and Probe timeout failures.
+* **Enterprise YAML Generator:** Generates hardened Deployment, Service, Ingress, and PVC manifests with one-click direct application to the cluster.
+* **CIS Hardening & FinOps Advisor:** Context-aware security tightening and resource waste optimization suggestions.
+
+### 🌐 7. Multi-Cluster Hub & Profile Switcher
+* **Centralized Fleet Management:** Switch between Production (Proxmox), Test (Hyper-V), and Staging (vCenter) clusters on the fly with a single click.
+* **Profile Persistence:** Add and save multiple Kubernetes master endpoints with encrypted SSH credentials.
+
 ---
 
 ## 🏗️ Architecture & Topology

@@ -2893,3 +2893,254 @@ table.dist-table tr:hover td {
   .workspace-scroll { padding: 18px 16px 40px; }
   .glass-card { padding: 20px 18px; }
 }
+
+/* ==============================================================================
+   MULTI-CLUSTER HUB & AI COPILOT STYLES
+   ============================================================================== */
+.topbar-cluster-dropdown {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.topbar-cluster-dropdown:hover {
+  border-color: var(--primary-glow);
+}
+
+.ai-copilot-top-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(56, 189, 248, 0.25));
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  color: #F3E8FF;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+  transition: all 0.25s ease;
+}
+.ai-copilot-top-btn:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(56, 189, 248, 0.4));
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.5);
+}
+.ai-sparkle-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #A855F7;
+  box-shadow: 0 0 8px #C084FC;
+  animation: pulseGlow 1.8s infinite;
+}
+
+/* AI Copilot Slide Drawer */
+.ai-copilot-drawer {
+  position: fixed;
+  top: 0;
+  right: -460px;
+  width: 440px;
+  max-width: 90vw;
+  height: 100vh;
+  background: rgba(11, 15, 25, 0.96);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: -8px 0 35px rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ai-copilot-drawer.open {
+  right: 0;
+}
+.ai-drawer-header {
+  padding: 16px 20px;
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ai-drawer-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+.ai-drawer-actions-bar {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+}
+.ai-action-chip {
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #E9D5FF;
+  padding: 4px 9px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.ai-action-chip:hover {
+  background: rgba(168, 85, 247, 0.25);
+  border-color: #C084FC;
+}
+.ai-chat-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ai-chat-bubble {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  animation: fadeIn 0.25s ease;
+}
+.ai-chat-bubble.user {
+  background: rgba(37, 99, 235, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  align-self: flex-end;
+  max-width: 85%;
+  color: #E0F2FE;
+}
+.ai-chat-bubble.assistant {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  align-self: flex-start;
+  width: 100%;
+  color: #F8FAFC;
+}
+.ai-bubble-sender {
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #A855F7;
+}
+.ai-drawer-footer {
+  padding: 14px 16px;
+  background: rgba(15, 23, 42, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  gap: 8px;
+}
+.ai-drawer-input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  outline: none;
+}
+.ai-drawer-input:focus {
+  border-color: #A855F7;
+}
+
+/* AI Code & Findings View */
+.ai-code-wrapper {
+  margin-top: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  background: #090D16;
+}
+.ai-code-header {
+  background: rgba(15, 23, 42, 0.95);
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  color: #38BDF8;
+  font-family: 'JetBrains Mono', monospace;
+}
+.ai-code-body {
+  padding: 10px;
+  margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #A5F3FC;
+  line-height: 1.4;
+}
+.ai-finding-card {
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid #38BDF8;
+}
+.ai-finding-card.critical { border-left-color: #EF4444; }
+.ai-finding-card.warning { border-left-color: #F59E0B; }
+.ai-finding-card.info { border-left-color: #10B981; }
+
+/* Real-time Telemetry Live Resource Gauges */
+.live-gauges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  .live-gauges-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.live-gauge-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.live-gauge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.live-gauge-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+}
+.live-gauge-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.live-gauge-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+

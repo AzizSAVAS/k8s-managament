@@ -261,6 +261,20 @@
         </div>
 
         <div class="topbar-actions">
+          <!-- MULTI-CLUSTER SELECTOR -->
+          <div class="topbar-cluster-select-wrap">
+            <select id="topbar-cluster-select" onchange="handleClusterSelectChange(this.value)" class="topbar-cluster-dropdown" title="Aktif Küme">
+              <option value="active">☸️ Birincil Küme (Aktif)</option>
+              <option value="__add_new__">➕ Yeni Küme Kaydet...</option>
+            </select>
+          </div>
+
+          <!-- SHAMS AI COPILOT TRIGGER -->
+          <button class="ai-copilot-top-btn" onclick="toggleAiCopilot()" title="Shams AI Kubernetes Asistanı">
+            <span class="ai-sparkle-dot"></span>
+            <span>🤖 AI Copilot</span>
+          </button>
+
           <!-- LANGUAGE SWITCHER (TR / EN) -->
           <div class="lang-switch-group">
             <button class="lang-pill-btn active" id="btn-lang-tr" onclick="setLanguage('tr')" title="Türkçe">🇹🇷 TR</button>
@@ -1030,6 +1044,53 @@
             <div>
               <div class="summary-stat-label">Toplam Pod Sayısı</div>
               <div class="summary-stat-val" id="live-pods-count">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CANLI KAYNAK & FINOPS TELEMETRİ GÖSTERGELERİ -->
+        <div class="live-gauges-grid">
+          <div class="live-gauge-card">
+            <div class="live-gauge-header">
+              <span>⚡ KÜME CPU YÜKÜ</span>
+              <span id="gauge-cpu-percent" style="color:#38BDF8;">24%</span>
+            </div>
+            <div class="live-gauge-val" id="gauge-cpu-cores">12 / 48 vCPU</div>
+            <div class="live-gauge-bar">
+              <div class="live-gauge-fill" id="gauge-cpu-bar" style="width: 24%; background: linear-gradient(90deg, #38BDF8, #818CF8);"></div>
+            </div>
+          </div>
+
+          <div class="live-gauge-card">
+            <div class="live-gauge-header">
+              <span>💾 RAM ALLOCATION</span>
+              <span id="gauge-ram-percent" style="color:#34D399;">38%</span>
+            </div>
+            <div class="live-gauge-val" id="gauge-ram-gb">36.5 / 96 GB</div>
+            <div class="live-gauge-bar">
+              <div class="live-gauge-fill" id="gauge-ram-bar" style="width: 38%; background: linear-gradient(90deg, #34D399, #10B981);"></div>
+            </div>
+          </div>
+
+          <div class="live-gauge-card">
+            <div class="live-gauge-header">
+              <span>📦 POD KAPASİTE YOĞUNLUĞU</span>
+              <span id="gauge-pod-percent" style="color:#F59E0B;">18%</span>
+            </div>
+            <div class="live-gauge-val" id="gauge-pod-density">45 / 250 Pod</div>
+            <div class="live-gauge-bar">
+              <div class="live-gauge-fill" id="gauge-pod-bar" style="width: 18%; background: linear-gradient(90deg, #F59E0B, #FBBF24);"></div>
+            </div>
+          </div>
+
+          <div class="live-gauge-card">
+            <div class="live-gauge-header">
+              <span>🐝 CILIUM eBPF TRAFİĞİ</span>
+              <span style="color:#A855F7;">Aktif</span>
+            </div>
+            <div class="live-gauge-val" id="gauge-ebpf-mbps">142.8 Mbps</div>
+            <div class="live-gauge-bar">
+              <div class="live-gauge-fill" style="width: 65%; background: linear-gradient(90deg, #A855F7, #EC4899);"></div>
             </div>
           </div>
         </div>
@@ -2583,10 +2644,86 @@
     </div>
   </div>
 
+  <!-- SHAMS AI KUBERNETES COPILOT SLIDE DRAWER -->
+  <aside id="ai-copilot-drawer" class="ai-copilot-drawer">
+    <div class="ai-drawer-header">
+      <div class="ai-drawer-title">
+        <span style="font-size:1.2rem;">🤖</span>
+        <div>
+          <div>Shams AI K8s Copilot</div>
+          <div style="font-size:0.68rem; font-weight:400; color:var(--text-dim);">Akıllı Küme Teşhis & YAML Asistanı</div>
+        </div>
+      </div>
+      <button onclick="closeAiCopilot()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:4px;">✕</button>
+    </div>
+
+    <!-- QUICK ACTION BUTTONS -->
+    <div class="ai-drawer-actions-bar">
+      <button class="ai-action-chip" onclick="askAiCopilot('diagnose_crash')">🔍 Pod Crash Teşhisi</button>
+      <button class="ai-action-chip" onclick="askAiCopilot('generate_yaml', 'Nginx Deployment ve Service YAML üret')">📝 YAML Üretici</button>
+      <button class="ai-action-chip" onclick="askAiCopilot('cis_remediation')">🛡️ CIS Hardening</button>
+      <button class="ai-action-chip" onclick="askAiCopilot('finops_advice')">📊 FinOps Tasarruf</button>
+    </div>
+
+    <!-- CHAT MESSAGES BODY -->
+    <div class="ai-chat-body" id="ai-copilot-messages">
+      <div class="ai-chat-bubble assistant">
+        <div class="ai-bubble-sender">🤖 Shams AI Copilot:</div>
+        <div>Merhaba! Ben Shamssoftware Kubernetes AI Asistanınızım. Kümeyle ilgili hata analizi yapabilir, üretim standartlarında deployment/ingress YAML'ları üretebilir ve CIS güvenlik tavsiyeleri verebilirim. Yukarıdaki hızlı butonları kullanabilir veya sorunuzu aşağıya yazabilirsiniz.</div>
+      </div>
+    </div>
+
+    <!-- CHAT INPUT FOOTER -->
+    <div class="ai-drawer-footer">
+      <input type="text" id="ai-copilot-input" class="ai-drawer-input" placeholder="Bir soru sorun veya işlem belirtin..." onkeydown="if(event.key==='Enter') askAiCopilot()">
+      <button class="btn btn-primary btn-sm" id="btn-ai-send" onclick="askAiCopilot()" style="padding:8px 14px;">Gönder</button>
+    </div>
+  </aside>
+
+  <!-- MULTI-CLUSTER ADD MODAL -->
+  <div id="modal-add-cluster" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); z-index:99999; justify-content:center; align-items:center;">
+    <div class="glass-card" style="width:480px; max-width:92vw; border:1px solid rgba(56,189,248,0.4); box-shadow:0 12px 35px rgba(0,0,0,0.8);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:1.05rem; font-weight:700; color:#fff;">☸️ Yeni Küme Profili Kaydet</h3>
+        <button onclick="closeAddClusterModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:0.82rem;">
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Küme Adı (Tanımlayıcı)</label>
+          <input type="text" id="mc-cluster-name" placeholder="Örn: Prod-Cluster-Proxmox" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+        </div>
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">Master Node IP</label>
+          <input type="text" id="mc-cluster-ip" placeholder="Örn: 10.0.10.11" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px; font-family:'JetBrains Mono';">
+        </div>
+        <div>
+          <label style="display:block; color:var(--text-muted); margin-bottom:4px;">VIP / LoadBalancer IP (Opsiyonel)</label>
+          <input type="text" id="mc-cluster-vip" placeholder="Örn: 10.0.10.100" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px; font-family:'JetBrains Mono';">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">SSH Kullanıcısı</label>
+            <input type="text" id="mc-cluster-user" value="root" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+          <div>
+            <label style="display:block; color:var(--text-muted); margin-bottom:4px;">SSH Şifresi</label>
+            <input type="password" id="mc-cluster-pass" placeholder="••••••••" style="width:100%; padding:8px 10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; border-radius:4px;">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button class="btn btn-secondary btn-sm" onclick="closeAddClusterModal()">İptal</button>
+        <button class="btn btn-primary btn-sm" onclick="saveNewClusterProfile()">Kaydet & Aktif Et ➔</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODULAR JAVASCRIPT SYSTEM -->
-  <script src="js/modules/i18n.js?v=20260910_55"></script>
-  <script src="js/app.js?v=20260910_55"></script>
-  <script src="js/modules/wizard.js?v=20260910_55"></script>
-  <script src="js/modules/operations.js?v=20260910_55"></script>
+  <script src="js/modules/i18n.js?v=20260910_60"></script>
+  <script src="js/app.js?v=20260910_60"></script>
+  <script src="js/modules/wizard.js?v=20260910_60"></script>
+  <script src="js/modules/operations.js?v=20260910_60"></script>
+  <script src="js/modules/aiCopilot.js?v=20260910_60"></script>
+  <script src="js/modules/multiCluster.js?v=20260910_60"></script>
 </body>
 </html>

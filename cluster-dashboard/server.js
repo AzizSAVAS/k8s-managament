@@ -13,6 +13,7 @@ const hypervService = require('./services/hypervService');
 const rke2Installer = require('./services/rke2Installer');
 const sshService = require('./services/sshService');
 const clusterOpsService = require('./services/clusterOpsService');
+const aiCopilotService = require('./services/aiCopilotService');
 
 const app = express();
 const server = http.createServer(app);
@@ -970,6 +971,16 @@ app.post('/api/cluster/cronjobs/manage', async (req, res) => {
   }
 });
 
+// 15. Shams AI K8s Copilot Endpoint
+app.post('/api/ai/copilot', async (req, res) => {
+  try {
+    const { prompt, action, context, targetMaster } = req.body;
+    const result = await aiCopilotService.processPrompt({ prompt, action, context, targetMaster });
+    res.json({ success: true, result });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 const PORT = process.env.PORT || 5050;
 server.listen(PORT, () => {
