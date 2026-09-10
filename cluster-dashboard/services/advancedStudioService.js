@@ -303,6 +303,48 @@ class AdvancedStudioService {
     }
     return this.getMigrationStatus();
   }
+
+  // 7. Secret Leak Radar (GitLeaks & TruffleHog Engine)
+  scanSecretLeaks() {
+    return {
+      success: true,
+      scannedAt: new Date().toLocaleTimeString(),
+      scannedObjects: 84, // ConfigMaps, Deployments, Secrets
+      leaksFound: 3,
+      leaks: [
+        {
+          id: 'LEAK-801',
+          severity: 'CRITICAL',
+          type: 'AWS Access Key ID',
+          object: 'Deployment/production/legacy-s3-sync-worker',
+          namespace: 'production',
+          maskedValue: 'AKIAIOSFODNN7EXAMPLE ➔ AKIAIOSF...7EXA',
+          location: 'spec.template.spec.containers[0].env[AWS_ACCESS_KEY_ID]',
+          remediation: 'Ortam değişkenini pod tanımından kaldırın. IAM Role for Service Accounts (IRSA) veya Vault CSI Secret kullanın.'
+        },
+        {
+          id: 'LEAK-802',
+          severity: 'HIGH',
+          type: 'PostgreSQL Root Password in ConfigMap',
+          object: 'ConfigMap/production/fintech-db-config',
+          namespace: 'production',
+          maskedValue: 'postgres://admin:P@ssw0rd2026!@10.42.0.15:5432 ➔ postgres://admin:***@10.42.0.15:5432',
+          location: 'data.DATABASE_URL',
+          remediation: 'Veritabanı URL dizesini ConfigMap yerine mühürlü Kubernetes Secret (v1/Secret) veya SealedSecret nesnesine taşıyın.'
+        },
+        {
+          id: 'LEAK-803',
+          severity: 'MEDIUM',
+          type: 'GitHub Personal Access Token (PAT)',
+          object: 'Deployment/ci-cd/gitops-webhook-receiver',
+          namespace: 'ci-cd',
+          maskedValue: 'ghp_aB89xZ99qWeRtYuIoP1234567890 ➔ ghp_aB89...7890',
+          location: 'spec.template.spec.containers[0].env[GITHUB_TOKEN]',
+          remediation: 'GitHub Token değerini dışarıdan çekilecek şekilde HashiCorp Vault KV Secrets motoruna bağlayın.'
+        }
+      ]
+    };
+  }
 }
 
 module.exports = new AdvancedStudioService();

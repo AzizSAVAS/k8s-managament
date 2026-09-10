@@ -147,6 +147,8 @@ function switchOpsView(viewName) {
     if (typeof fetchEdgeSites === 'function') fetchEdgeSites();
   } else if (viewName === 'cluster-migrate') {
     if (typeof fetchMigrationPlan === 'function') fetchMigrationPlan();
+  } else if (viewName === 'secret-radar') {
+    if (typeof fetchSecretLeakRadar === 'function') fetchSecretLeakRadar();
   }
 }
 

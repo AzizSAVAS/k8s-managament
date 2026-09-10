@@ -87,4 +87,9 @@ router.post('/api/studios/step-migration', (req, res) => {
   res.json(studioService.stepMigration());
 });
 
+// 7. Secret Leak Radar
+router.get('/api/studios/scan-secret-leaks', (req, res) => {
+  res.json(studioService.scanSecretLeaks());
+});
+
 module.exports = router;

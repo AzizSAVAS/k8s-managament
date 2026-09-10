@@ -416,6 +416,14 @@
             <span class="ops-nav-icon">🔄</span>
             <span class="ops-nav-label">Canlı Küme Göçü & Klonlama</span>
           </div>
+          <div class="ops-nav-item" id="ops-nav-secret-radar" onclick="switchOpsView('secret-radar')">
+            <span class="ops-nav-icon">🔍</span>
+            <span class="ops-nav-label">Gizli Anahtar & Şifre Radarı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-voice-alerts" onclick="switchOpsView('voice-alerts')">
+            <span class="ops-nav-icon">🎙️</span>
+            <span class="ops-nav-label">NOC Sesli Anons Sistemi</span>
+          </div>
         </nav>
 
 
@@ -456,6 +464,11 @@
           <!-- DEMO / SIMULATION MODE TOGGLE -->
           <button class="topbar-demo-btn" id="btn-toggle-demo-mode" onclick="toggleDemoMode()" title="Canlı Küme / Demo Simülasyonu Modu">
             🟢 <span class="demo-btn-label">Canlı Küme</span>
+          </button>
+
+          <!-- NOC VOICE ALERTING TOGGLE -->
+          <button class="topbar-demo-btn" id="btn-toggle-voice-alerts" onclick="toggleVoiceAlerts()" title="NOC Sesli Anons Sistemi">
+            🔇 <span class="voice-btn-label">Ses: Kapalı</span>
           </button>
 
           <!-- QUICK SEARCH / COMMAND PALETTE TRIGGER -->
@@ -3839,6 +3852,55 @@
         </div>
       </div>
 
+      <!-- ============================================================= -->
+      <!-- 47. GİZLİ ANAHTAR & ŞİFRE SIZINTISI RADARI (SECRET LEAK RADAR) -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-secret-radar" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(239,68,68,0.15); border-color:#EF4444; color:#F87171;">STATIC SECURITY SCANNING (GITLEAKS)</span>
+              <h2 class="card-title">Gizli Anahtar & Şifre Sızıntısı Radarı</h2>
+              <p class="card-desc">YAML manifestoları, ConfigMap'ler ve Pod ortam değişkenlerinde açıkta unutulmuş AWS key'leri, veritabanı şifreleri ve SSH anahtarlarını tarayın ve Vault'a dönüştürün.</p>
+            </div>
+          </div>
+          <div id="secret-radar-content"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 48. NOC OPERASYON ODASI SESLİ ANONS SİSTEMİ (VOICE ALERTS)    -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-voice-alerts" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(168,85,247,0.15); border-color:#A855F7; color:#C084FC;">NOC AUDIO TELEMETRY & SPEECH</span>
+              <h2 class="card-title">NOC Operasyon Odası Sesli Anons Sistemi</h2>
+              <p class="card-desc">Veri merkezi ve kontrol odalarında ekrana bakılmadığında dahi kritik arızaları, failover geçişlerini ve saldırıları Türkçe sesli anons edin.</p>
+            </div>
+          </div>
+
+          <div style="background:rgba(0,0,0,0.3); border:1px solid var(--border-color); border-radius:8px; padding:20px; margin-bottom:20px;">
+            <div style="font-size:0.95rem; font-weight:700; color:#FFFFFF; margin-bottom:12px;">🎙️ Sesli Anons Test & Simülasyon Masası</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+              <button class="btn btn-primary" onclick="testVoiceAnnouncement('Dikkat: Worker-02 düğümü çevrimdışı oldu. Keepalived yük devretmesi başarıyla tamamlandı.')">
+                📢 Arıza Anonsu Test Et
+              </button>
+              <button class="btn btn-secondary" onclick="testVoiceAnnouncement('Güvenlik Uyarısı: Cilium eBPF yüksek hacimli SYN-Flood saldırısını engelledi.')">
+                🛡️ Güvenlik Uyarısı Test Et
+              </button>
+              <button class="btn btn-secondary" onclick="testVoiceAnnouncement('Sistem Bilgisi: AI Doctor küme conntrack tablosunu başarıyla optimize etti.')">
+                ✨ İyileştirme Anonsu Test Et
+              </button>
+            </div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              Tarayıcınızın yerel <strong>HTML5 Web Speech API</strong> motoru kullanılmaktadır. Sıfır harici kütüphane veya ses paketi indirme gerektirmez.
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div> <!-- /workspace-operations -->
 
         </div> <!-- /workspace-content -->
@@ -4121,5 +4183,7 @@
   <script src="js/modules/ops/opsFlamegraph.js?v=20260910_86"></script>
   <script src="js/modules/ops/opsEdgeMesh.js?v=20260910_86"></script>
   <script src="js/modules/ops/opsClusterMigrate.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsSecretRadar.js?v=20260910_86"></script>
+  <script src="js/modules/voiceAlerts.js?v=20260910_86"></script>
 </body>
 </html>
