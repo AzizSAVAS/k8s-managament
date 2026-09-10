@@ -390,6 +390,32 @@
             <span class="ops-nav-icon">📑</span>
             <span class="ops-nav-label">C-Level SLA Raporu</span>
           </div>
+
+          <div class="pipeline-title" style="margin-top:14px; font-size:0.65rem; color:var(--text-muted); letter-spacing:0.06em;">İLERİ ALTYAPI & DONANIM VİZYONU</div>
+          <div class="ops-nav-item" id="ops-nav-ai-gpu" onclick="switchOpsView('ai-gpu')">
+            <span class="ops-nav-icon">🧠</span>
+            <span class="ops-nav-label">Kurumsal LLM & GPU Masası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-holo-cluster" onclick="switchOpsView('holo-cluster')">
+            <span class="ops-nav-icon">🌐</span>
+            <span class="ops-nav-label">3D Holo-Küme NOC Ekranı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-bare-metal" onclick="switchOpsView('bare-metal')">
+            <span class="ops-nav-icon">🖥️</span>
+            <span class="ops-nav-label">Bare-Metal & IPMI Konsolu</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-flamegraph" onclick="switchOpsView('flamegraph')">
+            <span class="ops-nav-icon">🔥</span>
+            <span class="ops-nav-label">eBPF Canlı Alev Grafikleri</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-edge-mesh" onclick="switchOpsView('edge-mesh')">
+            <span class="ops-nav-icon">📡</span>
+            <span class="ops-nav-label">Edge & Saha Şube Ağı</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cluster-migrate" onclick="switchOpsView('cluster-migrate')">
+            <span class="ops-nav-icon">🔄</span>
+            <span class="ops-nav-label">Canlı Küme Göçü & Klonlama</span>
+          </div>
         </nav>
 
 
@@ -3688,6 +3714,129 @@
 
           <div id="executive-report-body"></div>
         </div>
+      <!-- ============================================================= -->
+      <!-- 41. KURUMSAL LLM & GPU YAPAY ZEKA İŞ İSTASYONU                -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-ai-gpu" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(139,92,246,0.15); border-color:#8B5CF6; color:#C084FC;">GENAI & GPU INFRASTRUCTURE</span>
+              <h2 class="card-title">Kurumsal LLM & GPU Yapay Zeka İş İstasyonu</h2>
+              <p class="card-desc">Şirket içi NVIDIA/AMD GPU kaynakları üzerinde vLLM ve Ollama ile kendi özel modellerinizi (DeepSeek, Llama, Mistral) sıfır veri sızıntısıyla çalıştırın.</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <select id="llm-model-select" style="padding:6px 12px; background:var(--bg-input); color:#fff; border:1px solid var(--border-color); border-radius:6px; font-size:0.8rem;">
+                <option value="DeepSeek-R1-Distill-Llama-70B">DeepSeek-R1 (70B FP16)</option>
+                <option value="Llama-3.3-70B-Instruct">Llama-3.3 (70B INT8)</option>
+                <option value="Qwen-2.5-Coder-32B">Qwen-2.5 Coder (32B)</option>
+              </select>
+              <button class="btn btn-primary" onclick="deployLlmModelAction()" style="padding:6px 14px; font-size:0.8rem;">🚀 Modeli Dağıt</button>
+            </div>
+          </div>
+
+          <div id="gpu-telemetry-content"></div>
+
+          <!-- Interactive Test Console -->
+          <div style="margin-top:20px; background:rgba(0,0,0,0.3); border:1px solid var(--border-color); border-radius:8px; padding:16px;">
+            <div style="font-size:0.85rem; font-weight:700; color:#FFFFFF; margin-bottom:8px;">💬 Dahili Model Çıkarım (Inference) Test Masası</div>
+            <div style="display:flex; gap:10px; margin-bottom:12px;">
+              <input type="text" id="llm-prompt-input" placeholder="Yapay zekaya küme veya mimari hakkında bir soru sorun..." style="flex:1; padding:10px 14px; background:var(--bg-input); border:1px solid var(--border-color); border-radius:6px; color:#fff; font-size:0.85rem;">
+              <button class="btn btn-primary" onclick="sendTestLlmPrompt()">Gönder</button>
+            </div>
+            <div id="llm-chat-response" style="display:none; background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:14px; font-size:0.85rem;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 42. 3D HOLO-KÜME NOC GÖRSELLEŞTİRİCİ                         -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-holo-cluster" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(56,189,248,0.15); border-color:#38BDF8; color:#38BDF8;">3D ISOMETRIC TOPOLOGY & NOC DISPLAY</span>
+              <h2 class="card-title">3D Holo-Küme Veri Merkezi Görselleştirici</h2>
+              <p class="card-desc">Fiziksel sunucu kabinleri (Racks), blade sunucular ve aralarında akan canlı Cilium eBPF lazer paket akışlarını gerçek zamanlı 3D izleyin.</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-secondary" onclick="initHoloCluster()">🔄 Yeniden Başlat</button>
+              <button class="btn btn-primary" onclick="toggleHoloNocMode()">📺 NOC Tam Ekran</button>
+            </div>
+          </div>
+
+          <div style="position:relative; width:100%; height:460px; background:#060911; border:1px solid rgba(56,189,248,0.25); border-radius:10px; overflow:hidden;">
+            <canvas id="holo-cluster-canvas" style="width:100%; height:100%; display:block;"></canvas>
+            <div style="position:absolute; bottom:14px; left:18px; font-size:0.75rem; color:#94A3B8; background:rgba(0,0,0,0.6); padding:4px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1);">
+              🟢 Yeşil Lazer: İzin Verilen L7 Trafiği • 🔵 Mavi Lazer: Etcd Raft Senkronizasyonu • 🔴 Kırmızı Lazer: Engellenen Paketler
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 43. BARE-METAL PXE BOOT & IPMI/iDRAC DONANIM MASASI           -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-bare-metal" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(56,189,248,0.15); border-color:#38BDF8; color:#38BDF8;">LIGHTS-OUT HARDWARE MANAGEMENT</span>
+              <h2 class="card-title">Bare-Metal PXE Boot & IPMI/iDRAC Donanım Masası</h2>
+              <p class="card-desc">Sanallaştırma katmanı olmadan Dell, HPE ve Supermicro çıplak sunucularını uzaktan açın/kapatın, fan/güç sensörlerini izleyin ve iPXE ile otomatik kümeye dahil edin.</p>
+            </div>
+          </div>
+          <div id="bare-metal-content"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 44. eBPF CANLI ALEV GRAFİKLERİ İLE KOD PROFİLLEME             -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-flamegraph" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(239,68,68,0.15); border-color:#EF4444; color:#F87171;">CONTINUOUS PROFILING (eBPF)</span>
+              <h2 class="card-title">eBPF Canlı Alev Grafikleri (Continuous Flamegraphs)</h2>
+              <p class="card-desc">Uygulama kodunuza tek bir satır dahi eklemeden, kernel stack-trace ile CPU darboğazlarını ve bellek sızıntılarını alev grafiğinde analiz edin.</p>
+            </div>
+          </div>
+          <div id="flamegraph-canvas-container"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 45. EDGE (UÇ BİRİM) & ŞUBE KÜMELERİ OTONOM YÖNETİMİ           -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-edge-mesh" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(16,185,129,0.15); border-color:#10B981; color:#34D399;">AUTONOMOUS EDGE COMPUTING</span>
+              <h2 class="card-title">Edge (Uç Birim) & Şube Kümeleri Otonom Yönetimi</h2>
+              <p class="card-desc">Fabrika, gemi ve şubelerdeki uzak RKE2/K3s uç lokasyonları. İnternet koptuğunda dahi otonom çalışır ve 4G/5G/Starlink üzerinden sıkıştırılmış senkronizasyon sağlar.</p>
+            </div>
+          </div>
+          <div id="edge-mesh-content"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================= -->
+      <!-- 46. SIFIR KESİNTİYLE CANLI KÜME GÖÇÜ & KLONLAMA               -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-cluster-migrate" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(59,130,246,0.15); border-color:#3B82F6; color:#60A5FA;">ZERO-DOWNTIME HYPER-MIGRATION</span>
+              <h2 class="card-title">Sıfır Kesintiyle Canlı Küme Göçü & Klonlama</h2>
+              <p class="card-desc">Proxmox'tan VMware vCenter'a veya Genel Bulutlara tüm PV kalıcı diskleri, Ingress ve Secret'ları veri kaybı olmadan taşıyın ve canlı RTO süresini ölçün.</p>
+            </div>
+          </div>
+          <div id="migration-status-content"></div>
+        </div>
       </div>
 
     </div> <!-- /workspace-operations -->
@@ -3964,5 +4113,13 @@
   <script src="js/modules/toastAlerts.js?v=20260910_86"></script>
   <script src="js/modules/demoMode.js?v=20260910_86"></script>
   <script src="js/modules/rbacGuard.js?v=20260910_86"></script>
+
+  <!-- 6 Advanced Infrastructure Studios -->
+  <script src="js/modules/ops/opsAiGpu.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsHoloCluster.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsBareMetal.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsFlamegraph.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsEdgeMesh.js?v=20260910_86"></script>
+  <script src="js/modules/ops/opsClusterMigrate.js?v=20260910_86"></script>
 </body>
 </html>

@@ -135,6 +135,18 @@ function switchOpsView(viewName) {
     if (typeof fetchLogAnomalies === 'function') fetchLogAnomalies();
   } else if (viewName === 'executive-report') {
     if (typeof fetchExecutiveReport === 'function') fetchExecutiveReport();
+  } else if (viewName === 'ai-gpu') {
+    if (typeof fetchGpuTelemetry === 'function') fetchGpuTelemetry();
+  } else if (viewName === 'holo-cluster') {
+    if (typeof initHoloCluster === 'function') initHoloCluster();
+  } else if (viewName === 'bare-metal') {
+    if (typeof fetchBareMetalNodes === 'function') fetchBareMetalNodes();
+  } else if (viewName === 'flamegraph') {
+    if (typeof fetchFlamegraphProfile === 'function') fetchFlamegraphProfile();
+  } else if (viewName === 'edge-mesh') {
+    if (typeof fetchEdgeSites === 'function') fetchEdgeSites();
+  } else if (viewName === 'cluster-migrate') {
+    if (typeof fetchMigrationPlan === 'function') fetchMigrationPlan();
   }
 }
 
