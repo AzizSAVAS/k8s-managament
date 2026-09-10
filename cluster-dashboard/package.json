@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build:html": "node services/htmlBuilder.js"
+    "build:html": "node services/htmlBuilder.js",
+    "test": "node --test test/**/*.test.js",
+    "test:coverage": "node --test --experimental-test-coverage test/**/*.test.js"
   },
   "dependencies": {
     "express": "^4.19.2",

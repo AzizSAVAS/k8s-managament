@@ -56,9 +56,14 @@ app.use('/api/demo', demoRoutes);
 app.use(advancedStudioRoutes);
 
 const PORT = process.env.PORT || 5050;
-server.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(` RKE2 Cluster Dashboard Calisiyor!`);
-  console.log(` Web Arayuz: http://localhost:${PORT}`);
-  console.log(`====================================================`);
-});
+
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(` RKE2 Cluster Dashboard Calisiyor!`);
+    console.log(` Web Arayuz: http://localhost:${PORT}`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = { app, server, broadcast, wss };
