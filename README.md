@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Kubernetes-RKE2-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes RKE2" />
   <img src="https://img.shields.io/badge/Networking-Cilium%20eBPF-F48024?style=for-the-badge&logo=cilium&logoColor=white" alt="Cilium eBPF" />
-  <img src="https://img.shields.io/badge/Virtualization-Proxmox%20%7C%20vCenter-E57000?style=for-the-badge&logo=proxmox&logoColor=white" alt="Proxmox and vCenter" />
+  <img src="https://img.shields.io/badge/Virtualization-Proxmox%20%7C%20vCenter%20%7C%20Hyper--V-E57000?style=for-the-badge&logo=windows&logoColor=white" alt="Proxmox, vCenter and Hyper-V" />
   <img src="https://img.shields.io/badge/Platform-NodeJS%20v18+-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="NodeJS" />
   <img src="https://img.shields.io/badge/UI-Cyber%20Glass%20Dark-8A2BE2?style=for-the-badge" alt="UI" />
   <img src="https://img.shields.io/badge/Language-TR%20%7C%20EN-blue?style=for-the-badge" alt="Multi-Language" />
@@ -13,7 +13,7 @@
 
 ## 🌟 Overview
 
-**Shamssoftware RKE2 & Kubernetes Cluster Manager** is an enterprise-grade control center designed to orchestrate, monitor, deploy, and secure Kubernetes clusters across bare-metal and hybrid virtualized environments (**Proxmox VE** & **VMware vCenter**).
+**Shamssoftware RKE2 & Kubernetes Cluster Manager** is an enterprise-grade control center designed to orchestrate, monitor, deploy, and secure Kubernetes clusters across bare-metal and hybrid virtualized environments (**Proxmox VE**, **VMware vCenter** & **Microsoft Hyper-V**).
 
 Equipped with real-time WebSocket-based SSH streaming, automated RKE2 provisioning, Cilium eBPF network visualization, and multi-language support (**English & Türkçe**), it provides system administrators and DevOps engineers with seamless cluster lifecycle operations.
 
@@ -34,6 +34,7 @@ Equipped with real-time WebSocket-based SSH streaming, automated RKE2 provisioni
 ### ☁️ 3. Infrastructure & Virtualization Providers
 * **Proxmox VE:** Automatic VM discovery, template cloning, CPU/RAM resource allocation, and QEMU guest agent telemetry.
 * **VMware vCenter:** Datacenter inventory tracking, ESXi host status, and automated cluster node provisioning.
+* **Microsoft Hyper-V:** PowerShell / OpenSSH automation, Generation 2 VM provisioning, dynamic memory allocation, and VHDX template cloning.
 
 ### 🛡️ 4. Security, Hardening & Compliance
 * **CIS Benchmark Auditing:** Built-in hardening checks for Kubernetes & RKE2 configurations.

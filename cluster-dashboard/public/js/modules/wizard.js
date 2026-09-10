@@ -321,7 +321,29 @@ function applyProviderUI(prov) {
   const connForm = document.getElementById('conn-form-container');
   const btnNext = document.getElementById('btn-step2-next');
 
-  if (prov === 'vcenter') {
+  if (prov === 'hyperv') {
+    const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en');
+    document.title = 'RKE2 & Cilium Cluster Hub - Microsoft Hyper-V';
+    if (brandBadge) brandBadge.innerText = 'Cilium eBPF & Microsoft Hyper-V';
+    if (title) title.innerText = isEn ? 'Microsoft Hyper-V Connection & Discovery' : 'Microsoft Hyper-V Bağlantısı & Keşif';
+    if (desc) desc.innerText = isEn ? 'Connect via PowerShell / OpenSSH to discover Hyper-V virtual switches, host resources, and VHDX templates.' : 'PowerShell / OpenSSH ile bağlanarak Hyper-V sanal anahtarlarını (vSwitch), donanımı ve VHDX şablonlarını keşfedin.';
+    if (lblHost) lblHost.innerText = isEn ? 'Hyper-V Host IP / Hostname (or localhost)' : 'Hyper-V Sunucu IP / Hostname (veya localhost)';
+    if (apiHost) apiHost.placeholder = 'localhost veya 10.0.30.10';
+    if (lblHint) {
+      lblHint.innerHTML = isEn
+        ? '💡 <strong>Tip:</strong> If running directly on the Hyper-V host machine, specify <strong>localhost</strong> to execute via local PowerShell without credentials. For remote Windows Server, provide Administrator user and SSH port (22).'
+        : '💡 <strong>İpucu:</strong> Eğer bu dashboard doğrudan Hyper-V sunucusunun üzerinde çalışıyorsa IP kısmına <strong>localhost</strong> yazarak şifresiz yerel PowerShell ile bağlanabilirsiniz. Uzak Windows Server için Administrator hesabı ve SSH portu (22) kullanılır.';
+    }
+    if (port) port.value = '22';
+    if (lblUser) lblUser.innerText = isEn ? 'Windows Administrator User' : 'Windows Yönetici Kullanıcısı';
+    if (user) user.placeholder = 'Administrator veya ./Administrator';
+    if (btnText && btnText.innerText.indexOf('⏳') === -1) btnText.innerText = isEn ? '⚡ Connect to Hyper-V & Discover' : '⚡ Hyper-V\'ye Bağlan & Keşfet';
+    if (lblNodesPool) lblNodesPool.innerText = isEn ? 'Discovered Hyper-V Host & VMs' : 'Tespit Edilen Hyper-V Hostu & Sanal Makineler';
+    if (lblTemplate) lblTemplate.innerText = isEn ? 'Target VHDX Template' : 'Klonlanacak Altın VHDX Şablonu (Template)';
+    if (lblStorage) lblStorage.innerText = isEn ? 'Target Virtual Hard Disks Directory' : 'Hedef Sanal Disk Klasörü (Hyper-V Storage)';
+    if (connForm) connForm.style.display = 'block';
+    if (btnNext) btnNext.style.display = 'inline-flex';
+  } else if (prov === 'vcenter') {
     document.title = 'RKE2 & Cilium Cluster Hub - VMware vCenter';
     if (brandBadge) brandBadge.innerText = 'Cilium eBPF & VMware vCenter';
     if (title) title.innerText = 'VMware vCenter / vSphere Bağlantısı & Keşif';
@@ -385,14 +407,15 @@ function selectProvider(prov) {
 
 // --- PROVIDER API CONNECTION & DISCOVERY ---
 async function connectProvider() {
-  const host = document.getElementById('api-host').value.trim();
+  const host = document.getElementById('api-host').value.trim() || (selectedProvider === 'hyperv' ? 'localhost' : '');
   const port = document.getElementById('api-port').value.trim();
   const username = document.getElementById('api-user').value.trim();
   const password = document.getElementById('api-pass').value.trim();
   const btn = document.getElementById('btn-test-conn');
   const btnText = document.getElementById('conn-btn-text');
 
-  if (!host || !password) {
+  const isLocalHyperV = (selectedProvider === 'hyperv' && (!host || host === 'localhost' || host === '127.0.0.1'));
+  if (!isLocalHyperV && (!host || !password)) {
     alert('Lütfen sunucu IP adresi ve şifreyi giriniz!');
     return;
   }
@@ -401,11 +424,17 @@ async function connectProvider() {
   btn.disabled = true;
 
   try {
-    const endpoint = selectedProvider === 'proxmox' ? '/api/providers/proxmox/connect' : '/api/providers/vcenter/connect';
+    let endpoint = '/api/providers/proxmox/connect';
+    if (selectedProvider === 'vcenter') {
+      endpoint = '/api/providers/vcenter/connect';
+    } else if (selectedProvider === 'hyperv') {
+      endpoint = '/api/providers/hyperv/connect';
+    }
+
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ host, port: parseInt(port, 10), username, password })
+      body: JSON.stringify({ host, port: parseInt(port, 10) || 22, username, password })
     });
 
     const data = await res.json();

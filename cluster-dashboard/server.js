@@ -9,6 +9,7 @@ const os = require('os');
 
 const proxmoxService = require('./services/proxmoxService');
 const vcenterService = require('./services/vcenterService');
+const hypervService = require('./services/hypervService');
 const rke2Installer = require('./services/rke2Installer');
 const sshService = require('./services/sshService');
 const clusterOpsService = require('./services/clusterOpsService');
@@ -80,6 +81,34 @@ app.post('/api/providers/vcenter/connect', async (req, res) => {
       success: true,
       auth,
       hosts,
+      templates,
+      storages
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+// 3.1 Microsoft Hyper-V Baglantisi & Host/vSwitch/VHDX Kesfi
+app.post('/api/providers/hyperv/connect', async (req, res) => {
+  try {
+    const { host = 'localhost', port = 22, username = 'Administrator', password = '' } = req.body;
+    const isLocal = (!host || host === 'localhost' || host === '127.0.0.1');
+    const result = await hypervService.loginAndDiscover({ host, port, username, password, isLocal });
+    const templates = await hypervService.getTemplates({ host, port, username, password, isLocal });
+    const storages = await hypervService.getStorages({ host, port, username, password, isLocal });
+
+    res.json({
+      success: true,
+      auth: {
+        host: result.host,
+        port,
+        username,
+        isLocal,
+        switchName: (result.switches && result.switches[0]) ? result.switches[0].Name : 'Default Switch'
+      },
+      nodes: result.nodes,
+      switches: result.switches,
       templates,
       storages
     });
@@ -370,6 +399,36 @@ app.post('/api/cluster/deploy', async (req, res) => {
         }
 
         log('\nTum VM\'ler acildi. Isletim sistemlerinin ve IP\'lerin oturmasi icin 25 saniye bekleniyor...');
+        await new Promise(r => setTimeout(r, 25000));
+      }
+
+      // ASAMA 1.2: HYPER-V UZERINDE VM'LERI KLONLA VE AC
+      if (provider === 'hyperv') {
+        log('\n>>> [ASAMA 1] Hyper-V Üzerinde Generation 2 Sanal Makineler Klonlanıyor ve Başlatılıyor...');
+        for (const node of distribution) {
+          log(`\n-> [Hyper-V VM Klonlama] ${node.name} -> Hedef Disk: [${targetStorage || 'C:\\HyperV\\Virtual Hard Disks'}]`);
+          
+          await hypervService.provisionVM({
+            host: auth ? auth.host : 'localhost',
+            port: auth ? auth.port : 22,
+            username: auth ? auth.username : 'Administrator',
+            password: auth ? auth.password : '',
+            isLocal: auth ? auth.isLocal : true,
+            vmName: node.name,
+            templatePath: templateId,
+            targetStoragePath: targetStorage || 'C:\\HyperV\\Virtual Hard Disks',
+            vswitchName: (auth && auth.switchName) || 'Default Switch',
+            cores: cores || 4,
+            memoryMB: memoryMB || 8192,
+            diskSizeGB: diskSizeGB || 50,
+            ipAddress: node.ip,
+            gateway,
+            sshUser,
+            sshPass,
+            onLog: log
+          });
+        }
+        log('\nHyper-V üzerinde tüm sanal makineler başarıyla oluşturuldu ve başlatıldı. Ağ servislerinin oturması için 25 saniye bekleniyor...');
         await new Promise(r => setTimeout(r, 25000));
       }
 

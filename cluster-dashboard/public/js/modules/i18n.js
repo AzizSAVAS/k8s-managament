@@ -120,6 +120,7 @@ const translations = {
     "step1_prov_desc": "Yeni VM'lerin açılacağı platformu veya mevcut fiziksel/sanal sunucuları seçin.",
     "prov_proxmox_desc": "Proxmox REST API ile otomatik VM klonlama ve Cloud-Init",
     "prov_vcenter_desc": "VMware vSphere vCenter REST API ile OVA şablonu ve Otomasyon",
+    "prov_hyperv_desc": "Windows Server / Windows 10/11 Hyper-V ile otomatik VHDX klonlama",
     "prov_manual_desc": "Önceden hazır Ubuntu 22.04 sunucularına doğrudan SSH ile kurulum",
     "btn_next_step2": "Sonraki Adım: Sunucu Keşfi ➔",
 
@@ -254,6 +255,7 @@ const translations = {
     "step1_prov_desc": "Select the target virtualization platform for automated VM cloning or specify bare-metal hosts.",
     "prov_proxmox_desc": "Automated VM cloning and Cloud-Init provisioning via Proxmox REST API",
     "prov_vcenter_desc": "VMware vSphere vCenter REST API with OVA Golden Templates and Automation",
+    "prov_hyperv_desc": "Automated VHDX cloning & Gen2 VM provisioning via Hyper-V PowerShell",
     "prov_manual_desc": "Direct SSH deployment onto pre-installed Ubuntu 22.04 server instances",
     "btn_next_step2": "Next Step: Server Discovery ➔",
 
@@ -501,7 +503,17 @@ const phraseDictionary = [
   ["⚡ Doğrudan Bağlan & Aç", "⚡ Connect & Open Live"],
   ["Yeni pod girişini engeller", "Prevents scheduling new pods"],
   ["Düğümü tekrar aktif eder", "Re-enables scheduling on node"],
-  ["Podları diğer düğümlere tahliye eder", "Safely evicts pods to other nodes"]
+  ["Podları diğer düğümlere tahliye eder", "Safely evicts pods to other nodes"],
+
+  // Hyper-V Provider
+  ["Microsoft Hyper-V Bağlantısı & Keşif", "Microsoft Hyper-V Connection & Discovery"],
+  ["Microsoft Hyper-V Bağlantısı & Sunucu Keşfi", "Microsoft Hyper-V Connection & Server Discovery"],
+  ["⚡ Hyper-V'ye Bağlan & Keşfet", "⚡ Connect to Hyper-V & Discover"],
+  ["Tespit Edilen Hyper-V Hostu & Sanal Makineler", "Discovered Hyper-V Host & VMs"],
+  ["Klonlanacak Altın VHDX Şablonu (Template)", "Target VHDX Template"],
+  ["Hedef Sanal Disk Klasörü (Hyper-V Storage)", "Target Virtual Hard Disks Directory"],
+  ["Windows Yönetici Kullanıcısı", "Windows Administrator User"],
+  ["Hyper-V Sunucu IP / Hostname (veya localhost)", "Hyper-V Host IP / Hostname (or localhost)"]
 ];
 
 let currentLanguage = localStorage.getItem('shams_cluster_lang') || 'tr';
