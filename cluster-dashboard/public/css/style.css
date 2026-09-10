@@ -3932,6 +3932,42 @@ table.dist-table tr:hover td {
   text-decoration: underline;
 }
 
+/* ==============================================================================
+   PRINT & EXECUTIVE REPORT STYLING
+   ============================================================================== */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .app-sidebar, .topbar, .btn, .step-badge-pill, .card-header, #cmd-palette-backdrop, #cmd-palette-modal {
+    display: none !important;
+  }
+  .app-layout, .app-main, .workspace-content, .workspace-view, .ops-view-pane {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .executive-sheet {
+    box-shadow: none !important;
+    border: 1px solid #CBD5E1 !important;
+    padding: 20px !important;
+  }
+}
+
+/* Terminal Styling */
+#pod-terminal-screen::-webkit-scrollbar {
+  width: 6px;
+}
+#pod-terminal-screen::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+
 
 
 

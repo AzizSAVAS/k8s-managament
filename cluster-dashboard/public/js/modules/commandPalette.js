@@ -42,6 +42,12 @@ const COMMAND_PALETTE_ACTIONS = [
   { id: 'nav-secrets-vault', title: 'Güvenli Secret & ConfigMap Kasası', icon: '🔐', category: 'Güvenlik', action: () => switchOpsView('secrets-vault') },
   { id: 'nav-finops-calculator', title: 'Bulut Maliyet Kıyaslama & ROI Analizörü', icon: '💰', category: 'FinOps', action: () => switchOpsView('finops-calculator') },
   { id: 'nav-cluster-failover', title: 'Çoklu Küme DR & GSLB Yük Aktarımı', icon: '🌐', category: 'Felaket Kurtarma', action: () => switchOpsView('cluster-failover') },
+  { id: 'nav-gitops', title: 'GitOps & Sürekli Dağıtım Merkezi (ArgoCD & Flux)', icon: '🔄', category: 'Sürekli Dağıtım', action: () => switchOpsView('gitops') },
+  { id: 'nav-canary-traffic', title: 'eBPF Canary & Blue-Green Trafik Bölme', icon: '🚦', category: 'Ağ & eBPF', action: () => switchOpsView('canary-traffic') },
+  { id: 'nav-policy-engine', title: 'OPA Gatekeeper & Kyverno Politika Kalkanı', icon: '🛡️', category: 'Güvenlik', action: () => switchOpsView('policy-engine') },
+  { id: 'nav-pod-terminal', title: 'Pod İçi Canlı Web Terminali (Interactive WebTTY)', icon: '💻', category: 'Operasyon', action: () => switchOpsView('pod-terminal') },
+  { id: 'nav-log-anomaly-ai', title: 'AI Log Anomali Tespiti & Çökme Tahmini', icon: '🤖', category: 'Yapay Zeka', action: () => switchOpsView('log-anomaly-ai') },
+  { id: 'nav-executive-report', title: 'C-Level Yönetici & Denetim Raporu (SLA & ROI)', icon: '📑', category: 'Raporlama', action: () => switchOpsView('executive-report') },
 
   // Direct Actions
   { id: 'act-copilot', title: 'Shams AI K8s Copilot Asistanını Aç', icon: '🤖', category: 'Yapay Zeka', action: () => toggleAiCopilot() },

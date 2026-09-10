@@ -969,6 +969,18 @@ function switchOpsView(viewName) {
     if (typeof fetchVaultSecrets === 'function') fetchVaultSecrets();
   } else if (viewName === 'finops-calculator') {
     if (typeof calculateFinOpsSavings === 'function') calculateFinOpsSavings();
+  } else if (viewName === 'gitops') {
+    if (typeof fetchGitOpsApps === 'function') fetchGitOpsApps();
+  } else if (viewName === 'canary-traffic') {
+    if (typeof fetchTrafficSplit === 'function') fetchTrafficSplit();
+  } else if (viewName === 'policy-engine') {
+    if (typeof fetchPolicies === 'function') fetchPolicies();
+  } else if (viewName === 'pod-terminal') {
+    if (typeof clearPodTerminal === 'function') clearPodTerminal();
+  } else if (viewName === 'log-anomaly-ai') {
+    if (typeof fetchLogAnomalies === 'function') fetchLogAnomalies();
+  } else if (viewName === 'executive-report') {
+    if (typeof fetchExecutiveReport === 'function') fetchExecutiveReport();
   }
 }
 
