@@ -69,6 +69,12 @@ const translations = {
     "ops_nav_audit": "Denetim Defteri (Audit)",
     "ops_nav_webhooks": "Slack / Teams Alarmları",
     "ops_nav_registry": "Özel Registry (Harbor)",
+    "ops_nav_yaml_ide": "Canlı YAML IDE & Diff",
+    "ops_nav_pod_files": "Pod Dosya Gezgini",
+    "ops_nav_hpa_studio": "HPA & Ölçekleme Stüdyosu",
+    "ops_nav_secrets_vault": "Secret & Config Kasası",
+    "ops_nav_finops_calculator": "Bulut Maliyet & ROI",
+    "ops_nav_cluster_failover": "Multi-Cluster DR / GSLB",
 
     // Sidebar: Footer
     "footer_copy": "© 2026 Shamssoftware<br>Tüm hakları saklıdır.",
@@ -210,6 +216,12 @@ const translations = {
     "ops_nav_audit": "Audit Trail & Logs",
     "ops_nav_webhooks": "Slack / Teams Alerts",
     "ops_nav_registry": "Private Registry (Harbor)",
+    "ops_nav_yaml_ide": "Live YAML IDE & Diff",
+    "ops_nav_pod_files": "Pod File Explorer",
+    "ops_nav_hpa_studio": "HPA & Autoscaling Studio",
+    "ops_nav_secrets_vault": "Secret & Config Vault",
+    "ops_nav_finops_calculator": "Cloud Cost & ROI Matrix",
+    "ops_nav_cluster_failover": "Multi-Cluster DR / GSLB",
 
     // Sidebar: Footer
     "footer_copy": "© 2026 Shamssoftware<br>All rights reserved.",

@@ -36,6 +36,12 @@ const COMMAND_PALETTE_ACTIONS = [
   { id: 'nav-audit', title: 'Kurumsal Denetim Defteri (Audit Trail)', icon: '📜', category: 'Güvenlik', action: () => switchOpsView('audit') },
   { id: 'nav-webhooks', title: 'Akıllı Alarm Kanalları (Slack / Teams / Telegram)', icon: '📢', category: 'İzleme', action: () => switchOpsView('webhooks') },
   { id: 'nav-registry', title: 'Harbor & Özel Docker Registry (imagePullSecrets)', icon: '🐳', category: 'Güvenlik', action: () => switchOpsView('registry') },
+  { id: 'nav-yaml-ide', title: 'Canlı Kubernetes YAML IDE & Diff', icon: '📝', category: 'Operasyon', action: () => switchOpsView('yaml-ide') },
+  { id: 'nav-pod-files', title: 'Pod İçi Canlı Dosya Gezgini (kubectl cp)', icon: '📁', category: 'Operasyon', action: () => switchOpsView('pod-files') },
+  { id: 'nav-hpa-studio', title: 'HPA & Otomatik Pod Ölçekleme Stüdyosu', icon: '⚖️', category: 'İş Yükleri', action: () => switchOpsView('hpa-studio') },
+  { id: 'nav-secrets-vault', title: 'Güvenli Secret & ConfigMap Kasası', icon: '🔐', category: 'Güvenlik', action: () => switchOpsView('secrets-vault') },
+  { id: 'nav-finops-calculator', title: 'Bulut Maliyet Kıyaslama & ROI Analizörü', icon: '💰', category: 'FinOps', action: () => switchOpsView('finops-calculator') },
+  { id: 'nav-cluster-failover', title: 'Çoklu Küme DR & GSLB Yük Aktarımı', icon: '🌐', category: 'Felaket Kurtarma', action: () => switchOpsView('cluster-failover') },
 
   // Direct Actions
   { id: 'act-copilot', title: 'Shams AI K8s Copilot Asistanını Aç', icon: '🤖', category: 'Yapay Zeka', action: () => toggleAiCopilot() },

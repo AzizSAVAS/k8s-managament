@@ -961,6 +961,14 @@ function switchOpsView(viewName) {
     if (typeof fetchHelmCatalog === 'function') fetchHelmCatalog();
   } else if (viewName === 'audit') {
     if (typeof fetchAuditTrail === 'function') fetchAuditTrail();
+  } else if (viewName === 'yaml-ide') {
+    if (typeof loadYamlTemplate === 'function') loadYamlTemplate('deployment');
+  } else if (viewName === 'pod-files') {
+    if (typeof fetchPodFiles === 'function') fetchPodFiles('/app');
+  } else if (viewName === 'secrets-vault') {
+    if (typeof fetchVaultSecrets === 'function') fetchVaultSecrets();
+  } else if (viewName === 'finops-calculator') {
+    if (typeof calculateFinOpsSavings === 'function') calculateFinOpsSavings();
   }
 }
 

@@ -331,6 +331,30 @@
             <span class="ops-nav-icon">🐳</span>
             <span class="ops-nav-label" data-i18n="ops_nav_registry">Özel Registry (Harbor)</span>
           </div>
+          <div class="ops-nav-item" id="ops-nav-yaml-ide" onclick="switchOpsView('yaml-ide')">
+            <span class="ops-nav-icon">📝</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_yaml_ide">Canlı YAML IDE & Diff</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-pod-files" onclick="switchOpsView('pod-files')">
+            <span class="ops-nav-icon">📁</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_pod_files">Pod Dosya Gezgini</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-hpa-studio" onclick="switchOpsView('hpa-studio')">
+            <span class="ops-nav-icon">⚖️</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_hpa_studio">HPA & Ölçekleme Stüdyosu</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-secrets-vault" onclick="switchOpsView('secrets-vault')">
+            <span class="ops-nav-icon">🔐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_secrets_vault">Secret & Config Kasası</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-finops-calculator" onclick="switchOpsView('finops-calculator')">
+            <span class="ops-nav-icon">💰</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_finops_calculator">Bulut Maliyet & ROI</span>
+          </div>
+          <div class="ops-nav-item" id="ops-nav-cluster-failover" onclick="switchOpsView('cluster-failover')">
+            <span class="ops-nav-icon">🌐</span>
+            <span class="ops-nav-label" data-i18n="ops_nav_cluster_failover">Multi-Cluster DR / GSLB</span>
+          </div>
         </nav>
       </div>
 
@@ -2897,6 +2921,266 @@
         <div class="code-box" id="reg-yaml-output" style="display:none; max-height:220px;"></div>
       </div>
 
+      <!-- PANE 29: CANLI YAML IDE & MANIFEST EDİTÖRÜ -->
+      <div id="ops-pane-yaml-ide" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Canlı Kubernetes YAML Manifest IDE & Diff Uygulayıcı</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Tarayıcı üzerinden doğrudan Deployment, Service, Ingress tanımları yazın, doğrulayın (lint) ve <code>kubectl apply</code> ile canlı kümeye aktarın.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-secondary btn-sm" id="btn-yaml-dryrun" onclick="applyYamlManifest(true)">🔍 Doğrula (Dry-Run)</button>
+            <button class="btn btn-primary btn-sm" id="btn-yaml-apply" onclick="applyYamlManifest(false)">🚀 Kümeye Uygula (Apply)</button>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+          <span style="font-size:0.75rem; color:var(--text-dim); display:flex; align-items:center; margin-right:4px;">Hazır Şablonlar:</span>
+          <button class="preset-pill" onclick="loadYamlTemplate('deployment')">📄 Deployment</button>
+          <button class="preset-pill" onclick="loadYamlTemplate('service')">🔌 Service</button>
+          <button class="preset-pill" onclick="loadYamlTemplate('ingress')">🌐 Ingress</button>
+          <button class="preset-pill" onclick="loadYamlTemplate('configmap')">⚙️ ConfigMap</button>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <textarea id="yaml-ide-editor" class="code-box" style="width:100%; height:320px; font-family:'JetBrains Mono'; font-size:0.8rem; background:#0B1220; border:1px solid var(--border-color); color:#A5F3FC; border-radius:8px; padding:14px; outline:none; resize:vertical; line-height:1.5;"></textarea>
+        </div>
+
+        <div class="code-box" id="yaml-ide-output" style="display:none; max-height:160px; font-size:0.78rem;"></div>
+      </div>
+
+      <!-- PANE 30: POD İÇİ CANLI DOSYA GEZGİNİ -->
+      <div id="ops-pane-pod-files" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Pod İçi Canlı Dosya Gezgini & Transfer (kubectl cp)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Çalışan podların içindeki dosya ve dizinleri görsel olarak inceleyin, log ve konfigürasyonları okuyun.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary btn-sm" onclick="fetchPodFiles('/app')">🔄 Yenile</button>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:16px; display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-size:0.75rem; color:var(--text-dim);">Hedef Pod:</label>
+            <select id="pod-file-target-select" class="login-input" style="padding:4px 10px; width:auto; font-size:0.78rem;" onchange="fetchPodFiles('/app')">
+              <option value="core-backend-api-pod">core-backend-api-pod (production)</option>
+              <option value="frontend-web-ui-pod">frontend-web-ui-pod (production)</option>
+              <option value="coredns-system-pod">coredns-pod (kube-system)</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex:1;">
+            <label style="font-size:0.75rem; color:var(--text-dim);">Konum:</label>
+            <input type="text" id="pod-file-current-path" value="/app" class="login-input" style="padding:4px 10px; font-size:0.78rem; font-family:'JetBrains Mono';" onkeydown="if(event.key==='Enter') fetchPodFiles(this.value)">
+          </div>
+        </div>
+
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Dosya / Dizin Adı</th>
+                <th>Tür</th>
+                <th>Boyut</th>
+                <th>İzinler</th>
+                <th>Eylemler</th>
+              </tr>
+            </thead>
+            <tbody id="pod-files-list">
+              <!-- Injected by cloudStudio.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PANE 31: HPA & ÖLÇEKLEME STÜDYOSU -->
+      <div id="ops-pane-hpa-studio" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Yatay Pod Otomatik Ölçekleyici (HPA) & Simülasyon Stüdyosu</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Trafik dalgalanmalarına karşı CPU ve RAM tabanlı otomatik pod ölçekleme kuralları tanımlayın ve yük altında simüle edin.
+          </p>
+        </div>
+
+        <div class="config-section-card" style="margin-bottom:24px;">
+          <div class="form-grid col-4" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Min Replika (Dinlenmede)</label>
+              <input type="number" id="hpa-min-replicas" value="2" min="1" max="20">
+            </div>
+            <div class="form-group">
+              <label>Maks Replika (Zirvede)</label>
+              <input type="number" id="hpa-max-replicas" value="8" min="2" max="50">
+            </div>
+            <div class="form-group">
+              <label>Hedef CPU Eşiği (%)</label>
+              <input type="number" id="hpa-target-cpu" value="70" min="10" max="95">
+            </div>
+            <div class="form-group">
+              <label>Hedef RAM Eşiği (%)</label>
+              <input type="number" id="hpa-target-ram" value="80" min="10" max="95">
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <span style="font-size:0.78rem; color:var(--text-dim);">
+              💡 <code>autoscaling/v2</code> API'si ile hedef Deployment'a HPA kaynağı bağlanır ve Metrics-Server üzerinden kontrol edilir.
+            </span>
+            <button class="btn btn-primary" onclick="runHpaSimulation()">
+              🔥 Yük Dalgası Simüle Et & HPA Testi Başlat
+            </button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+          <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:18px;">
+            <h4 style="font-size:0.9rem; font-weight:700; color:#fff; margin-bottom:12px;">📈 Simülasyon Olay Akışı (Scale-Out / In)</h4>
+            <div id="hpa-timeline-results">
+              <div style="padding:20px; text-align:center; color:var(--text-dim); font-size:0.8rem;">Yukarıdaki butona basarak yük simülasyonu başlatabilirsiniz.</div>
+            </div>
+          </div>
+          <div style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:18px;">
+            <h4 style="font-size:0.9rem; font-weight:700; color:#fff; margin-bottom:12px;">📄 Üretilen HPA Manifesti (v2)</h4>
+            <div class="code-box" id="hpa-generated-yaml" style="height:220px; font-size:0.75rem;">Simülasyon çalıştırıldığında HPA YAML manifesti burada görüntülenecektir.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 32: GÜVENLİ SECRET & CONFIGMAP KASASI -->
+      <div id="ops-pane-secrets-vault" class="ops-view-pane" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:14px;">
+          <div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Güvenli Secret & ConfigMap Kasası (Key-Value Manager)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted);">
+              Veritabanı şifreleri, API anahtarları ve ortam konfigürasyonlarını base64 karmaşası yaşamadan maskelenmiş biçimde yönetin.
+            </p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-secondary btn-sm" onclick="fetchVaultSecrets()">🔄 Yenile</button>
+            <button class="btn btn-primary btn-sm" onclick="alert('Yeni Secret Ekleme Sihirbazı Açılıyor...')">➕ Yeni Secret Ekle</button>
+          </div>
+        </div>
+
+        <div class="distribution-table-container">
+          <table class="dist-table">
+            <thead>
+              <tr>
+                <th>Kasa Kaynak Adı</th>
+                <th>Tür (Type)</th>
+                <th>Namespace</th>
+                <th>İçerilen Anahtarlar (Keys)</th>
+                <th>Şifreleme Durumu</th>
+                <th>Eylemler</th>
+              </tr>
+            </thead>
+            <tbody id="secrets-vault-list">
+              <!-- Injected by cloudStudio.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PANE 33: BULUT MALİYET & ROI HESAPLAYICI -->
+      <div id="ops-pane-finops-calculator" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">On-Prem vs Cloud FinOps Maliyet & Yatırım Getirisi (ROI) Matrisi</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Şu anki RKE2 kümenizin tükettiği kaynakların AWS EKS, Azure AKS ve Google GKE üzerinde çalışması durumundaki aylık ve yıllık dolar maliyetini kıyaslayın.
+          </p>
+        </div>
+
+        <div class="config-section-card" style="margin-bottom:24px;">
+          <div class="form-grid col-3" style="margin-bottom:14px;">
+            <div class="form-group">
+              <label>Toplam vCPU Kapasitesi</label>
+              <input type="number" id="finops-input-vcpu" value="48" oninput="calculateFinOpsSavings()">
+            </div>
+            <div class="form-group">
+              <label>Toplam Bellek (GB RAM)</label>
+              <input type="number" id="finops-input-ram" value="96" oninput="calculateFinOpsSavings()">
+            </div>
+            <div class="form-group">
+              <label>Kalıcı Depolama (GB Disk)</label>
+              <input type="number" id="finops-input-storage" value="1500" oninput="calculateFinOpsSavings()">
+            </div>
+          </div>
+        </div>
+
+        <!-- ROI SUMMARY BANNER -->
+        <div class="cis-score-banner" style="margin-bottom:24px; background:rgba(16,185,129,0.08); border-color:rgba(16,185,129,0.3);">
+          <div style="display:flex; align-items:center; gap:20px;">
+            <div class="cis-score-circle" id="finops-roi-badge" style="border-color:#34D399; background:rgba(16,185,129,0.2); color:#34D399; font-size:1.1rem;">%1380 ROI</div>
+            <div>
+              <div style="font-size:1.2rem; font-weight:800; color:#fff;">Yıllık Tahmini Şirket Tasarrufu: <span style="color:#34D399;" id="finops-annual-savings">$42,800 / YIL</span></div>
+              <div style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;" id="finops-monthly-savings">On-premise RKE2 altyapısı sayesinde her ay ~$3,560 tasarruf ediyorsunuz.</div>
+            </div>
+          </div>
+          <span class="role-tag success">KURUMSAL FINOPS RAPORU</span>
+        </div>
+
+        <div class="live-gauges-grid" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="live-gauge-card">
+            <div class="live-gauge-header"><span>AWS EKS EŞDEĞERİ</span><span style="color:#F59E0B;">Compute + EBS</span></div>
+            <div class="live-gauge-val" id="cost-aws-val" style="color:#F59E0B;">$3,450 / ay</div>
+          </div>
+          <div class="live-gauge-card">
+            <div class="live-gauge-header"><span>AZURE AKS EŞDEĞERİ</span><span style="color:#38BDF8;">D4s_v5 + Disk</span></div>
+            <div class="live-gauge-val" id="cost-azure-val" style="color:#38BDF8;">$3,280 / ay</div>
+          </div>
+          <div class="live-gauge-card">
+            <div class="live-gauge-header"><span>GOOGLE GKE EŞDEĞERİ</span><span style="color:#EC4899;">E2 + Persistent</span></div>
+            <div class="live-gauge-val" id="cost-gcp-val" style="color:#EC4899;">$3,120 / ay</div>
+          </div>
+          <div class="live-gauge-card" style="border-color:#10B981; background:rgba(16,185,129,0.04);">
+            <div class="live-gauge-header"><span>ON-PREM RKE2 MALİYETİ</span><span style="color:#34D399;">Donanım + Enerji</span></div>
+            <div class="live-gauge-val" id="cost-onprem-val" style="color:#34D399;">$280 / ay</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 34: MULTI-CLUSTER DR & GSLB FAILOVER SİMÜLATÖRÜ -->
+      <div id="ops-pane-cluster-failover" class="ops-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:4px;">Çoklu Küme Felaket Kurtarma (Multi-Cluster DR & GSLB Failover)</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted);">
+            Proxmox, VMware veya Hyper-V üzerindeki birincil kümenizde arıza olduğunda trafiği DNS düzeyinde (GSLB) saniyeler içinde ikincil DR kümesine aktarın.
+          </p>
+        </div>
+
+        <div class="config-section-card" style="margin-bottom:24px;">
+          <div class="form-grid col-3" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Birincil Küme (Primary Active)</label>
+              <input type="text" value="Prod-Proxmox-Cluster (10.0.10.10)" readonly>
+            </div>
+            <div class="form-group">
+              <label>Hedef Felaket Kurtarma Kümesi (Standby DR)</label>
+              <select id="failover-target-cluster" class="login-input" style="padding:7px 10px;">
+                <option value="DR-HyperV-Cluster (10.0.20.10)" selected>DR-HyperV-Cluster (10.0.20.10)</option>
+                <option value="vCenter-Backup-Cluster (10.0.30.10)">vCenter-Backup-Cluster (10.0.30.10)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Trafik Aktarım Oranı</label>
+              <input type="text" value="100% (Tam Kesintisiz Geçiş)" readonly>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" onclick="runClusterFailoverTest()">
+              ⚡ Küme Düzeyinde Canlı Failover Simülasyonu Başlat
+            </button>
+          </div>
+        </div>
+
+        <div id="failover-report-card" style="display:none; background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px;">
+          <div id="failover-report-body"></div>
+        </div>
+      </div>
+
     </div>
 
   </div> <!-- /workspace-operations -->
@@ -3129,14 +3413,15 @@
   </div>
 
   <!-- MODULAR JAVASCRIPT SYSTEM -->
-  <script src="js/modules/i18n.js?v=20260910_80"></script>
-  <script src="js/app.js?v=20260910_80"></script>
-  <script src="js/modules/auth.js?v=20260910_80"></script>
-  <script src="js/modules/wizard.js?v=20260910_80"></script>
-  <script src="js/modules/operations.js?v=20260910_80"></script>
-  <script src="js/modules/enterpriseSuite.js?v=20260910_80"></script>
-  <script src="js/modules/aiCopilot.js?v=20260910_80"></script>
-  <script src="js/modules/multiCluster.js?v=20260910_80"></script>
-  <script src="js/modules/commandPalette.js?v=20260910_80"></script>
+  <script src="js/modules/i18n.js?v=20260910_85"></script>
+  <script src="js/app.js?v=20260910_85"></script>
+  <script src="js/modules/auth.js?v=20260910_85"></script>
+  <script src="js/modules/wizard.js?v=20260910_85"></script>
+  <script src="js/modules/operations.js?v=20260910_85"></script>
+  <script src="js/modules/enterpriseSuite.js?v=20260910_85"></script>
+  <script src="js/modules/cloudStudio.js?v=20260910_85"></script>
+  <script src="js/modules/aiCopilot.js?v=20260910_85"></script>
+  <script src="js/modules/multiCluster.js?v=20260910_85"></script>
+  <script src="js/modules/commandPalette.js?v=20260910_85"></script>
 </body>
 </html>
