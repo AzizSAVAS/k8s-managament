@@ -1,0 +1,838 @@
+/* ==============================================================================
+
+   DAY-2 OPERATIONS, TELEMETRY GAUGES & EXTENSIONS
+
+   Shamssoftware & Aziz SAVAS Enterprise Architecture
+
+   ============================================================================== */
+
+/* ==============================================================================
+   PRE-FLIGHT VALIDATION PANEL & DAY-2 ENTERPRISE CONSOLE
+   ============================================================================== */
+
+/* Pre-flight Panel */
+.preflight-panel {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+}
+
+.preflight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.preflight-status-icon {
+  font-size: 1.5rem;
+}
+
+.preflight-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.preflight-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.preflight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.preflight-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.preflight-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.preflight-ip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.preflight-ip-row:last-child {
+  border-bottom: none;
+}
+
+.preflight-status-chip {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.preflight-status-chip.success {
+  background: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid var(--success-border);
+}
+
+.preflight-status-chip.danger {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.preflight-status-chip.warning {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+  border: 1px solid var(--warning-border);
+}
+
+/* Day-2 Segmented Tabs */
+.day2-tabs-bar {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  overflow-x: auto;
+}
+
+.day2-tab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.day2-tab-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.day2-tab-btn.active {
+  color: #fff;
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+}
+
+/* Day-2 Quick Access Banner */
+.quick-access-banner {
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.code-snippet-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: #93C5FD;
+  overflow-x: auto;
+}
+
+.copy-pill-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.copy-pill-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Add-ons Catalog */
+.addons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.addon-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition);
+}
+
+.addon-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.addon-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.addon-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.addon-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.addon-category {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.addon-status-pill {
+  margin-left: auto;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+.addon-status-pill.installed {
+  background: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid var(--success-border);
+}
+
+.addon-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.addon-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.addon-tag {
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-dim);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.addon-footer {
+  padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* System Pods Chips Grid */
+.system-pods-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.system-pod-chip {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.system-pod-chip .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.system-pod-chip .dot.running {
+  background: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+}
+
+.system-pod-chip .dot.pending {
+  background: #F59E0B;
+}
+
+.system-pod-chip .dot.error {
+  background: #EF4444;
+}
+
+/* Smoke Test Steps */
+.smoke-steps-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.smoke-step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  transition: var(--transition);
+}
+
+.smoke-step-card.passed {
+  border-color: rgba(5, 150, 105, 0.4);
+  background: rgba(5, 150, 105, 0.04);
+}
+
+.smoke-step-card.failed {
+  border-color: rgba(220, 38, 38, 0.4);
+  background: rgba(220, 38, 38, 0.04);
+}
+
+.smoke-step-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.smoke-step-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.smoke-step-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.smoke-step-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.smoke-status-badge {
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.smoke-status-badge.passed {
+  background: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid var(--success-border);
+}
+
+.smoke-status-badge.running {
+  background: var(--primary-subtle);
+  color: var(--primary-text);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.smoke-status-badge.failed {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+/* CIS Benchmark */
+.cis-score-banner {
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.cis-score-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.2);
+  border: 2px solid #A78BFA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.cis-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.cis-cat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.cis-cat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Console input & presets */
+.console-preset-row .preset-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+}
+
+/* ==============================================================================
+   GLOBAL WORKSPACE SWITCHER & DAY-2 OPERATIONS PORTAL
+   ============================================================================== */
+.global-mode-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  gap: 3px;
+}
+
+.mode-pill-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.mode-pill-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mode-pill-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
+}
+
+/* Day-2 Operations Sidebar Navigation */
+.ops-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.ops-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.81rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.ops-nav-item:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.ops-nav-item.active {
+  color: #FFFFFF;
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.35);
+  font-weight: 600;
+}
+
+.ops-nav-icon {
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.ops-nav-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Operational View Panes */
+.ops-view-pane {
+  display: none;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.ops-view-pane.active {
+  display: block !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.config-section-card {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+/* Cluster Events Timeline */
+.events-timeline-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  padding-left: 18px;
+}
+
+.events-timeline-wrap::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border-color);
+}
+
+.timeline-event-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.timeline-event-card:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-card-subtle);
+}
+
+.timeline-event-card::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 18px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3B82F6;
+  border: 2px solid var(--bg-main);
+}
+
+.timeline-event-card.warning::before {
+  background: #F59E0B;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+.timeline-event-card.normal::before {
+  background: #10B981;
+}
+
+.timeline-event-card.error::before {
+  background: #EF4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
+.event-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.event-obj-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.event-meta-info {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.event-card-msg {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.preflight-status-chip.over {
+  background: rgba(245, 158, 11, 0.15);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.preflight-status-chip.under {
+  background: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* ==============================================================================
+   DAY-2 EXTENSIONS: HUBBLE, DOCTOR, TRIVY, CRONJOBS
+   ============================================================================== */
+
+/* Hubble Verdict Badges */
+.badge-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.badge-verdict.forwarded {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.badge-verdict.dropped {
+  background: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Hubble Service Map Node Cards */
+.service-node-card {
+  background: #0F172A;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.service-node-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-glow);
+}
+.service-node-icon {
+  font-size: 1.6rem;
+}
+.service-node-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+}
+.service-node-ns {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+.service-link-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.service-flow-arrow {
+  color: #38BDF8;
+  font-size: 1.2rem;
+  animation: pulseArrow 1.5s infinite;
+}
+@keyframes pulseArrow {
+  0% { opacity: 0.4; transform: translateX(-2px); }
+  50% { opacity: 1; transform: translateX(2px); }
+  100% { opacity: 0.4; transform: translateX(-2px); }
+}
+
+/* AI Doctor Diagnostic Cards */
+.doctor-diag-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: var(--transition);
+}
+.doctor-diag-card.critical {
+  border-left: 4px solid #EF4444;
+}
+.doctor-diag-card.warning {
+  border-left: 4px solid #F59E0B;
+}
+.doctor-diag-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.doctor-diag-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+.doctor-diag-component {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+.doctor-diag-body {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #E2E8F0;
+}
+.doctor-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* Trivy CVE Badges */
+.cve-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.cve-badge.critical {
+  background: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.cve-badge.high {
+  background: rgba(249, 115, 22, 0.2);
+  color: #F97316;
+  border: 1px solid rgba(249, 115, 22, 0.4);
+}
+.cve-badge.medium {
+  background: rgba(251, 191, 36, 0.2);
+  color: #FBBF24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+.cve-badge.low {
+  background: rgba(148, 163, 184, 0.2);
+  color: #94A3B8;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+/* CronJob Status Chips */
+.cronjob-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.cronjob-chip.active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.cronjob-chip.suspended {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94A3B8;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}

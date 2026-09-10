@@ -1,0 +1,116 @@
+/* ==============================================================================
+
+   DESIGN TOKENS & SYSTEM BASE RESET
+
+   Shamssoftware & Aziz SAVAS Enterprise Architecture
+
+   ============================================================================== */
+
+/* ==============================================================================
+   Shamssoftware RKE2 & Cilium Enterprise Hub - Clean Human-Engineered Design System
+   Style: Professional Enterprise Dark Theme (Grounded Slate, Restrained Blue Accents)
+   ============================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  color-scheme: dark;
+
+  /* Neutral Dark Palette (Slate / Zinc based - No over-saturated neon) */
+  --bg-dark: #0B0F19;
+  --bg-sidebar: #0F172A;
+  --bg-topbar: #0F172A;
+  --bg-card: #131D33;
+  --bg-card-hover: #192642;
+  --bg-card-subtle: #0E1628;
+  --bg-input: #0A0F1D;
+
+  /* Borders - Crisp, restrained 1px lines */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-focus: #3B82F6;
+
+  /* Purposeful Accent Color (Engineering Royal Blue - Single Primary) */
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --primary-subtle: rgba(37, 99, 235, 0.12);
+  --primary-text: #60A5FA;
+
+  /* Semantic Status Colors (Restrained, Not Neon) */
+  --success: #059669;
+  --success-bg: rgba(5, 150, 105, 0.12);
+  --success-text: #34D399;
+  --success-border: rgba(5, 150, 105, 0.3);
+
+  --warning: #D97706;
+  --warning-bg: rgba(217, 119, 6, 0.12);
+  --warning-text: #FBBF24;
+  --warning-border: rgba(217, 119, 6, 0.3);
+
+  --danger: #DC2626;
+  --danger-bg: rgba(220, 38, 38, 0.12);
+  --danger-text: #F87171;
+
+  --role-master-bg: rgba(124, 58, 237, 0.12);
+  --role-master-text: #A78BFA;
+  --role-master-border: rgba(124, 58, 237, 0.3);
+
+  /* Typography */
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --text-dim: #64748B;
+
+  /* Layout Geometry */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 9999px;
+  --sidebar-w: 290px;
+  --topbar-h: 64px;
+  --transition: all 0.15s ease-in-out;
+}
+
+/* --- RESET & VIEWPORT --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle clean scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- APP LAYOUT SHELL --- */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
