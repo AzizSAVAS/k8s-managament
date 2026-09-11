@@ -2564,6 +2564,90 @@
         </div>
       </div>
 
+      <!-- ============================================================= -->
+      <!-- 53. LENS KUBERNETES IDE STÜDYOSU (LENS STUDIO)                -->
+      <!-- ============================================================= -->
+      <div id="ops-pane-lens-studio" class="ops-view-pane" style="display:none;">
+        <div class="glass-card" style="margin-bottom:20px;">
+          <!-- Studio Header -->
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:18px;">
+            <div>
+              <span class="step-badge-pill" style="background:rgba(56,189,248,0.15); border-color:#38BDF8; color:#38BDF8;">OPENLENS ENTERPRISE CONTROLLER</span>
+              <h2 class="card-title">🔭 Kubernetes Lens IDE & Küme Gezgini</h2>
+              <p class="card-desc">Lens / OpenLens benzeri derinlemesine küme gezgini. Podlar, Deploymentlar, Servisler, ConfigMap'ler ve aktif port yönlendirmeleri üzerinde canlı log, shell, YAML düzenleme ve replika ölçekleme yapın.</p>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <!-- Namespace Selector -->
+              <div style="display:flex; align-items:center; gap:6px; background:rgba(15,23,42,0.8); border:1px solid var(--border-color); padding:4px 10px; border-radius:6px;">
+                <span style="font-size:0.75rem; color:var(--text-dim);">🌐 Namespace:</span>
+                <select id="lens-global-ns-select" onchange="filterLensNamespace(this.value)" style="background:transparent; border:none; color:#38BDF8; font-weight:700; font-size:0.8rem; outline:none; cursor:pointer;">
+                  <option value="all" style="background:#0F172A; color:#fff;">All Namespaces</option>
+                  <option value="production" style="background:#0F172A; color:#fff;">production</option>
+                  <option value="kube-system" style="background:#0F172A; color:#fff;">kube-system</option>
+                  <option value="monitoring" style="background:#0F172A; color:#fff;">monitoring</option>
+                  <option value="hubble-system" style="background:#0F172A; color:#fff;">hubble-system</option>
+                  <option value="default" style="background:#0F172A; color:#fff;">default</option>
+                </select>
+              </div>
+
+              <!-- Search -->
+              <input type="text" id="lens-search-input" placeholder="🔍 Kaynak veya IP ara..." oninput="searchLensResources(this.value)" style="padding:6px 12px; font-size:0.78rem; background:rgba(15,23,42,0.8); border:1px solid var(--border-color); color:#fff; border-radius:6px; outline:none; width:180px;">
+
+              <!-- Refresh Button -->
+              <button class="btn btn-secondary btn-sm" onclick="fetchLensResources(currentLensKind)" title="Yenile">🔄</button>
+            </div>
+          </div>
+
+          <!-- Kind Sub-Tabs Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); margin-bottom:16px; overflow-x:auto; padding-bottom:6px; gap:8px;">
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-secondary btn-sm lens-kind-tab active" id="lens-tab-pods" onclick="switchLensKind('pods')">Pods</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-deployments" onclick="switchLensKind('deployments')">Deployments</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-statefulsets" onclick="switchLensKind('statefulsets')">StatefulSets</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-daemonsets" onclick="switchLensKind('daemonsets')">DaemonSets</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-services" onclick="switchLensKind('services')">Services</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-ingresses" onclick="switchLensKind('ingresses')">Ingresses</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-configmaps" onclick="switchLensKind('configmaps')">ConfigMaps</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-secrets" onclick="switchLensKind('secrets')">Secrets</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-pvcs" onclick="switchLensKind('pvcs')">PVCs</button>
+              <button class="btn btn-secondary btn-sm lens-kind-tab" id="lens-tab-portforwards" onclick="switchLensKind('portforwards')" style="border-color:#38BDF8; color:#38BDF8;">🔌 Port-Forwards</button>
+            </div>
+            <div id="lens-item-count-badge" style="font-size:0.75rem; color:var(--text-dim); white-space:nowrap; padding-left:12px;"></div>
+          </div>
+
+          <!-- Table Content Area -->
+          <div id="lens-resource-table-container"></div>
+        </div>
+      </div>
+
+      <!-- LENS SLIDING RESOURCE INSPECTOR DRAWER -->
+      <div id="lens-drawer-backdrop" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); backdrop-filter:blur(3px); z-index:9998;" onclick="closeLensInspector()"></div>
+      <div id="lens-resource-drawer" style="position:fixed; top:0; right:0; width:580px; max-width:95vw; height:100vh; background:#0B0F19; border-left:1px solid rgba(56,189,248,0.3); z-index:9999; transform:translateX(100%); transition:transform 0.28s cubic-bezier(0.16, 1, 0.3, 1); box-shadow:-12px 0 35px rgba(0,0,0,0.8); display:flex; flex-direction:column; overflow:hidden;">
+        
+        <!-- Drawer Header -->
+        <div style="padding:16px 20px; border-bottom:1px solid var(--border-color); background:rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span id="lens-drawer-kind-badge" class="step-badge-pill" style="font-size:0.7rem; padding:2px 8px; background:rgba(56,189,248,0.15); border-color:#38BDF8; color:#38BDF8;">POD</span>
+              <span id="lens-drawer-ns-badge" style="font-size:0.75rem; background:rgba(255,255,255,0.08); padding:2px 7px; border-radius:4px; font-family:'JetBrains Mono',monospace;">default</span>
+            </div>
+            <h3 id="lens-drawer-title" style="margin:6px 0 0 0; font-size:1.05rem; color:#fff; word-break:break-all;">Resource Name</h3>
+          </div>
+          <button onclick="closeLensInspector()" style="background:rgba(255,255,255,0.08); border:none; color:#fff; cursor:pointer; width:32px; height:32px; border-radius:6px; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:background 0.2s ease;">✕</button>
+        </div>
+
+        <!-- Drawer Navigation Sub-tabs -->
+        <div style="display:flex; border-bottom:1px solid var(--border-color); background:rgba(0,0,0,0.2); padding:0 20px;">
+          <button class="lens-drawer-tab-btn active" id="lens-dtab-overview" onclick="renderLensDrawerTabs('overview')" style="padding:10px 14px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:600; border-bottom:2px solid transparent;">Genel Bakış</button>
+          <button class="lens-drawer-tab-btn" id="lens-dtab-containers" onclick="renderLensDrawerTabs('containers')" style="padding:10px 14px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:600; border-bottom:2px solid transparent;">Konteynerler</button>
+          <button class="lens-drawer-tab-btn" id="lens-dtab-events" onclick="renderLensDrawerTabs('events')" style="padding:10px 14px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:600; border-bottom:2px solid transparent;">Olaylar (Events)</button>
+          <button class="lens-drawer-tab-btn" id="lens-dtab-yaml" onclick="renderLensDrawerTabs('yaml')" style="padding:10px 14px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem; font-weight:600; border-bottom:2px solid transparent;">Canlı YAML</button>
+        </div>
+
+        <!-- Drawer Body -->
+        <div id="lens-drawer-body" style="flex:1; overflow-y:auto; padding:20px;"></div>
+      </div>
+
     </div> <!-- /workspace-operations -->
 
         </div> <!-- /workspace-content -->

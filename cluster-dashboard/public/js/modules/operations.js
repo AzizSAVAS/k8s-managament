@@ -157,6 +157,8 @@ function switchOpsView(viewName) {
     if (typeof fetchTimeMachineHistory === 'function') fetchTimeMachineHistory();
   } else if (viewName === 'metrics-oscilloscope') {
     if (typeof initMetricsOscilloscope === 'function') initMetricsOscilloscope();
+  } else if (viewName === 'lens-studio') {
+    if (typeof fetchLensResources === 'function') fetchLensResources(currentLensKind);
   }
 }
 

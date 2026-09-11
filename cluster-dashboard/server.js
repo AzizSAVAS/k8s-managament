@@ -15,6 +15,7 @@ const deployRoutes = require('./routes/deployRoutes');
 const operationsRoutes = require('./routes/operationsRoutes');
 const demoRoutes = require('./routes/demoRoutes');
 const advancedStudioRoutes = require('./routes/advancedStudioRoutes');
+const lensRoutes = require('./routes/lensRoutes');
 const { buildHtml } = require('./services/htmlBuilder');
 
 // Compile modular HTML template & partials on boot
@@ -54,6 +55,7 @@ app.use(deployRoutes(broadcast));
 app.use(operationsRoutes);
 app.use('/api/demo', demoRoutes);
 app.use(advancedStudioRoutes);
+app.use(lensRoutes);
 
 const PORT = process.env.PORT || 5050;
 

@@ -183,7 +183,8 @@ const translations = {
     "ops_nav_ebpf_waf": "eBPF Kernel WAF & Tehdit Haritası",
     "ops_nav_cluster_janitor": "Küme Çöp & Zombi Temizleyici",
     "ops_nav_time_machine": "YAML Zaman Makinesi & Diff",
-    "ops_nav_metrics_oscilloscope": "Canlı Metrik Osiloskopu"
+    "ops_nav_metrics_oscilloscope": "Canlı Metrik Osiloskopu",
+    "ops_nav_lens_studio": "Lens Kubernetes IDE Stüdyosu"
   },
 
   en: {
@@ -365,7 +366,8 @@ const translations = {
     "ops_nav_ebpf_waf": "eBPF Kernel WAF & Threat Map",
     "ops_nav_cluster_janitor": "Cluster Janitor & Zombie Purger",
     "ops_nav_time_machine": "YAML Time-Machine & Visual Diff",
-    "ops_nav_metrics_oscilloscope": "Live Metrics Oscilloscope"
+    "ops_nav_metrics_oscilloscope": "Live Metrics Oscilloscope",
+    "ops_nav_lens_studio": "Lens Kubernetes IDE Studio"
   }
 };
 
@@ -692,7 +694,14 @@ const phraseDictionary = [
   ["Gürültü Filtresi:", "Noise Filter:"],
   ["Hafif (Low)", "Low"],
   ["Orta (Med)", "Medium"],
-  ["Yüksek (High)", "High"]
+  ["Yüksek (High)", "High"],
+  ["🔭 Kubernetes Lens IDE & Küme Gezgini", "🔭 Kubernetes Lens IDE & Cluster Explorer"],
+  ["Lens / OpenLens benzeri derinlemesine küme gezgini. Podlar, Deploymentlar, Servisler, ConfigMap'ler ve aktif port yönlendirmeleri üzerinde canlı log, shell, YAML düzenleme ve replika ölçekleme yapın.", "Deep cluster explorer akin to Lens / OpenLens. Perform live logs, interactive shell, YAML editing, replica scaling, and active port-forwarding across Pods, Deployments, Services, and ConfigMaps."],
+  ["🔍 Kaynak veya IP ara...", "🔍 Search resource or IP..."],
+  ["Canlı YAML Düzenle (In-Place Apply):", "Edit Live YAML (In-Place Apply):"],
+  ["Değişiklikleri Uygula", "Apply Changes"],
+  ["Tüneli Durdur", "Stop Tunnel"],
+  ["Aktif Tünel", "Active Tunnels"]
 ];
 
 let currentLanguage = localStorage.getItem('shams_cluster_lang') || 'tr';
